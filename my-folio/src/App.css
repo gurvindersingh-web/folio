@@ -1,0 +1,489 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: #0f0f0f;
+  color: #d4cebd;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.ryoku-layout {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Subtle noise texture */
+.r-noise {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ───────── Header ───────── */
+.r-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.8rem 6vw;
+  z-index: 10;
+}
+
+.r-logo {
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.r-logo-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+.r-nav {
+  display: flex;
+  gap: 3.5rem;
+}
+
+.r-nav a {
+  text-decoration: none;
+  color: #666459;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.r-nav a:hover {
+  color: #d4cebd;
+}
+
+.r-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  color: #666459;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #2a2925;
+  padding: 0.4rem 0.8rem;
+  letter-spacing: 0.15em;
+}
+
+.r-square {
+  font-size: 0.4rem;
+  color: #d4cebd;
+}
+
+/* ───────── Main Area ───────── */
+.r-main {
+  flex: 1;
+  display: flex;
+  padding: 0 6vw;
+  position: relative;
+}
+
+/* ───────── Left Content ───────── */
+.r-left {
+  width: 480px;
+  padding-top: 0.5rem;
+  padding-bottom: 3rem;
+  z-index: 2;
+}
+
+.r-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  color: #666459;
+  letter-spacing: 0.3em;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.r-plus { font-size: 1rem; line-height: 0; }
+.r-char { font-size: 0.8rem; color: #d4cebd; }
+.r-star { font-size: 0.7rem; }
+
+.r-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 5.5rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #d4cebd;
+  margin-bottom: 0.8rem;
+}
+
+.r-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  color: #666459;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+
+.r-local-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  color: #4a483f;
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.r-pulse {
+  color: #4a483f;
+  font-size: 0.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+.r-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.r-spec-row {
+  display: flex;
+  align-items: baseline;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  color: #d4cebd;
+  text-transform: uppercase;
+}
+
+.r-spec-row span:first-child {
+  color: #666459;
+}
+
+.r-dots {
+  flex-grow: 1;
+  border-bottom: 1px dotted #4a483f;
+  margin: 0 1rem;
+  opacity: 0.6;
+}
+
+.r-vitals {
+  display: flex;
+  border: 1px solid #2a2925;
+  border-right: none;
+}
+
+.r-vital-box {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-right: 1px solid #2a2925;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.r-vital-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #d4cebd;
+  line-height: 1;
+}
+
+.r-vital-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
+  color: #666459;
+}
+
+.r-ramp {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  color: #666459;
+  letter-spacing: 0.15em;
+}
+
+.r-ramp-colors {
+  display: flex;
+}
+
+.r-ramp-colors > div {
+  width: 1.75rem;
+  height: 0.9rem;
+}
+
+.r-c1 { background: #080808; border: 1px solid #2a2925; }
+.r-c2 { background: #3c3a33; }
+.r-c3 { background: #736f62; }
+.r-c4 { background: #a39f8d; }
+.r-c5 { background: #d4cebd; }
+
+.r-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.r-actions button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.r-btn-primary {
+  background: #d4cebd;
+  color: #0d0c0a;
+  border: 1px solid #d4cebd;
+}
+
+.r-btn-primary:hover {
+  background: #bfb9a6;
+}
+
+.r-btn-secondary {
+  background: transparent;
+  color: #d4cebd;
+  border: 1px solid #2a2925;
+}
+
+.r-btn-secondary:hover {
+  border-color: #d4cebd;
+}
+
+.r-stars {
+  margin-top: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  color: #666459;
+  letter-spacing: 0.1em;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #2a2925;
+}
+
+.r-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.r-barcode-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.r-barcode-star {
+  font-size: 1.25rem;
+  color: #666459;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.r-barcode-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.r-barcode {
+  width: 300px;
+  height: 40px;
+  background-image: linear-gradient(to right,
+    #d4cebd 0%, #d4cebd 2%, transparent 2%, transparent 4%,
+    #d4cebd 4%, #d4cebd 5%, transparent 5%, transparent 7%,
+    #d4cebd 7%, #d4cebd 10%, transparent 10%, transparent 12%,
+    #d4cebd 12%, #d4cebd 14%, transparent 14%, transparent 15%,
+    #d4cebd 15%, #d4cebd 18%, transparent 18%, transparent 20%,
+    #d4cebd 20%, #d4cebd 21%, transparent 21%, transparent 23%,
+    #d4cebd 23%, #d4cebd 25%, transparent 25%, transparent 28%,
+    #d4cebd 28%, #d4cebd 30%, transparent 30%, transparent 31%,
+    #d4cebd 31%, #d4cebd 34%, transparent 34%, transparent 36%,
+    #d4cebd 36%, #d4cebd 38%, transparent 38%, transparent 40%,
+    #d4cebd 40%, #d4cebd 43%, transparent 43%, transparent 45%,
+    #d4cebd 45%, #d4cebd 47%, transparent 47%, transparent 50%,
+    #d4cebd 50%, #d4cebd 52%, transparent 52%, transparent 55%,
+    #d4cebd 55%, #d4cebd 56%, transparent 56%, transparent 59%,
+    #d4cebd 59%, #d4cebd 62%, transparent 62%, transparent 65%,
+    #d4cebd 65%, #d4cebd 67%, transparent 67%, transparent 70%,
+    #d4cebd 70%, #d4cebd 71%, transparent 71%, transparent 73%,
+    #d4cebd 73%, #d4cebd 76%, transparent 76%, transparent 78%,
+    #d4cebd 78%, #d4cebd 80%, transparent 80%, transparent 82%,
+    #d4cebd 82%, #d4cebd 83%, transparent 83%, transparent 85%,
+    #d4cebd 85%, #d4cebd 88%, transparent 88%, transparent 90%,
+    #d4cebd 90%, #d4cebd 92%, transparent 92%, transparent 94%,
+    #d4cebd 94%, #d4cebd 95%, transparent 95%, transparent 98%,
+    #d4cebd 98%, #d4cebd 100%
+  );
+}
+
+.r-barcode-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.25em;
+  color: #4a483f;
+}
+
+.r-edition {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.r-ed-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.25em;
+  color: #666459;
+}
+
+.r-ed-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #d4cebd;
+}
+
+.r-ed-ver {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  color: #4a483f;
+}
+
+/* ───────── Right Art ───────── */
+.r-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 55%;
+  pointer-events: none;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.r-halo {
+  position: absolute;
+  top: 45%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: 80vh;
+  height: 80vh;
+  border: 2px solid #d3cdbc;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.r-art {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+}
+
+.r-art img {
+  position: absolute;
+  bottom: 0;
+  right: 6vw; /* move slightly left of the absolute right edge */
+  height: 95vh;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  filter: grayscale(100%);
+}
+
+.r-scroll-hint {
+  position: absolute;
+  bottom: 4rem;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 3;
+}
+
+.r-scroll-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  color: #4a483f;
+  transform: rotate(90deg);
+  margin-bottom: 1.5rem;
+}
+
+.r-scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, #4a483f, transparent);
+}
+
+/* ───────── Side Text ───────── */
+.r-side-text {
+  position: fixed;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.3em;
+  color: #4a483f;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* ───────── Responsive ───────── */
+@media (max-width: 1024px) {
+  .r-header, .r-main { padding: 0 4rem; }
+  .r-header { padding-top: 2rem; }
+  .r-art img { margin-right: 4rem; }
+}
+
+@media (max-width: 768px) {
+  html, body { overflow-y: auto; }
+  .r-header { padding: 1.5rem; }
+  .r-nav { display: none; }
+  .r-main { padding: 0 1.5rem; flex-direction: column; }
+  .r-left { width: 100%; max-width: 100%; }
+  .r-right { position: relative; width: 100%; height: 500px; margin-top: 2rem; }
+  .r-halo { right: 50%; transform: translate(50%, -50%); width: 300px; height: 300px; }
+  .r-art img { height: 100%; object-position: bottom center; margin-right: 0; }
+  .r-title { font-size: 4rem; }
+  .r-side-text { display: none; }
+  .r-vitals { flex-wrap: wrap; }
+  .r-vital-box { flex: 1 1 40%; border-bottom: 1px solid #2a2925; }
+  .r-footer-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+}
