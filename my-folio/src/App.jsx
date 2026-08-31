@@ -3,10 +3,39 @@ import './App.css';
 import LogoLoop from "./component/LogoLoop.jsx"
 import AnimatedContent from "./component/AnimatedContent.jsx"
 import InfiniteSpiral from "./component/InfiniteSpiral.jsx"
-
+import Carousel from "./component/Carousel.jsx"
+import BorderGlow from "./component/BorderGlow.jsx"
+import { FiMonitor, FiServer, FiDatabase, FiTerminal } from 'react-icons/fi';
 function App() {
   const [time, setTime] = useState("");
   const [scrollY, setScrollY] = useState(0);
+
+  const carouselItems = [
+    {
+      title: 'Frontend',
+      description: 'Building responsive, modern web applications with React 19 and JavaScript.',
+      id: 1,
+      icon: <FiMonitor className="carousel-icon" />
+    },
+    {
+      title: 'Backend',
+      description: 'Designing scalable APIs and services with Node.js and Spring Frameworks.',
+      id: 2,
+      icon: <FiServer className="carousel-icon" />
+    },
+    {
+      title: 'Database',
+      description: 'Modeling and managing data with PostgreSQL and MongoDB.',
+      id: 3,
+      icon: <FiDatabase className="carousel-icon" />
+    },
+    {
+      title: 'DevOps',
+      description: 'Containerizing with Docker and orchestrating with Kubernetes on Linux environments.',
+      id: 4,
+      icon: <FiTerminal className="carousel-icon" />
+    }
+  ];
 
   useEffect(() => {
     // Clock Timer
@@ -269,41 +298,57 @@ function App() {
             <span className="r-about-eyebrow-icon">カ</span>
           </div>
           
+          <div className="r-skills-carousel-container" style={{ flex: 1, maxWidth: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <BorderGlow borderRadius={165} backgroundColor="#121212" className="carousel-border-glow">
+              <Carousel 
+                items={carouselItems}
+                baseWidth={330}
+                round={true}
+                autoplay={true} 
+                autoplayDelay={3000}
+                loop={true}
+                pauseOnHover={false}
+              />
+            </BorderGlow>
+          </div>
+
           <div className="r-skills-content">
             <h2 className="r-section-heading">SKILLS</h2>
             <div className="r-skills-grid">
-              <div className="r-skill-category">
-                <h3>FRONTEND</h3>
-                <div className="r-skill-list">
-                  <span>React 19</span>
-                  <span>Next.js</span>
-                  <span>TypeScript</span>
-                  <span>Tailwind CSS</span>
+              <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
+                <h3><span className="r-pulse"></span>FRONTEND</h3>
+                <div className="r-skill-list r-skill-logos">
+                  <span><img src="https://cdn.simpleicons.org/react" alt="React" width="20" height="20"/> React 19</span>
+                  <span><img src="https://cdn.simpleicons.org/javascript" alt="JavaScript" width="20" height="20"/> JavaScript</span>
+                  <span><img src="https://cdn.simpleicons.org/typescript" alt="TypeScript" width="20" height="20"/> TypeScript</span>
+                  <span><img src="https://cdn.simpleicons.org/tailwindcss" alt="Tailwind CSS" width="20" height="20"/> Tailwind CSS</span>
+                  <span><img src="https://cdn.simpleicons.org/qt" alt="Quickshell" width="20" height="20"/> Quickshell</span>
                 </div>
-              </div>
-              <div className="r-skill-category">
-                <h3>BACKEND</h3>
-                <div className="r-skill-list">
-                  <span>Spring Boot</span>
-                  <span>Node.js</span>
-                  <span>Express</span>
-                  <span>PostgreSQL</span>
-                  <span>MongoDB</span>
+              </BorderGlow>
+              <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
+                <h3><span className="r-pulse-red"></span>BACKEND</h3>
+                <div className="r-skill-list r-skill-logos">
+                  <span><img src="https://cdn.simpleicons.org/springboot" alt="Spring Boot" width="20" height="20"/> Spring Boot</span>
+                  <span><img src="https://cdn.simpleicons.org/nodedotjs" alt="Node.js" width="20" height="20"/> Node.js</span>
+                  <span><img src="https://cdn.simpleicons.org/spring" alt="Spring Frameworks" width="20" height="20"/> Spring Frameworks</span>
+                  <span><img src="https://cdn.simpleicons.org/postgresql" alt="PostgreSQL" width="20" height="20"/> PostgreSQL</span>
+                  <span><img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB" width="20" height="20"/> MongoDB</span>
                 </div>
-              </div>
-              <div className="r-skill-category">
-                <h3>PLATFORMS & TOOLS</h3>
-                <div className="r-skill-list">
-                  <span>Arch Linux</span>
-                  <span>Web Security</span>
-                  <span>Docker</span>
-                  <span>Git</span>
-                  <span>Vercel</span>
+              </BorderGlow>
+              <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
+                <h3><span className="r-pulse-blue"></span>PLATFORMS & TOOLS</h3>
+                <div className="r-skill-list r-skill-logos">
+                  <span><img src="https://cdn.simpleicons.org/archlinux" alt="Arch Linux" width="20" height="20"/> Arch Linux</span>
+                  <span><img src="https://cdn.simpleicons.org/git" alt="Git" width="20" height="20"/> Git</span>
+                  <span><img src="https://cdn.simpleicons.org/docker" alt="Docker" width="20" height="20"/> Docker</span>
+                  <span><img src="https://cdn.simpleicons.org/kubernetes" alt="Kubernetes" width="20" height="20"/> Kubernetes</span>
+                  <span><img src="https://cdn.simpleicons.org/cloudflare" alt="Cloudflare" width="20" height="20"/> Cloudflare</span>
                 </div>
-              </div>
+              </BorderGlow>
             </div>
           </div>
         </section>
+
       </main>
       {/* Side Text */}
       <div className="r-side-text">
