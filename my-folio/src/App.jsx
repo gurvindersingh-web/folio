@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import LogoLoop from "./component/LogoLoop.jsx"
 
 function App() {
   const [time, setTime] = useState("");
@@ -182,8 +183,8 @@ function App() {
             </p>
           </div>
 
-          <div className="r-about-graphic">
-            <div className="r-graphic-box-new">
+          {/* <div className="r-about-graphic"> */}
+            {/* <div className="r-graphic-box-new">
               <div className="r-corner r-corner-tl">┌</div>
               <div className="r-corner r-corner-tr">┐</div>
               <div className="r-corner r-corner-bl">└</div>
@@ -217,7 +218,28 @@ function App() {
                 <div className="r-gb-ka">カ</div>
               </div>
             </div>
-          </div>
+          </div> */}
+        </section>
+
+        {/* Logo Loop Section */}
+        <section className="r-logo-loop-section" style={{ padding: '2rem 0', overflow: 'hidden' }}>
+          <LogoLoop 
+            logos={[
+              { src: 'https://cdn.simpleicons.org/vercel/white', alt: 'Vercel', title: 'Vercel' },
+              { src: 'https://cdn.simpleicons.org/github/white', alt: 'GitHub', title: 'GitHub' },
+              { src: 'https://cdn.simpleicons.org/docker/white', alt: 'Docker', title: 'Docker' },
+              { src: 'https://cdn.simpleicons.org/prisma/white', alt: 'Prisma', title: 'Prisma' },
+              { src: 'https://cdn.simpleicons.org/supabase/white', alt: 'Supabase', title: 'Supabase' },
+              { src: 'https://cdn.simpleicons.org/stripe/white', alt: 'Stripe', title: 'Stripe' },
+              { src: 'https://cdn.simpleicons.org/react/white', alt: 'React', title: 'React' },
+              { src: 'https://cdn.simpleicons.org/nextdotjs/white', alt: 'Next.js', title: 'Next.js' },
+              { src: 'https://cdn.simpleicons.org/typescript/white', alt: 'TypeScript', title: 'TypeScript' }
+            ]}
+            speed={40}
+            direction="left"
+            gap={64}
+            logoHeight={32}
+          />
         </section>
       </main>
 
