@@ -3,13 +3,23 @@ import './App.css';
 
 function App() {
   const [time, setTime] = useState("");
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
+    // Clock Timer
     const timer = setInterval(() => {
       const now = new Date();
       setTime(now.toLocaleTimeString('en-US', { hour12: false }));
     }, 1000);
-    return () => clearInterval(timer);
+
+    // Scroll Listener for Parallax
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -147,7 +157,7 @@ function App() {
           <div className="r-halo"></div>
           <div className="r-art">
             {/* The profile picture, uncropped, fading in from left */}
-            <img src="/imgs/ppf_1080p.png" alt="Profile" />
+            <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" />
           </div>
           <div className="r-scroll-hint">
             <div className="r-scroll-text">SCROLL</div>
@@ -200,13 +210,6 @@ function App() {
   ▚▚                  ▚▚
   ▚▚  ▚▚▚▚▚▚▚▚▚▚▚▚▚▚  ▚▚`}
                 </pre>
-              </div>
-
-              <div className="r-gb-overlay-text">
-                One source of truth. The<br/>
-                repo is the machine, a<br/>
-                live arch linux<br/>
-                target.
               </div>
 
               <div className="r-gb-bottom">
