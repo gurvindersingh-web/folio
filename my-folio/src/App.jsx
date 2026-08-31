@@ -5,10 +5,51 @@ import AnimatedContent from "./component/AnimatedContent.jsx"
 import InfiniteSpiral from "./component/InfiniteSpiral.jsx"
 import Carousel from "./component/Carousel.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
+import ProjectCard from "./component/ProjectCard.jsx"
+import ScrollStack, { ScrollStackItem } from "./component/ScrollStack.jsx"
 import { FiMonitor, FiServer, FiDatabase, FiTerminal } from 'react-icons/fi';
 function App() {
   const [time, setTime] = useState("");
   const [scrollY, setScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const projects = [
+    {
+      title: "Dynamic Memory Management",
+      description: "Visualise FIFO, LRU, and Optimal page replacement algorithms with stunning animations, TLB simulation, working set tracking, and Belady's anomaly detection.",
+      stack: ["C", "C++", "OS Concepts", "Algorithms"],
+      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop",
+      link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management"
+    },
+    {
+      title: "Text RPG Battle Engine",
+      description: "A complete turn-based RPG battle engine built in C++. Features dynamic stats, enemy AI, inventory management, and tactical combat mechanics.",
+      stack: ["C++", "OOP", "Game Engine", "Terminal UI"],
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop",
+      link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine"
+    },
+    {
+      title: "Spatiotemporal Climate AI",
+      description: "A machine learning pipeline for detecting climate anomalies over space and time. Processes massive datasets to predict environmental outliers.",
+      stack: ["Python", "TensorFlow", "Pandas", "Data Science"],
+      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1600&auto=format&fit=crop",
+      link: "https://github.com/gurvindersingh-web/Spatiotemporal-climate-anomaly-detection-AI"
+    },
+    {
+      title: "RMS Automation Tool",
+      description: "Revamped automation architecture for RMS systems, improving efficiency and scripting reliability through extensive Python tooling.",
+      stack: ["Python", "Automation", "Scripting", "Shell"],
+      image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=1600&auto=format&fit=crop",
+      link: "https://github.com/gurvindersingh-web/REVAMPING-RMS-AUTOMATION.git"
+    },
+    {
+      title: "Future Endeavor",
+      description: "My latest secret project currently in development. Blending cutting-edge web technologies with a highly polished user experience.",
+      stack: ["React", "Node.js", "MongoDB", "Web3"],
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1600&auto=format&fit=crop",
+      link: ""
+    }
+  ];
 
   const carouselItems = [
     {
@@ -270,8 +311,8 @@ function App() {
           </div>
         </section>
 
-        {/* Logo Loop Section */}
-        <section className="r-logo-loop-section" style={{ padding: '3rem 0', overflow: 'hidden' }}>
+        {/* Logo Loop & Skills Section */}
+        <section id="skills" className="r-logo-loop-section" style={{ padding: '3rem 0', overflow: 'hidden' }}>
           <LogoLoop
             logos={[
               { src: 'https://cdn.simpleicons.org/vercel/c6c1b9', alt: 'Vercel', title: 'Vercel' },
@@ -292,7 +333,7 @@ function App() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="r-skills">
+        <section className="r-skills">
           <div className="r-about-eyebrow">
             <span className="r-about-eyebrow-text">MY SKILLS</span>
             <span className="r-about-eyebrow-icon">カ</span>
@@ -346,6 +387,49 @@ function App() {
                 </div>
               </BorderGlow>
             </div>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects" className="r-projects-container">
+          <div className="r-section-header" style={{ marginBottom: '4rem', textAlign: 'center' }}>
+            <div className="r-about-eyebrow" style={{ alignSelf: 'center', marginBottom: '1rem' }}>
+              <span className="r-about-eyebrow-text">PROJECTS</span>
+              <span className="r-about-eyebrow-icon">カ</span>
+            </div>
+            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
+              Featured Works
+            </h2>
+            <p style={{ color: 'rgba(212, 206, 189, 0.6)', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', lineHeight: '1.6' }}>
+              A collection of my recent projects, showcasing dynamic memory management, AI anomaly detection, and interactive game engines. Scroll to explore.
+            </p>
+          </div>
+          
+          <div className="r-projects-list">
+            <ScrollStack
+              useWindowScroll={true}
+              itemDistance={80}
+              itemScale={0.02}
+              itemStackDistance={20}
+              stackPosition="15%"
+              scaleEndPosition="5%"
+              baseScale={0.9}
+              blurAmount={1.5}
+              className="r-projects-stack"
+            >
+              {projects.map((project, index) => (
+                <ScrollStackItem key={index} itemClassName="r-project-stack-item">
+                  <ProjectCard 
+                    title={project.title}
+                    description={project.description}
+                    stack={project.stack}
+                    image={project.image}
+                    link={project.link}
+                    reverse={index % 2 !== 0}
+                  />
+                </ScrollStackItem>
+              ))}
+            </ScrollStack>
           </div>
         </section>
 

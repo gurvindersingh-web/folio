@@ -7,12 +7,16 @@ export default defineConfig({
   plugins: [react()],
   publicDir: path.resolve(import.meta.dirname, 'public'),
   optimizeDeps: {
-    exclude: ['venv']
+    entries: ['src/**/*.{js,jsx,ts,tsx}'],
+    exclude: ['venv'],
   },
   server: {
     watch: {
-      ignored: ['**/venv/**']
-    }
-  }
+      ignored: ['**/venv/**'],
+    },
+    fs: {
+      deny: ['venv'],
+    },
+  },
 })
 
