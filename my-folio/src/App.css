@@ -89,11 +89,13 @@ html, body {
 }
 
 /* ───────── Main Area ───────── */
-.r-main {
+.r-hero {
   flex: 1;
   display: flex;
   padding: 0 6vw;
   position: relative;
+  min-height: 100vh;
+  border-bottom: 1px solid rgba(212, 206, 189, 0.1);
 }
 
 /* ───────── Left Content ───────── */
@@ -417,12 +419,14 @@ html, body {
 .r-art img {
   position: absolute;
   bottom: 0;
-  right: 6vw; /* move slightly left of the absolute right edge */
+  right: 4vw;
   height: 95vh;
   width: auto;
   max-width: none;
   object-fit: contain;
-  filter: grayscale(100%);
+  filter: grayscale(100%) drop-shadow(-20px 20px 40px rgba(0, 0, 0, 0.8));
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
 
 .r-scroll-hint {
@@ -451,23 +455,146 @@ html, body {
   background: linear-gradient(to bottom, #4a483f, transparent);
 }
 
-/* ───────── Side Text ───────── */
 .r-side-text {
   position: fixed;
-  left: 1.5rem;
+  left: 2vw;
   top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.5625rem;
   letter-spacing: 0.3em;
   color: #4a483f;
-  white-space: nowrap;
   z-index: 10;
+}
+
+/* ───────── About Section ───────── */
+.r-about {
+  display: flex;
+  padding: 8vw 6vw 8vw 4vw;
+  gap: 4vw;
+  align-items: center;
+  position: relative;
+  background-color: #0f0f0f;
+  border-bottom: 1px solid rgba(212, 206, 189, 0.1);
+}
+
+.r-about-eyebrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-right: 2vw;
+}
+
+.r-about-eyebrow-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  color: #666459;
+}
+
+.r-about-eyebrow-icon {
+  font-size: 1rem;
+  color: #d4cebd;
+}
+
+.r-about-content {
+  flex: 1;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.r-about-large {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.3;
+  color: #d4cebd;
+  letter-spacing: -0.02em;
+}
+
+.r-about-small {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #666459;
+  max-width: 85%;
+}
+
+.r-about-graphic {
+  margin-left: auto;
+  padding: 2rem;
+}
+
+.r-graphic-box {
+  border: 1px solid rgba(212, 206, 189, 0.1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: rgba(212, 206, 189, 0.02);
+}
+
+.r-graphic-top {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  color: #666459;
+  letter-spacing: 0.2em;
+}
+
+.r-graphic-mid {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.r-graphic-kanji {
+  font-family: 'Inter', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: #d4cebd;
+  line-height: 1.1;
+  border-right: 1px solid rgba(212, 206, 189, 0.1);
+  padding-right: 1.5rem;
+}
+
+.r-graphic-ascii pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  line-height: 1.2;
+  color: #8c897d;
+  margin: 0;
+}
+
+.r-graphic-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(212, 206, 189, 0.1);
+  padding-top: 1rem;
+}
+
+.r-graphic-barcode {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  color: #666459;
+  letter-spacing: 0.2em;
+}
+
+.r-graphic-bottom-icon {
+  font-size: 0.875rem;
+  color: #d4cebd;
 }
 
 /* ───────── Responsive ───────── */
 @media (max-width: 1024px) {
-  .r-header, .r-main { padding: 0 4rem; }
+  .r-header, .r-hero { padding: 0 4rem; }
   .r-header { padding-top: 2rem; }
   .r-art img { margin-right: 4rem; }
 }
@@ -476,7 +603,7 @@ html, body {
   html, body { overflow-y: auto; }
   .r-header { padding: 1.5rem; }
   .r-nav { display: none; }
-  .r-main { padding: 0 1.5rem; flex-direction: column; }
+  .r-hero { padding: 0 1.5rem; flex-direction: column; }
   .r-left { width: 100%; max-width: 100%; }
   .r-right { position: relative; width: 100%; height: 500px; margin-top: 2rem; }
   .r-halo { right: 50%; transform: translate(50%, -50%); width: 300px; height: 300px; }

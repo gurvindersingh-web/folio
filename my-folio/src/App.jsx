@@ -34,7 +34,9 @@ function App() {
         </div>
       </header>
 
-      <main className="r-main">
+      <main>
+        {/* Hero Section */}
+        <section className="r-hero">
         {/* Left Content Area */}
         <div className="r-left">
           <div className="r-eyebrow">
@@ -152,6 +154,68 @@ function App() {
             <div className="r-scroll-line"></div>
           </div>
         </div>
+        </section>
+
+        {/* About Section */}
+        <section className="r-about">
+          <div className="r-about-eyebrow">
+            <span className="r-about-eyebrow-text">WHAT I DO</span>
+            <span className="r-about-eyebrow-icon">カ</span>
+          </div>
+          
+          <div className="r-about-content">
+            <p className="r-about-large">
+              A passionate Full Stack Developer building robust web applications and seamless digital experiences. Specializing in modern JavaScript frameworks and scalable backend architectures.
+            </p>
+            <p className="r-about-small">
+              I craft elegant solutions to complex problems, focusing on performance, clean code, and user-centric design. Always learning, always building.
+            </p>
+          </div>
+
+          <div className="r-about-graphic">
+            <div className="r-graphic-box-new">
+              <div className="r-corner r-corner-tl">┌</div>
+              <div className="r-corner r-corner-tr">┐</div>
+              <div className="r-corner r-corner-bl">└</div>
+              <div className="r-corner r-corner-br">┘</div>
+
+              <div className="r-gb-top">00 // GURV-BASE</div>
+              
+              <div className="r-gb-left">ARCH LINUX</div>
+              <div className="r-gb-kanji">基<br/>盤</div>
+
+              <div className="r-gb-ascii">
+                <pre>{`       ▚▚▚▚      ▚▚▚▚
+    ▚▚▚▚▚▚▚▚    ▚▚▚▚▚▚▚▚
+ 
+   ██████████████████████
+   ██████████████████████
+ 
+  ▚▚  ███        ███  ▚▚
+  ▚▚  ███ ▚▚▚▚▚▚ ███  ▚▚
+  ▚▚  ███ ▚▚▚▚▚▚ ███  ▚▚
+  ▚▚  ███ ▚▚▚▚▚▚ ███  ▚▚
+  ▚▚  ██████████████  ▚▚
+  ▚▚  ██████████████  ▚▚
+  ▚▚                  ▚▚
+  ▚▚  ▚▚▚▚▚▚▚▚▚▚▚▚▚▚  ▚▚`}
+                </pre>
+              </div>
+
+              <div className="r-gb-overlay-text">
+                One source of truth. The<br/>
+                repo is the machine, a<br/>
+                live arch linux<br/>
+                target.
+              </div>
+
+              <div className="r-gb-bottom">
+                <div className="r-gb-barcode-real"></div>
+                <div className="r-gb-ka">カ</div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Side Text */}
