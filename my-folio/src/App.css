@@ -125,6 +125,23 @@ html, body {
   margin-bottom: 1rem;
 }
 
+.r-skills-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2rem;
+}
+
+.carousel-border-glow {
+  width: 330px;
+  height: 330px;
+  border-radius: 50%;
+}
+
+.carousel-border-glow .carousel-container.round {
+  border: none !important;
+}
+
 .r-plus { font-size: 1rem; line-height: 0; }
 .r-char { font-size: 0.8rem; color: #d4cebd; }
 .r-star { font-size: 0.7rem; }
@@ -159,15 +176,51 @@ html, body {
 }
 
 .r-pulse {
-  color: #4a483f;
-  font-size: 0.5rem;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  margin-right: 12px;
   animation: pulse 2s infinite;
 }
 
+.r-pulse-red {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #f87171;
+  border-radius: 50%;
+  margin-right: 12px;
+  animation: pulse-red 2s infinite;
+}
+
+.r-pulse-blue {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #60a5fa;
+  border-radius: 50%;
+  margin-right: 12px;
+  animation: pulse-blue 2s infinite;
+}
+
 @keyframes pulse {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
+  0% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  70% { opacity: 0.3; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+  100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+@keyframes pulse-red {
+  0% { opacity: 1; box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+  70% { opacity: 0.3; box-shadow: 0 0 0 6px rgba(248, 113, 113, 0); }
+  100% { opacity: 1; box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+}
+
+@keyframes pulse-blue {
+  0% { opacity: 1; box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4); }
+  70% { opacity: 0.3; box-shadow: 0 0 0 6px rgba(96, 165, 250, 0); }
+  100% { opacity: 1; box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
 }
 
 .r-specs {
@@ -569,6 +622,7 @@ html, body {
   padding: 8vw;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: #121212;
   border-bottom: 1px solid rgba(212, 206, 189, 0.05);
 }
@@ -646,6 +700,20 @@ html, body {
   font-size: 0.65rem;
   margin-right: 1.2rem;
   transition: color 0.3s ease;
+}
+
+.r-skill-logos span::before {
+  display: none;
+}
+
+.r-skill-logos img {
+  margin-right: 0.8rem;
+  filter: grayscale(1) brightness(2) contrast(0.8);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.r-skill-list span:hover img {
+  filter: grayscale(0) brightness(1) contrast(1);
 }
 
 .r-skill-category:hover .r-skill-list span::before {
