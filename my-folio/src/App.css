@@ -55,7 +55,7 @@ html, body {
 }
 
 .r-logo-icon {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
   font-weight: 300;
 }
@@ -143,7 +143,7 @@ html, body {
 }
 
 .r-plus { font-size: 1rem; line-height: 0; }
-.r-char { font-size: 0.8rem; color: #d4cebd; }
+.r-char { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: #d4cebd; }
 .r-star { font-size: 0.7rem; }
 
 .r-title {
@@ -558,7 +558,8 @@ html, body {
 }
 
 .r-about-eyebrow-icon {
-  font-size: 1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
   color: #d4cebd;
 }
 
@@ -643,7 +644,7 @@ html, body {
 .r-projects-container {
   position: relative;
   width: 100%;
-  padding: 8vw 6vw 0;
+  padding: 4vw 6vw 0;
   display: flex;
   flex-direction: column;
   background-color: #121212;
@@ -676,14 +677,14 @@ html, body {
 .r-skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 4rem;
+  gap: 2rem;
   margin-top: 2rem;
 }
 
 .r-skill-category {
   background: rgba(212, 206, 189, 0.02);
   border: 1px solid rgba(212, 206, 189, 0.05);
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: 12px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
@@ -694,7 +695,6 @@ html, body {
 .r-skill-category:hover {
   border-color: rgba(212, 206, 189, 0.2);
   background: rgba(212, 206, 189, 0.04);
-  transform: translateY(-8px);
   box-shadow: 0 15px 35px -10px rgba(0,0,0,0.5);
 }
 
@@ -712,12 +712,12 @@ html, body {
 .r-skill-list {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.8rem;
 }
 
 .r-skill-list span {
   font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #d4cebd;
   font-weight: 300;
   display: flex;
@@ -728,7 +728,6 @@ html, body {
 
 .r-skill-list span:hover {
   color: #fff;
-  transform: translateX(4px);
 }
 
 .r-skill-list span::before {

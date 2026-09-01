@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import LogoLoop from "./component/LogoLoop.jsx"
 import AnimatedContent from "./component/AnimatedContent.jsx"
@@ -6,50 +6,29 @@ import InfiniteSpiral from "./component/InfiniteSpiral.jsx"
 import Carousel from "./component/Carousel.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
-import ScrollStack, { ScrollStackItem } from "./component/ScrollStack.jsx"
+import SwarmCursor from "./component/SwarmCursor.jsx"
+import ClickSpark from './component/ClickSpark.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal } from 'react-icons/fi';
-function App() {
+const Clock = () => {
   const [time, setTime] = useState("");
-  const [scrollY, setScrollY] = useState(0);
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('en-US', { hour12: false }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return <>{time || "11:20:47"}</>;
+};
+
+
+
+function App() {
   const [isMobile, setIsMobile] = useState(false);
 
-  const projects = [
-    {
-      title: "Dynamic Memory Management",
-      description: "Visualise FIFO, LRU, and Optimal page replacement algorithms with stunning animations, TLB simulation, working set tracking, and Belady's anomaly detection.",
-      stack: ["C", "C++", "OS Concepts", "Algorithms"],
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop",
-      link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management"
-    },
-    {
-      title: "Text RPG Battle Engine",
-      description: "A complete turn-based RPG battle engine built in C++. Features dynamic stats, enemy AI, inventory management, and tactical combat mechanics.",
-      stack: ["C++", "OOP", "Game Engine", "Terminal UI"],
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop",
-      link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine"
-    },
-    {
-      title: "Spatiotemporal Climate AI",
-      description: "A machine learning pipeline for detecting climate anomalies over space and time. Processes massive datasets to predict environmental outliers.",
-      stack: ["Python", "TensorFlow", "Pandas", "Data Science"],
-      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1600&auto=format&fit=crop",
-      link: "https://github.com/gurvindersingh-web/Spatiotemporal-climate-anomaly-detection-AI"
-    },
-    {
-      title: "RMS Automation Tool",
-      description: "Revamped automation architecture for RMS systems, improving efficiency and scripting reliability through extensive Python tooling.",
-      stack: ["Python", "Automation", "Scripting", "Shell"],
-      image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=1600&auto=format&fit=crop",
-      link: "https://github.com/gurvindersingh-web/REVAMPING-RMS-AUTOMATION.git"
-    },
-    {
-      title: "Future Endeavor",
-      description: "My latest secret project currently in development. Blending cutting-edge web technologies with a highly polished user experience.",
-      stack: ["React", "Node.js", "MongoDB", "Web3"],
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1600&auto=format&fit=crop",
-      link: ""
-    }
-  ];
+  const projects = [];
 
   const carouselItems = [
     {
@@ -79,20 +58,7 @@ function App() {
   ];
 
   useEffect(() => {
-    // Clock Timer
-    const timer = setInterval(() => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString('en-US', { hour12: false }));
-    }, 1000);
-
-    // Scroll Listener for Parallax
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    // Other mount logic can go here if needed
   }, []);
 
   return (
@@ -103,7 +69,7 @@ function App() {
       {/* Header */}
       <header className="r-header">
         <div className="r-logo">
-          <span className="r-logo-icon">カ</span> Gurvinder Singh
+          <span className="r-logo-icon">水</span> Gurvinder Singh
         </div>
         <nav className="r-nav">
           <a href="#about">ABOUT</a>
@@ -136,7 +102,7 @@ function App() {
             <div className="r-left">
               <div className="r-eyebrow">
                 <span className="r-plus">+</span>
-                <span className="r-char">ヵ</span>
+                <span className="r-char">水</span>
                 <span className="r-dot">-</span>
                 FULL-STACK DEVELOPER            <span className="r-star">❖</span>
               </div>
@@ -148,7 +114,7 @@ function App() {
               </div>
 
               <div className="r-local-time">
-                <span className="r-pulse">●</span> LOCAL {time || "11:20:47"}
+                <span className="r-pulse">●</span> LOCAL <Clock />
               </div>
 
               <div className="r-specs">
@@ -212,8 +178,18 @@ function App() {
               </div>
 
               <div className="r-actions">
-                <button className="r-btn-primary">VIEW PROJECTS</button>
-                <button className="r-btn-secondary">GITHUB</button>
+                <button 
+                  className="r-btn-primary" 
+                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  VIEW PROJECTS
+                </button>
+                <button 
+                  className="r-btn-secondary"
+                  onClick={() => window.open('https://github.com/gurvindersingh-web', '_blank')}
+                >
+                  GITHUB
+                </button>
               </div>
 
               <div className="r-stars">
@@ -242,7 +218,7 @@ function App() {
             <div className="r-halo"></div>
             <div className="r-art">
               {/* The profile picture, uncropped, fading in from left */}
-              <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" />
+              <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" loading="lazy" decoding="async" />
             </div>
             <div className="r-scroll-hint">
               <div className="r-scroll-text">SCROLL</div>
@@ -255,7 +231,7 @@ function App() {
         <section id="about" className="r-about">
           <div className="r-about-eyebrow">
             <span className="r-about-eyebrow-text">WHAT I DO</span>
-            <span className="r-about-eyebrow-icon">カ</span>
+            <span className="r-about-eyebrow-icon">水</span>
           </div>
 
           <div className="r-about-content">
@@ -277,7 +253,7 @@ function App() {
                 'https://cdn.simpleicons.org/docker/c6c1b9',
                 'https://cdn.simpleicons.org/github/c6c1b9',
                 'https://cdn.simpleicons.org/spring/c6c1b9',
-                'https://cdn.simpleicons.org/vite/c6c1b9',
+                'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
                 'https://cdn.simpleicons.org/nodedotjs/c6c1b9',
                 'https://cdn.simpleicons.org/express/c6c1b9',
                 'https://cdn.simpleicons.org/mongodb/c6c1b9',
@@ -333,28 +309,55 @@ function App() {
         </section>
 
         {/* Skills Section */}
-        <section className="r-skills">
-          <div className="r-about-eyebrow">
-            <span className="r-about-eyebrow-text">MY SKILLS</span>
-            <span className="r-about-eyebrow-icon">カ</span>
-          </div>
+        <section className="r-skills" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '6rem' }}>
           
-          <div className="r-skills-carousel-container" style={{ flex: 1, maxWidth: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <BorderGlow borderRadius={165} backgroundColor="#121212" className="carousel-border-glow">
-              <Carousel 
-                items={carouselItems}
-                baseWidth={330}
-                round={true}
-                autoplay={true} 
-                autoplayDelay={3000}
-                loop={true}
-                pauseOnHover={false}
-              />
-            </BorderGlow>
+          {/* Top Row: Description + Carousel */}
+          <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+            
+            <div style={{ display: 'flex', gap: '4vw', alignItems: 'center' }}>
+              <div className="r-about-eyebrow">
+                <span className="r-about-eyebrow-text">HONEST STATUS</span>
+                <span className="r-about-eyebrow-icon">水</span>
+              </div>
+              
+              <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '550px' }}>
+                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '4.5rem', fontWeight: 400, lineHeight: 1.1, color: '#d4cebd', letterSpacing: '-0.02em', margin: 0 }}>
+                  Building digital<br />experiences.
+                </h1>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.15rem', lineHeight: 1.6, color: '#666459', margin: 0 }}>
+                  Focused on performance, clean code, and user-centric design.<br/>
+                  Crafting solutions from backend to frontend.
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '0.5rem' }}>
+                  <div style={{ backgroundColor: '#d4cebd', color: '#121212', padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>
+                    <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: '#121212', borderRadius: '50%' }}></span>
+                    AVAILABLE FOR WORK
+                  </div>
+                  <span style={{ fontSize: '0.8rem', color: '#666459', fontFamily: 'JetBrains Mono, monospace' }}>Actively seeking new opportunities</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="r-skills-carousel-container" style={{ width: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BorderGlow borderRadius={165} backgroundColor="#121212" className="carousel-border-glow">
+                <Carousel 
+                  items={carouselItems}
+                  baseWidth={330}
+                  round={true}
+                  autoplay={true} 
+                  autoplayDelay={3000}
+                  loop={true}
+                  pauseOnHover={false}
+                />
+              </BorderGlow>
+            </div>
           </div>
 
-          <div className="r-skills-content">
+          <div className="r-skills-content" style={{ width: '100%', maxWidth: 'none', marginLeft: 0 }}>
             <h2 className="r-section-heading">SKILLS</h2>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.5rem', fontWeight: 400, marginBottom: '3rem', letterSpacing: '-0.02em', color: '#d4cebd', marginTop: '1rem' }}>
+              Technical Arsenal
+            </h3>
             <div className="r-skills-grid">
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
                 <h3><span className="r-pulse"></span>FRONTEND</h3>
@@ -384,6 +387,7 @@ function App() {
                   <span><img src="https://cdn.simpleicons.org/docker" alt="Docker" width="20" height="20"/> Docker</span>
                   <span><img src="https://cdn.simpleicons.org/kubernetes" alt="Kubernetes" width="20" height="20"/> Kubernetes</span>
                   <span><img src="https://cdn.simpleicons.org/cloudflare" alt="Cloudflare" width="20" height="20"/> Cloudflare</span>
+                  <span><img src="https://cdn.simpleicons.org/n8n" alt="n8n" width="20" height="20"/> n8n</span>
                 </div>
               </BorderGlow>
             </div>
@@ -391,13 +395,16 @@ function App() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="r-projects-container">
+        <section 
+          id="projects" 
+          className="r-projects-container"
+        >
           <div className="r-section-header" style={{ marginBottom: '4rem', textAlign: 'center' }}>
             <div className="r-about-eyebrow" style={{ alignSelf: 'center', marginBottom: '1rem' }}>
               <span className="r-about-eyebrow-text">PROJECTS</span>
-              <span className="r-about-eyebrow-icon">カ</span>
+              <span className="r-about-eyebrow-icon">水</span>
             </div>
-            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.5rem', fontWeight: 400, marginBottom: '1.5rem', letterSpacing: '-0.02em', color: '#d4cebd' }}>
               Featured Works
             </h2>
             <p style={{ color: 'rgba(212, 206, 189, 0.6)', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', lineHeight: '1.6' }}>
@@ -405,21 +412,10 @@ function App() {
             </p>
           </div>
           
-          <div className="r-projects-list">
-            <ScrollStack
-              useWindowScroll={true}
-              itemDistance={80}
-              itemScale={0.02}
-              itemStackDistance={20}
-              stackPosition="15%"
-              scaleEndPosition="5%"
-              baseScale={0.9}
-              blurAmount={1.5}
-              className="r-projects-stack"
-            >
+          <div className="r-projects-list" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
               {projects.map((project, index) => (
-                <ScrollStackItem key={index} itemClassName="r-project-stack-item">
                   <ProjectCard 
+                    key={index}
                     title={project.title}
                     description={project.description}
                     stack={project.stack}
@@ -427,9 +423,7 @@ function App() {
                     link={project.link}
                     reverse={index % 2 !== 0}
                   />
-                </ScrollStackItem>
               ))}
-            </ScrollStack>
           </div>
         </section>
 
@@ -438,6 +432,7 @@ function App() {
       <div className="r-side-text">
         PORTFOLIO · BETA 18 · ARCH LINUX · SHOT ON BLACK
       </div>
+
     </div>
   );
 }
