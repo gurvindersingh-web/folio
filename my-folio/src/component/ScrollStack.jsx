@@ -1,201 +1,124 @@
-import { useLayoutEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import './ScrollStack.css';
 
 export const ScrollStackItem = ({ children, itemClassName = '' }) => (
-  <div className={`scroll-stack-card ${itemClassName}`.trim()}>{children}</div>
+  <div className={`scroll-stack-card ${itemClassName}`.trim()}>
+    <div className="scroll-stack-card-inner">
+      {children}
+    </div>
+  </div>
 );
 
 const ScrollStack = ({
   children,
   className = '',
-  itemDistance = 100,
-  itemScale = 0.03,
-  itemStackDistance = 30,
-  stackPosition = '20%',
-  scaleEndPosition = '10%',
-  baseScale = 0.85,
-  rotationAmount = 0,
-  blurAmount = 0,
-  useWindowScroll = false,
-  onStackComplete,
+  itemDistance = 80,
+  itemScale = 0.05,
+  itemStackDistance = 20, // px distance between stacked cards
+  stackPosition = 15, // vh offset for sticky
 }) => {
-  const scrollerRef = useRef(null);
-  const rafRef = useRef(null);
-  const cardsRef = useRef([]);
-  const isVisibleRef = useRef(false);
+  const containerRef = useRef(null);
 
-  /* ── helpers ──────────────────────────────── */
-  const pct = useCallback(
-    (v, h) =>
-      typeof v === 'string' && v.includes('%')
-        ? (parseFloat(v) / 100) * h
-        : parseFloat(v),
-    [],
-  );
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  const offsetTop = useCallback(
-    (el) => {
-      if (useWindowScroll) {
-        let top = 0;
-        let node = el;
-        while (node) {
-          top += node.offsetTop || 0;
-          node = node.offsetParent;
-        }
-        return top;
-      }
-      return el.offsetTop;
-    },
-    [useWindowScroll],
-  );
+    const cards = Array.from(container.querySelectorAll('.scroll-stack-card'));
+    const inners = Array.from(container.querySelectorAll('.scroll-stack-card-inner'));
 
-  /* ── main update ─────────────────────────── */
-  const update = useCallback(() => {
-    const cards = cardsRef.current;
-    if (!cards.length) return;
-
-    const scrollTop = useWindowScroll
-      ? window.scrollY
-      : scrollerRef.current?.scrollTop ?? 0;
-    const viewH = useWindowScroll
-      ? window.innerHeight
-      : scrollerRef.current?.clientHeight ?? 0;
-
-    const stackPx = pct(stackPosition, viewH);
-    const scaleEndPx = pct(scaleEndPosition, viewH);
-
-    /* find the scroll-stack-end sentinel */
-    const endEl = useWindowScroll
-      ? document.querySelector('.scroll-stack-end')
-      : scrollerRef.current?.querySelector('.scroll-stack-end');
-    const endTop = endEl ? offsetTop(endEl) : Infinity;
-
+    // 1. Setup CSS Variables for Sticky logic
     cards.forEach((card, i) => {
-      if (!card) return;
+      // Calculate top position for each card so they stack with a small offset
+      const topOffset = `calc(${stackPosition}vh + ${i * itemStackDistance}px)`;
+      card.style.position = 'sticky';
+      card.style.top = topOffset;
+      card.style.zIndex = i + 1;
 
-      const cardTop = offsetTop(card);
-
-      /* trigger range for scale */
-      const triggerStart = cardTop - stackPx - itemStackDistance * i;
-      const triggerEnd = cardTop - scaleEndPx;
-
-      /* pin range */
-      const pinStart = triggerStart;
-      const pinEnd = endTop - viewH / 2;
-
-      /* scale */
-      const rawProgress = triggerEnd > triggerStart
-        ? Math.min(Math.max((scrollTop - triggerStart) / (triggerEnd - triggerStart), 0), 1)
-        : 0;
-      const targetScale = baseScale + i * itemScale;
-      const scale = 1 - rawProgress * (1 - targetScale);
-
-      /* rotation */
-      const rotation = rotationAmount ? i * rotationAmount * rawProgress : 0;
-
-      /* blur */
-      let blur = 0;
-      if (blurAmount) {
-        let topIdx = 0;
-        for (let j = 0; j < cards.length; j++) {
-          const jTop = offsetTop(cards[j]);
-          const jStart = jTop - stackPx - itemStackDistance * j;
-          if (scrollTop >= jStart) topIdx = j;
-        }
-        if (i < topIdx) blur = (topIdx - i) * blurAmount;
-      }
-
-      /* translateY */
-      let ty = 0;
-      const pinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-      if (pinned) {
-        ty = scrollTop - cardTop + stackPx + itemStackDistance * i;
-      } else if (scrollTop > pinEnd) {
-        ty = pinEnd - cardTop + stackPx + itemStackDistance * i;
-      }
-
-      card.style.transform = `translate3d(0,${ty.toFixed(1)}px,0) scale(${scale.toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`;
-      card.style.filter = blur > 0 ? `blur(${blur.toFixed(1)}px)` : 'none';
-
-      /* stack-complete callback */
-      if (i === cards.length - 1 && onStackComplete) {
-        if (pinned) onStackComplete();
+      // Add spacing below all cards except the last one
+      if (i < cards.length - 1) {
+        card.style.marginBottom = `${itemDistance}px`;
+      } else {
+        // Give the last card some bottom margin so you can scroll past the stack
+        card.style.marginBottom = '20vh'; 
       }
     });
-  }, [
-    useWindowScroll,
-    pct,
-    offsetTop,
-    stackPosition,
-    scaleEndPosition,
-    itemStackDistance,
-    baseScale,
-    itemScale,
-    rotationAmount,
-    blurAmount,
-    onStackComplete,
-  ]);
 
-  /* ── rAF loop (only when visible) ────────── */
-  const tick = useCallback(() => {
-    if (!isVisibleRef.current) return;
-    update();
-    rafRef.current = requestAnimationFrame(tick);
-  }, [update]);
+    // 2. Setup Scroll Listener for Scale/Blur effect
+    let rafId;
+    const handleScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      
+      rafId = requestAnimationFrame(() => {
+        const viewportHeight = window.innerHeight;
+        // Approximate the pixel value of our vh-based stackPosition
+        const stackPosPx = (stackPosition / 100) * viewportHeight;
 
-  /* ── setup ───────────────────────────────── */
-  useLayoutEffect(() => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
+        cards.forEach((card, i) => {
+          const inner = inners[i];
+          if (!inner) return;
 
-    const cards = Array.from(
-      useWindowScroll
-        ? scroller.querySelectorAll('.scroll-stack-card')
-        : scroller.querySelectorAll('.scroll-stack-card'),
-    );
+          const rect = card.getBoundingClientRect();
+          // The exact pixel top where this card becomes sticky
+          const targetTop = stackPosPx + (i * itemStackDistance);
 
-    cardsRef.current = cards;
+          // If the card is currently pinned at its sticky position (or slightly past it)
+          if (rect.top <= targetTop + 1) {
+            let scale = 1;
+            let blur = 0;
 
-    cards.forEach((card, i) => {
-      if (i < cards.length - 1) card.style.marginBottom = `${itemDistance}px`;
-      card.style.willChange = 'transform, filter';
-      card.style.transformOrigin = 'top center';
-    });
+            // Look at the next card to calculate how much we should scale down
+            if (i < cards.length - 1) {
+              const nextCard = cards[i + 1];
+              const nextRect = nextCard.getBoundingClientRect();
+              const nextTargetTop = stackPosPx + ((i + 1) * itemStackDistance);
+              
+              // Distance between this card's pinning position and the next card
+              const distance = nextRect.top - targetTop;
+              
+              // We start scaling down when the next card gets close (e.g., within window height)
+              const maxDistance = viewportHeight; 
+              
+              if (distance < maxDistance && distance > 0) {
+                const progress = 1 - (distance / maxDistance); // 0 to 1 as next card approaches
+                const eased = Math.min(Math.max(progress, 0), 1);
+                
+                scale = 1 - (eased * itemScale);
+                blur = eased * 2; // up to 2px blur
+              } else if (distance <= 0) {
+                // Next card is fully on top
+                scale = 1 - itemScale;
+                blur = 2;
+              }
+            }
 
-    /* Intersection observer — only animate when on-screen */
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-        if (entry.isIntersecting) {
-          rafRef.current = requestAnimationFrame(tick);
-        } else if (rafRef.current) {
-          cancelAnimationFrame(rafRef.current);
-          rafRef.current = null;
-        }
-      },
-      { threshold: 0 },
-    );
-    io.observe(scroller);
+            inner.style.transform = `scale(${scale})`;
+            inner.style.filter = `blur(${blur}px)`;
+            
+            // To prevent scale from causing the bottom of the card to peek, transform origin is top
+            inner.style.transformOrigin = 'top center';
+          } else {
+            // Card is scrolling freely (not yet pinned)
+            inner.style.transform = 'scale(1)';
+            inner.style.filter = 'blur(0px)';
+          }
+        });
+      });
+    };
 
-    /* initial paint */
-    update();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll(); // Initial call
 
     return () => {
-      io.disconnect();
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      cardsRef.current = [];
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [itemDistance, useWindowScroll, tick, update]);
+  }, [itemDistance, itemScale, itemStackDistance, stackPosition]);
 
   return (
-    <div
-      className={`scroll-stack-scroller ${useWindowScroll ? 'scroll-stack--window' : ''} ${className}`.trim()}
-      ref={scrollerRef}
-    >
-      <div className="scroll-stack-inner">
-        {children}
-        <div className="scroll-stack-end" />
-      </div>
+    <div className={`scroll-stack-scroller ${className}`.trim()} ref={containerRef}>
+      {children}
     </div>
   );
 };
