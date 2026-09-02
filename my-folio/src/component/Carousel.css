@@ -32,6 +32,8 @@
 
 .carousel-container.round {
   border: 1px solid rgba(212, 206, 189, 0.05);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  clip-path: circle(50% at 50% 50%);
 }
 
 .carousel-item.round {
