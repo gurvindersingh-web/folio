@@ -1,35 +1,17 @@
 .chroma-grid {
   position: relative;
-  width: 100%;
-  height: 100%;
   display: grid;
-  grid-template-columns: repeat(var(--cols, 3), 320px);
-  grid-auto-rows: auto;
-  justify-content: center;
-  gap: 0.75rem;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: 1.5rem;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem;
-  box-sizing: border-box;
-
-  --x: 50%;
-  --y: 50%;
-  --r: 220px;
 }
 
-@media (max-width: 1124px) {
+@media (max-width: 768px) {
   .chroma-grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 320px));
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .chroma-grid {
-    grid-template-columns: 320px;
-    gap: 0.75rem;
-    padding: 1rem;
+    grid-template-columns: 1fr;
+    max-width: 400px;
   }
 }
 
@@ -37,17 +19,12 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 320px;
-  height: auto;
-  border-radius: 20px;
+  background: var(--card-bg, #1a1a1a);
+  border: 1px solid var(--card-border, #333);
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #333;
   transition: border-color 0.3s ease;
-  background: var(--card-gradient);
-
-  --mouse-x: 50%;
-  --mouse-y: 50%;
-  --spotlight-color: rgba(255, 255, 255, 0.3);
+  min-height: 350px;
 }
 
 .chroma-card:hover {
@@ -58,7 +35,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--spotlight-color), transparent 70%);
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--spotlight-color, rgba(255, 255, 255, 0.1)), transparent 70%);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -90,18 +67,44 @@
 .chroma-info {
   position: relative;
   z-index: 1;
-  padding: 0.75rem 1rem;
+  padding: 1.5rem;
   color: #fff;
-  font-family: system-ui, sans-serif;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  row-gap: 0.25rem;
-  column-gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.chroma-info .role,
-.chroma-info .handle {
-  color: #aaa;
+.chroma-info .name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  color: #d4cebd;
+}
+
+.chroma-info .role {
+  font-family: 'Inter', sans-serif;
+  color: #8c897d;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.chroma-info .stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.chroma-info .stack span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  background: transparent;
+  border: 1px solid rgba(212, 206, 189, 0.2);
+  border-radius: 4px;
+  color: #8c897d;
 }
 
 .chroma-overlay {

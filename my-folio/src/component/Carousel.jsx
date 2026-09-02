@@ -80,7 +80,7 @@ export default function Carousel({
   loop = false,
   round = false
 }) {
-  const containerPadding = 16;
+  const containerPadding = round ? 0 : 16;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
   const itemsForRender = useMemo(() => {

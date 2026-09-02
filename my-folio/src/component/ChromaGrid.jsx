@@ -1,12 +1,13 @@
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { FiGithub } from 'react-icons/fi';
 import './ChromaGrid.css';
 
 export const ChromaGrid = ({
   items,
   className = '',
   radius = 300,
-  columns = 3,
+  columns = 2,
   rows = 2,
   damping = 0.45,
   fadeOut = 0.6,
@@ -18,63 +19,7 @@ export const ChromaGrid = ({
   const setY = useRef(null);
   const pos = useRef({ x: 0, y: 0 });
 
-  const demo = [
-    {
-      image: 'https://i.pravatar.cc/300?img=8',
-      title: 'Alex Rivera',
-      subtitle: 'Full Stack Developer',
-      handle: '@alexrivera',
-      borderColor: '#4F46E5',
-      gradient: 'linear-gradient(145deg, #4F46E5, #000)',
-      url: 'https://github.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=11',
-      title: 'Jordan Chen',
-      subtitle: 'DevOps Engineer',
-      handle: '@jordanchen',
-      borderColor: '#10B981',
-      gradient: 'linear-gradient(210deg, #10B981, #000)',
-      url: 'https://linkedin.com/in/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=3',
-      title: 'Morgan Blake',
-      subtitle: 'UI/UX Designer',
-      handle: '@morganblake',
-      borderColor: '#F59E0B',
-      gradient: 'linear-gradient(165deg, #F59E0B, #000)',
-      url: 'https://dribbble.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=16',
-      title: 'Casey Park',
-      subtitle: 'Data Scientist',
-      handle: '@caseypark',
-      borderColor: '#EF4444',
-      gradient: 'linear-gradient(195deg, #EF4444, #000)',
-      url: 'https://kaggle.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=25',
-      title: 'Sam Kim',
-      subtitle: 'Mobile Developer',
-      handle: '@thesamkim',
-      borderColor: '#8B5CF6',
-      gradient: 'linear-gradient(225deg, #8B5CF6, #000)',
-      url: 'https://github.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=60',
-      title: 'Tyler Rodriguez',
-      subtitle: 'Cloud Architect',
-      handle: '@tylerrod',
-      borderColor: '#06B6D4',
-      gradient: 'linear-gradient(135deg, #06B6D4, #000)',
-      url: 'https://aws.amazon.com/'
-    }
-  ];
-  const data = items?.length ? items : demo;
+  const data = items || [];
 
   useEffect(() => {
     const el = rootRef.current;
@@ -147,21 +92,30 @@ export const ChromaGrid = ({
           key={i}
           className="chroma-card"
           onMouseMove={handleCardMove}
-          onClick={() => handleCardClick(c.url)}
+          onClick={() => handleCardClick(c.link)}
           style={{
-            '--card-border': c.borderColor || 'transparent',
-            '--card-gradient': c.gradient,
-            cursor: c.url ? 'pointer' : 'default'
+            '--card-border': c.borderColor || 'rgba(255, 255, 255, 0.1)',
+            '--card-gradient': c.gradient || 'linear-gradient(145deg, rgba(255,255,255,0.05), #000)',
+            cursor: c.link ? 'pointer' : 'default'
           }}
         >
           <div className="chroma-img-wrapper">
-            <img src={c.image} alt={c.title} loading="lazy" />
+            {c.component ? (
+              <div style={{ width: '100%', height: '100%' }}>{c.component}</div>
+            ) : (
+              <img src={c.image} alt={c.title} loading="lazy" />
+            )}
           </div>
           <footer className="chroma-info">
             <h3 className="name">{c.title}</h3>
-            {c.handle && <span className="handle">{c.handle}</span>}
-            <p className="role">{c.subtitle}</p>
-            {c.location && <span className="location">{c.location}</span>}
+            <p className="role">{c.description}</p>
+            {c.stack && c.stack.length > 0 && (
+              <div className="stack">
+                {c.stack.map((tech, idx) => (
+                  <span key={idx}>{tech}</span>
+                ))}
+              </div>
+            )}
           </footer>
         </article>
       ))}
