@@ -31,7 +31,7 @@
 }
 
 .carousel-container.round {
-  border: 1px solid rgba(212, 206, 189, 0.05);
+  padding: 0;
   -webkit-mask-image: -webkit-radial-gradient(white, black);
   clip-path: circle(50% at 50% 50%);
 }
@@ -39,8 +39,6 @@
 .carousel-item.round {
   background-color: rgba(212, 206, 189, 0.02);
   position: relative;
-  bottom: 0.1em;
-  border: 1px solid rgba(212, 206, 189, 0.05);
   justify-content: center;
   align-items: center;
   text-align: center;

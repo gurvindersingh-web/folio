@@ -133,8 +133,6 @@ html, body {
 }
 
 .carousel-border-glow {
-  width: 330px;
-  height: 330px;
   border-radius: 50%;
 }
 
@@ -321,6 +319,13 @@ html, body {
   letter-spacing: 0.2em;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.btn-glow-wrapper {
+  border: none !important;
+}
+.btn-glow-wrapper .border-glow-inner {
+  display: flex;
 }
 
 .r-btn-primary {

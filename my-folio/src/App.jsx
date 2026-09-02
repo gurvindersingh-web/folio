@@ -8,6 +8,7 @@ import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
 import SwarmCursor from "./component/SwarmCursor.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
+import ChromaGrid from './component/ChromaGrid.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal } from 'react-icons/fi';
 const Clock = () => {
   const [time, setTime] = useState("");
@@ -34,7 +35,9 @@ function App() {
       description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO, LRU. The UI leverages Framer Motion, Three.js, and Recharts for immersive 3D effects and live statistics.",
       stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
       image: "/imgs/dynamic_memory.png",
-      link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management"
+      link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management",
+      borderColor: '#4F46E5',
+      gradient: 'linear-gradient(145deg, rgba(79, 70, 229, 0.1), #000)'
     }
   ];
 
@@ -186,18 +189,22 @@ function App() {
               </div>
 
               <div className="r-actions">
-                <button 
-                  className="r-btn-primary" 
-                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  VIEW PROJECTS
-                </button>
-                <button 
-                  className="r-btn-secondary"
-                  onClick={() => window.open('https://github.com/gurvindersingh-web', '_blank')}
-                >
-                  GITHUB
-                </button>
+                <BorderGlow borderRadius={4} backgroundColor="transparent" className="btn-glow-wrapper" autoAnimate={true} glowRadius={12} glowIntensity={0.5}>
+                  <button 
+                    className="r-btn-primary" 
+                    onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    VIEW PROJECTS
+                  </button>
+                </BorderGlow>
+                <BorderGlow borderRadius={4} backgroundColor="transparent" className="btn-glow-wrapper" autoAnimate={true} glowRadius={12} glowIntensity={0.5}>
+                  <button 
+                    className="r-btn-secondary"
+                    onClick={() => window.open('https://github.com/gurvindersingh-web', '_blank')}
+                  >
+                    GITHUB
+                  </button>
+                </BorderGlow>
               </div>
 
               <div className="r-stars">
@@ -346,18 +353,11 @@ function App() {
               </div>
             </div>
 
-            <div className="r-status-image-container" style={{ position: 'relative', width: '400px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ position: 'absolute', inset: 0, border: '1px solid rgba(212, 206, 189, 0.1)' }}>
-                {/* Corner markers */}
-                <div style={{ position: 'absolute', top: '-1px', left: '-1px', width: '10px', height: '10px', borderTop: '1px solid rgba(212, 206, 189, 0.5)', borderLeft: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
-                <div style={{ position: 'absolute', top: '-1px', right: '-1px', width: '10px', height: '10px', borderTop: '1px solid rgba(212, 206, 189, 0.5)', borderRight: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
-                <div style={{ position: 'absolute', bottom: '-1px', left: '-1px', width: '10px', height: '10px', borderBottom: '1px solid rgba(212, 206, 189, 0.5)', borderLeft: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
-                <div style={{ position: 'absolute', bottom: '-1px', right: '-1px', width: '10px', height: '10px', borderBottom: '1px solid rgba(212, 206, 189, 0.5)', borderRight: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
-              </div>
-              <BorderGlow borderRadius={170} backgroundColor="#121212" className="carousel-border-glow">
+            <div className="r-status-image-container" style={{ position: 'relative', width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BorderGlow borderRadius={210} backgroundColor="#121212" className="carousel-border-glow" autoAnimate={true}>
                 <Carousel
                   items={carouselItems}
-                  baseWidth={340}
+                  baseWidth={420}
                   round={true}
                   autoplay={true}
                   autoplayDelay={3000}
@@ -427,19 +427,8 @@ function App() {
             </p>
           </div>
           
-          <div className="r-projects-list" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-              {projects.map((project, index) => (
-                  <ProjectCard 
-                    key={index}
-                    index={index + 1}
-                    title={project.title}
-                    description={project.description}
-                    stack={project.stack}
-                    image={project.image}
-                    link={project.link}
-                    reverse={index % 2 !== 0}
-                  />
-              ))}
+          <div className="r-projects-list" style={{ marginTop: '2rem' }}>
+            <ChromaGrid items={projects} columns={projects.length > 1 ? 2 : 1} damping={0.45} fadeOut={0.6} />
           </div>
         </section>
 
