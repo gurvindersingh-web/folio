@@ -28,7 +28,15 @@ const Clock = () => {
 function App() {
   const [isMobile, setIsMobile] = useState(false);
 
-  const projects = [];
+  const projects = [
+    {
+      title: "Dynamic Memory Management Visualiser",
+      description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO, LRU. The UI leverages Framer Motion, Three.js, and Recharts for immersive 3D effects and live statistics.",
+      stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
+      image: "/imgs/dynamic_memory.png",
+      link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management"
+    }
+  ];
 
   const carouselItems = [
     {
@@ -321,30 +329,37 @@ function App() {
               </div>
               
               <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '550px' }}>
-                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '4.5rem', fontWeight: 400, lineHeight: 1.1, color: '#d4cebd', letterSpacing: '-0.02em', margin: 0 }}>
-                  Building digital<br />experiences.
+                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.8rem', fontWeight: 400, lineHeight: 1.1, color: '#d4cebd', letterSpacing: '-0.02em', margin: 0 }}>
+                  This is a public beta.<br />It shows its cracks.
                 </h1>
-                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.15rem', lineHeight: 1.6, color: '#666459', margin: 0 }}>
-                  Focused on performance, clean code, and user-centric design.<br/>
-                  Crafting solutions from backend to frontend.
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', lineHeight: 1.6, color: '#666459', margin: 0 }}>
+                  Unfinished on purpose, in the open. You are seeing<br/>
+                  Ryoku while it is still being built, not a frozen release.
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem' }}>
                   <div style={{ backgroundColor: '#d4cebd', color: '#121212', padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>
                     <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: '#121212', borderRadius: '50%' }}></span>
-                    AVAILABLE FOR WORK
+                    BETA - v0.48.0-beta.18
                   </div>
-                  <span style={{ fontSize: '0.8rem', color: '#666459', fontFamily: 'JetBrains Mono, monospace' }}>Actively seeking new opportunities</span>
+                  <span style={{ fontSize: '0.8rem', color: '#666459', fontFamily: 'JetBrains Mono, monospace' }}>tracked live from GitHub</span>
                 </div>
               </div>
             </div>
 
-            <div className="r-skills-carousel-container" style={{ width: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <BorderGlow borderRadius={165} backgroundColor="#121212" className="carousel-border-glow">
-                <Carousel 
+            <div className="r-status-image-container" style={{ position: 'relative', width: '400px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ position: 'absolute', inset: 0, border: '1px solid rgba(212, 206, 189, 0.1)' }}>
+                {/* Corner markers */}
+                <div style={{ position: 'absolute', top: '-1px', left: '-1px', width: '10px', height: '10px', borderTop: '1px solid rgba(212, 206, 189, 0.5)', borderLeft: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
+                <div style={{ position: 'absolute', top: '-1px', right: '-1px', width: '10px', height: '10px', borderTop: '1px solid rgba(212, 206, 189, 0.5)', borderRight: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
+                <div style={{ position: 'absolute', bottom: '-1px', left: '-1px', width: '10px', height: '10px', borderBottom: '1px solid rgba(212, 206, 189, 0.5)', borderLeft: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
+                <div style={{ position: 'absolute', bottom: '-1px', right: '-1px', width: '10px', height: '10px', borderBottom: '1px solid rgba(212, 206, 189, 0.5)', borderRight: '1px solid rgba(212, 206, 189, 0.5)' }}></div>
+              </div>
+              <BorderGlow borderRadius={170} backgroundColor="#121212" className="carousel-border-glow">
+                <Carousel
                   items={carouselItems}
-                  baseWidth={330}
+                  baseWidth={340}
                   round={true}
-                  autoplay={true} 
+                  autoplay={true}
                   autoplayDelay={3000}
                   loop={true}
                   pauseOnHover={false}
@@ -416,6 +431,7 @@ function App() {
               {projects.map((project, index) => (
                   <ProjectCard 
                     key={index}
+                    index={index + 1}
                     title={project.title}
                     description={project.description}
                     stack={project.stack}
