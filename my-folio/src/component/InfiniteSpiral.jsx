@@ -107,6 +107,11 @@ const InfiniteSpiral = ({
       const followBlend = 1 - Math.exp(-delta * (draggingRef.current ? 22 : 11));
       progressRef.current += (targetProgressRef.current - progressRef.current) * followBlend;
 
+      if (!visibleRef.current && Math.abs(autoSpeedRef.current) < 0.001 && Math.abs(targetProgressRef.current - progressRef.current) < 0.001) {
+        frameId = requestAnimationFrame(render);
+        return;
+      }
+
       const count = normalizedItems.length;
       const half = count / 2;
       const width = Math.max(bounds.width, 1);
