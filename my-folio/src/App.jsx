@@ -3,13 +3,12 @@ import './App.css';
 import AnimatedContent from "./component/AnimatedContent.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
-import SwarmCursor from "./component/SwarmCursor.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
-import { FiMonitor, FiServer, FiDatabase, FiTerminal } from 'react-icons/fi';
+import SmoothScroll from './component/SmoothScroll.jsx';
+import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight } from 'react-icons/fi';
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
-const ChromaGrid = lazy(() => import("./component/ChromaGrid.jsx"));
 const Clock = () => {
   const [time, setTime] = useState("");
   
@@ -27,17 +26,17 @@ const Clock = () => {
 
 
 function App() {
-  const [isMobile, setIsMobile] = useState(false);
-
   const projects = [
     {
       title: "Dynamic Memory Management Visualiser",
-      description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO, LRU. The UI leverages Framer Motion, Three.js, and Recharts for immersive 3D effects and live statistics.",
+      description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO and LRU, with live statistics and an immersive 3D stage.",
       stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
       image: "/imgs/dynamic_memory.png",
       link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management",
-      borderColor: '#4F46E5',
-      gradient: 'linear-gradient(145deg, rgba(79, 70, 229, 0.1), #000)'
+      year: "2025",
+      role: "Full-Stack",
+      engine: "Three.js",
+      status: "Public"
     }
   ];
 
@@ -68,11 +67,9 @@ function App() {
     }
   ];
 
-  useEffect(() => {
-    // Other mount logic can go here if needed
-  }, []);
-
   return (
+    <SmoothScroll>
+    <ClickSpark sparkColor="#d4cebd" sparkSize={8} sparkRadius={18} sparkCount={9} duration={420}>
     <div className="ryoku-layout">
       {/* Texture overlay */}
       <div className="r-noise"></div>
@@ -233,7 +230,7 @@ function App() {
             <div className="r-halo"></div>
             <div className="r-art">
               {/* The profile picture, uncropped, fading in from left */}
-              <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" loading="lazy" decoding="async" />
+              <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" fetchPriority="high" decoding="async" />
             </div>
             <div className="r-scroll-hint">
               <div className="r-scroll-text">SCROLL</div>
@@ -297,7 +294,7 @@ function App() {
                 cardRadius={12}
                 centerScale={1.35}
                 edgeFade={0.6}
-                edgeBlur={8}
+                edgeBlur={4}
                 pauseOnHover={false}
               />
             </Suspense>
@@ -416,27 +413,54 @@ function App() {
         </section>
 
         {/* Projects Section */}
-        <section 
-          id="projects" 
-          className="r-projects-container"
-        >
-          <div className="r-section-header" style={{ marginBottom: '4rem', textAlign: 'center' }}>
-            <div className="r-about-eyebrow" style={{ alignSelf: 'center', marginBottom: '1rem' }}>
+        <section id="projects" className="r-projects-container">
+          <div className="r-projects-header">
+            <div className="r-about-eyebrow">
               <span className="r-about-eyebrow-text">PROJECTS</span>
               <span className="r-about-eyebrow-icon">水</span>
             </div>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.5rem', fontWeight: 400, marginBottom: '1.5rem', letterSpacing: '-0.02em', color: '#d4cebd' }}>
-              Featured Works
-            </h2>
-            <p style={{ color: 'rgba(212, 206, 189, 0.6)', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', lineHeight: '1.6' }}>
-              A collection of my recent projects, showcasing dynamic memory management, AI anomaly detection, and interactive game engines. Scroll to explore.
-            </p>
+            <div className="r-projects-intro">
+              <h2 className="r-section-heading">SELECTED WORK</h2>
+              <h3 className="r-projects-title">Featured Works</h3>
+              <p className="r-projects-lede">
+                Case studies from the lab: systems visualization, interaction, and the tools I use to make complex ideas feel immediate.
+              </p>
+            </div>
           </div>
-          
-          <div className="r-projects-list" style={{ marginTop: '2rem' }}>
-            <Suspense fallback={<div style={{ minHeight: '400px', width: '100%' }}></div>}>
-              <ChromaGrid items={projects} columns={projects.length > 1 ? 2 : 1} damping={0.45} fadeOut={0.6} />
-            </Suspense>
+
+          <div className="r-projects-list">
+            {projects.map((project, index) => (
+              <AnimatedContent
+                key={project.title}
+                distance={56}
+                direction="vertical"
+                duration={1.05}
+                ease="power3.out"
+                initialOpacity={0}
+                animateOpacity
+                scale={0.985}
+                threshold={0.12}
+                delay={0.05}
+              >
+                <ProjectCard {...project} index={index + 1} reverse={index % 2 === 1} />
+              </AnimatedContent>
+            ))}
+          </div>
+
+          <div className="r-projects-footer">
+            <div className="r-projects-footer-copy">
+              <span className="r-projects-footer-kicker">ARCHIVE</span>
+              <p>More experiments, notes, and incomplete work live in public repositories.</p>
+            </div>
+            <a
+              className="project-card__link project-card__link--primary"
+              href="https://github.com/gurvindersingh-web"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+              <FiArrowUpRight size={14} />
+            </a>
           </div>
         </section>
 
@@ -447,6 +471,8 @@ function App() {
       </div>
 
     </div>
+    </ClickSpark>
+    </SmoothScroll>
   );
 }
 
