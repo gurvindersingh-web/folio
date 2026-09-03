@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import './App.css';
-import LogoLoop from "./component/LogoLoop.jsx"
 import AnimatedContent from "./component/AnimatedContent.jsx"
-import InfiniteSpiral from "./component/InfiniteSpiral.jsx"
-import Carousel from "./component/Carousel.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
 import SwarmCursor from "./component/SwarmCursor.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
-import ChromaGrid from './component/ChromaGrid.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal } from 'react-icons/fi';
+const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
+const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
+const Carousel = lazy(() => import("./component/Carousel.jsx"));
+const ChromaGrid = lazy(() => import("./component/ChromaGrid.jsx"));
 const Clock = () => {
   const [time, setTime] = useState("");
   
@@ -260,67 +260,71 @@ function App() {
           </div>
 
           <div className="r-about-graphic">
-            <InfiniteSpiral
-              items={[
-                'https://cdn.simpleicons.org/react/c6c1b9',
-                'https://cdn.simpleicons.org/typescript/c6c1b9',
-                'https://cdn.simpleicons.org/archlinux/c6c1b9',
-                'https://cdn.simpleicons.org/docker/c6c1b9',
-                'https://cdn.simpleicons.org/github/c6c1b9',
-                'https://cdn.simpleicons.org/spring/c6c1b9',
-                'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
-                'https://cdn.simpleicons.org/nodedotjs/c6c1b9',
-                'https://cdn.simpleicons.org/express/c6c1b9',
-                'https://cdn.simpleicons.org/mongodb/c6c1b9',
-                'https://cdn.simpleicons.org/postgresql/c6c1b9',
-                'https://cdn.simpleicons.org/git/c6c1b9',
-                'https://cdn.simpleicons.org/linux/c6c1b9',
-                'https://cdn.simpleicons.org/javascript/c6c1b9',
-                'https://cdn.simpleicons.org/html5/c6c1b9',
-                'https://cdn.simpleicons.org/css/c6c1b9',
-                'https://cdn.simpleicons.org/python/c6c1b9'
-              ]}
-              speed={0.3}
-              direction="up"
-              animationMode="auto"
-              imageFit="contain"
-              grayscale={0}
-              radius={180}
-              cardWidth={70}
-              cardHeight={70}
-              verticalSpacing={45}
-              perspective={1500}
-              cardsPerTurn={8}
-              rotation={-10}
-              cardTilt={15}
-              cardRadius={12}
-              centerScale={1.35}
-              edgeFade={0.6}
-              edgeBlur={8}
-              pauseOnHover={false}
-            />
+            <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
+              <InfiniteSpiral
+                items={[
+                  'https://cdn.simpleicons.org/react/c6c1b9',
+                  'https://cdn.simpleicons.org/typescript/c6c1b9',
+                  'https://cdn.simpleicons.org/archlinux/c6c1b9',
+                  'https://cdn.simpleicons.org/docker/c6c1b9',
+                  'https://cdn.simpleicons.org/github/c6c1b9',
+                  'https://cdn.simpleicons.org/spring/c6c1b9',
+                  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
+                  'https://cdn.simpleicons.org/nodedotjs/c6c1b9',
+                  'https://cdn.simpleicons.org/express/c6c1b9',
+                  'https://cdn.simpleicons.org/mongodb/c6c1b9',
+                  'https://cdn.simpleicons.org/postgresql/c6c1b9',
+                  'https://cdn.simpleicons.org/git/c6c1b9',
+                  'https://cdn.simpleicons.org/linux/c6c1b9',
+                  'https://cdn.simpleicons.org/javascript/c6c1b9',
+                  'https://cdn.simpleicons.org/html5/c6c1b9',
+                  'https://cdn.simpleicons.org/css/c6c1b9',
+                  'https://cdn.simpleicons.org/python/c6c1b9'
+                ]}
+                speed={0.3}
+                direction="up"
+                animationMode="auto"
+                imageFit="contain"
+                grayscale={0}
+                radius={180}
+                cardWidth={70}
+                cardHeight={70}
+                verticalSpacing={45}
+                perspective={1500}
+                cardsPerTurn={8}
+                rotation={-10}
+                cardTilt={15}
+                cardRadius={12}
+                centerScale={1.35}
+                edgeFade={0.6}
+                edgeBlur={8}
+                pauseOnHover={false}
+              />
+            </Suspense>
           </div>
         </section>
 
         {/* Logo Loop & Skills Section */}
         <section id="skills" className="r-logo-loop-section" style={{ padding: '3rem 0', overflow: 'hidden' }}>
-          <LogoLoop
-            logos={[
-              { src: 'https://cdn.simpleicons.org/vercel/c6c1b9', alt: 'Vercel', title: 'Vercel' },
-              { src: 'https://cdn.simpleicons.org/github/c6c1b9', alt: 'GitHub', title: 'GitHub' },
-              { src: 'https://cdn.simpleicons.org/docker/c6c1b9', alt: 'Docker', title: 'Docker' },
-              { src: 'https://cdn.simpleicons.org/prisma/c6c1b9', alt: 'Prisma', title: 'Prisma' },
-              { src: 'https://cdn.simpleicons.org/supabase/c6c1b9', alt: 'Supabase', title: 'Supabase' },
-              { src: 'https://cdn.simpleicons.org/stripe/c6c1b9', alt: 'Stripe', title: 'Stripe' },
-              { src: 'https://cdn.simpleicons.org/react/c6c1b9', alt: 'React', title: 'React' },
-              { src: 'https://cdn.simpleicons.org/nextdotjs/c6c1b9', alt: 'Next.js', title: 'Next.js' },
-              { src: 'https://cdn.simpleicons.org/typescript/c6c1b9', alt: 'TypeScript', title: 'TypeScript' }
-            ]}
-            speed={40}
-            direction="left"
-            gap={80}
-            logoHeight={48}
-          />
+          <Suspense fallback={<div style={{ height: '48px', width: '100%' }}></div>}>
+            <LogoLoop
+              logos={[
+                { src: 'https://cdn.simpleicons.org/vercel/c6c1b9', alt: 'Vercel', title: 'Vercel' },
+                { src: 'https://cdn.simpleicons.org/github/c6c1b9', alt: 'GitHub', title: 'GitHub' },
+                { src: 'https://cdn.simpleicons.org/docker/c6c1b9', alt: 'Docker', title: 'Docker' },
+                { src: 'https://cdn.simpleicons.org/prisma/c6c1b9', alt: 'Prisma', title: 'Prisma' },
+                { src: 'https://cdn.simpleicons.org/supabase/c6c1b9', alt: 'Supabase', title: 'Supabase' },
+                { src: 'https://cdn.simpleicons.org/stripe/c6c1b9', alt: 'Stripe', title: 'Stripe' },
+                { src: 'https://cdn.simpleicons.org/react/c6c1b9', alt: 'React', title: 'React' },
+                { src: 'https://cdn.simpleicons.org/nextdotjs/c6c1b9', alt: 'Next.js', title: 'Next.js' },
+                { src: 'https://cdn.simpleicons.org/typescript/c6c1b9', alt: 'TypeScript', title: 'TypeScript' }
+              ]}
+              speed={40}
+              direction="left"
+              gap={80}
+              logoHeight={48}
+            />
+          </Suspense>
         </section>
 
         {/* Skills Section */}
@@ -355,15 +359,17 @@ function App() {
 
             <div className="r-status-image-container" style={{ position: 'relative', width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <BorderGlow borderRadius={210} backgroundColor="#121212" className="carousel-border-glow" autoAnimate={true}>
-                <Carousel
-                  items={carouselItems}
-                  baseWidth={420}
-                  round={true}
-                  autoplay={true}
-                  autoplayDelay={3000}
-                  loop={true}
-                  pauseOnHover={false}
-                />
+                <Suspense fallback={<div style={{ width: 420, height: 420, borderRadius: '50%' }}></div>}>
+                  <Carousel
+                    items={carouselItems}
+                    baseWidth={420}
+                    round={true}
+                    autoplay={true}
+                    autoplayDelay={3000}
+                    loop={true}
+                    pauseOnHover={false}
+                  />
+                </Suspense>
               </BorderGlow>
             </div>
           </div>
@@ -428,7 +434,9 @@ function App() {
           </div>
           
           <div className="r-projects-list" style={{ marginTop: '2rem' }}>
-            <ChromaGrid items={projects} columns={projects.length > 1 ? 2 : 1} damping={0.45} fadeOut={0.6} />
+            <Suspense fallback={<div style={{ minHeight: '400px', width: '100%' }}></div>}>
+              <ChromaGrid items={projects} columns={projects.length > 1 ? 2 : 1} damping={0.45} fadeOut={0.6} />
+            </Suspense>
           </div>
         </section>
 

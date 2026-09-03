@@ -131,18 +131,32 @@ const BorderGlow = ({
       let currentAngle = 0;
       let lastTime = performance.now();
       const rotateSpeed = 360 / 4000; // 360 degrees every 4000ms
+      let isVisible = true;
+
+      const observer = new IntersectionObserver(([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          lastTime = performance.now();
+        }
+      });
+      observer.observe(card);
 
       const tick = (time) => {
         const delta = time - lastTime;
         lastTime = time;
-        currentAngle = (currentAngle + delta * rotateSpeed) % 360;
-        card.style.setProperty('--cursor-angle', `${currentAngle}deg`);
+        if (isVisible) {
+          currentAngle = (currentAngle + delta * rotateSpeed) % 360;
+          card.style.setProperty('--cursor-angle', `${currentAngle}deg`);
+        }
         rafId = requestAnimationFrame(tick);
       };
 
       rafId = requestAnimationFrame(tick);
 
-      return () => cancelAnimationFrame(rafId);
+      return () => {
+        cancelAnimationFrame(rafId);
+        observer.disconnect();
+      };
     } else if (animated) {
       const angleStart = 110;
       const angleEnd = 465;
