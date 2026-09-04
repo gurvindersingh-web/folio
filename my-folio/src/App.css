@@ -321,31 +321,28 @@ html, body {
   transition: all 0.2s;
 }
 
-.btn-glow-wrapper {
-  border: none !important;
-}
-.btn-glow-wrapper .border-glow-inner {
-  display: flex;
-}
-
 .r-btn-primary {
   background: #d4cebd;
   color: #0d0c0a;
   border: 1px solid #d4cebd;
+  box-shadow: 0 0 15px rgba(212, 206, 189, 0.4);
 }
 
 .r-btn-primary:hover {
   background: #bfb9a6;
+  box-shadow: 0 0 25px rgba(212, 206, 189, 0.6);
 }
 
 .r-btn-secondary {
   background: transparent;
   color: #d4cebd;
-  border: 1px solid #2a2925;
+  border: 1px solid rgba(212, 206, 189, 0.4);
+  box-shadow: 0 0 15px rgba(212, 206, 189, 0.15);
 }
 
 .r-btn-secondary:hover {
   border-color: #d4cebd;
+  box-shadow: 0 0 25px rgba(212, 206, 189, 0.4);
 }
 
 .r-stars {

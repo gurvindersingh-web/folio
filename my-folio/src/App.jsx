@@ -32,6 +32,7 @@ function App() {
       description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO and LRU, with live statistics and an immersive 3D stage.",
       stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
       image: "/imgs/dynamic_memory.png",
+      video: "/videos/screenrecording-2026-09-04_22-01-08.mp4",
       link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management",
       year: "2025",
       role: "Full-Stack",
@@ -186,22 +187,18 @@ function App() {
               </div>
 
               <div className="r-actions">
-                <BorderGlow borderRadius={4} backgroundColor="transparent" className="btn-glow-wrapper" autoAnimate={true} glowRadius={12} glowIntensity={0.5}>
-                  <button 
-                    className="r-btn-primary" 
-                    onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    VIEW PROJECTS
-                  </button>
-                </BorderGlow>
-                <BorderGlow borderRadius={4} backgroundColor="transparent" className="btn-glow-wrapper" autoAnimate={true} glowRadius={12} glowIntensity={0.5}>
-                  <button 
-                    className="r-btn-secondary"
-                    onClick={() => window.open('https://github.com/gurvindersingh-web', '_blank')}
-                  >
-                    GITHUB
-                  </button>
-                </BorderGlow>
+                <button 
+                  className="r-btn-primary" 
+                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  VIEW PROJECTS
+                </button>
+                <button 
+                  className="r-btn-secondary"
+                  onClick={() => window.open('https://github.com/gurvindersingh-web', '_blank')}
+                >
+                  GITHUB
+                </button>
               </div>
 
               <div className="r-stars">
