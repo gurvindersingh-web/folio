@@ -14,10 +14,12 @@ const ProjectCard = ({
   year,
   role,
   status = 'Public',
-  engine
+  engine,
+  video
 }) => {
   const frameRef = useRef(null);
   const shineRef = useRef(null);
+  const videoRef = useRef(null);
   const rafRef = useRef(0);
   const targetRef = useRef({ x: 0, y: 0 });
   const currentRef = useRef({ x: 0, y: 0 });
@@ -74,9 +76,21 @@ const ProjectCard = ({
     startSettle();
   };
 
+
+
+  const handlePointerEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => console.log("Video play error:", e));
+    }
+  };
+
   const handlePointerLeave = () => {
     targetRef.current = { x: 0, y: 0 };
     startSettle();
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
   };
 
   useEffect(() => () => {
@@ -100,6 +114,7 @@ const ProjectCard = ({
       <div
         className="project-card__media"
         onPointerMove={handlePointerMove}
+        onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
       >
         <div ref={frameRef} className="project-card__frame">
@@ -109,6 +124,17 @@ const ProjectCard = ({
           <span className="project-card__corner project-card__corner--br">+</span>
           <div className="project-card__image-clip">
             <img src={image} alt={title} className="project-card__image" loading="lazy" decoding="async" />
+            {video && (
+              <video
+                ref={videoRef}
+                src={video}
+                className="project-card__video"
+                loop
+                muted
+                playsInline
+                preload="auto"
+              />
+            )}
             <div ref={shineRef} className="project-card__shine" />
             <div className="project-card__image-overlay" />
           </div>
