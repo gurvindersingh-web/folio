@@ -55,7 +55,7 @@
   background: rgba(212, 206, 189, 0.03);
   transform: perspective(1400px) rotateX(var(--rx)) rotateY(var(--ry)) translate3d(var(--tx), var(--ty), 0);
   transform-style: preserve-3d;
-  will-change: transform;
+  will-change: auto;
 }
 
 .project-card__corner {
@@ -91,8 +91,13 @@
 
 .project-card__media:hover .project-card__image,
 .project-card__media:focus-within .project-card__image {
-  transform: scale(1.1) translateZ(0);
+  transform: scale(1.2) translateZ(0);
   filter: grayscale(0) contrast(1.08);
+}
+
+.project-card__media:hover .project-card__frame,
+.project-card__media:focus-within .project-card__frame {
+  will-change: transform;
 }
 
 .project-card__video {
@@ -102,8 +107,8 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: translateZ(0);
-  transition: opacity 0.25s ease;
+  transform: scale(1.04) translateZ(0);
+  transition: opacity 0.25s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
   z-index: 5;
 }
@@ -111,6 +116,7 @@
 .project-card__media:hover .project-card__video,
 .project-card__media:focus-within .project-card__video {
   opacity: 1;
+  transform: scale(1.2) translateZ(0);
 }
 
 .project-card__image-overlay {
@@ -152,7 +158,12 @@
   );
   background-size: 100% 220%;
   animation: project-scan 7s linear infinite;
+  animation-play-state: paused;
   opacity: 0.35;
+}
+
+.project-card--visible .project-card__scan {
+  animation-play-state: running;
 }
 
 .project-card__body {

@@ -74,6 +74,8 @@ const BorderGlow = ({
   fillOpacity = 0.5,
 }) => {
   const cardRef = useRef(null);
+  const pointerFrameRef = useRef(0);
+  const pointerRef = useRef(null);
 
   const getCenterOfElement = useCallback((el) => {
     const { width, height } = el.getBoundingClientRect();
@@ -102,21 +104,35 @@ const BorderGlow = ({
     return degrees;
   }, [getCenterOfElement]);
 
-  const handlePointerMove = useCallback((e) => {
+  const updatePointerGlow = useCallback(() => {
+    pointerFrameRef.current = 0;
     if (autoAnimate) return;
     const card = cardRef.current;
-    if (!card) return;
+    const pointer = pointerRef.current;
+    if (!card || !pointer) return;
 
     const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = pointer.x - rect.left;
+    const y = pointer.y - rect.top;
 
     const edge = getEdgeProximity(card, x, y);
     const angle = getCursorAngle(card, x, y);
 
     card.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(3)}`);
     card.style.setProperty('--cursor-angle', `${angle.toFixed(3)}deg`);
-  }, [getEdgeProximity, getCursorAngle]);
+  }, [autoAnimate, getEdgeProximity, getCursorAngle]);
+
+  const handlePointerMove = useCallback((e) => {
+    if (autoAnimate || e.pointerType === 'touch') return;
+    pointerRef.current = { x: e.clientX, y: e.clientY };
+    if (!pointerFrameRef.current) {
+      pointerFrameRef.current = requestAnimationFrame(updatePointerGlow);
+    }
+  }, [autoAnimate, updatePointerGlow]);
+
+  useEffect(() => () => {
+    if (pointerFrameRef.current) cancelAnimationFrame(pointerFrameRef.current);
+  }, []);
 
   useEffect(() => {
     if (!cardRef.current) return;
@@ -127,35 +143,55 @@ const BorderGlow = ({
       card.classList.add('sweep-active');
       card.style.setProperty('--edge-proximity', '100');
 
-      let rafId;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let rafId = 0;
       let currentAngle = 0;
       let lastTime = performance.now();
-      const rotateSpeed = 360 / 4000; // 360 degrees every 4000ms
+      const rotateSpeed = 360 / 4000;
       let isVisible = true;
+      let documentVisible = !document.hidden;
+
+      const canAnimate = () => isVisible && documentVisible && !reducedMotion.matches;
+      const schedule = () => {
+        if (!rafId && canAnimate()) rafId = requestAnimationFrame(tick);
+      };
 
       const observer = new IntersectionObserver(([entry]) => {
         isVisible = entry.isIntersecting;
         if (entry.isIntersecting) {
           lastTime = performance.now();
+          schedule();
         }
       });
       observer.observe(card);
 
+      const handleVisibilityChange = () => {
+        documentVisible = !document.hidden;
+        if (documentVisible) lastTime = performance.now();
+        schedule();
+      };
+      const handleMotionChange = () => schedule();
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      reducedMotion.addEventListener('change', handleMotionChange);
+
       const tick = (time) => {
+        rafId = 0;
         const delta = time - lastTime;
         lastTime = time;
-        if (isVisible) {
+        if (canAnimate()) {
           currentAngle = (currentAngle + delta * rotateSpeed) % 360;
           card.style.setProperty('--cursor-angle', `${currentAngle}deg`);
         }
-        rafId = requestAnimationFrame(tick);
+        schedule();
       };
 
-      rafId = requestAnimationFrame(tick);
+      schedule();
 
       return () => {
         cancelAnimationFrame(rafId);
         observer.disconnect();
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        reducedMotion.removeEventListener('change', handleMotionChange);
       };
     } else if (animated) {
       const angleStart = 110;

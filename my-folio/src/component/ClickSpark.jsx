@@ -10,41 +10,33 @@ const ClickSpark = ({
   extraScale = 1.0,
   children
 }) => {
+  const maxParticles = 120;
   const canvasRef = useRef(null);
   const sparksRef = useRef([]);
-  const startTimeRef = useRef(null);
   const animationIdRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const parent = canvas.parentElement;
-    if (!parent) return;
-
-    let resizeTimeout;
-
     const resizeCanvas = () => {
-      const { width, height } = parent.getBoundingClientRect();
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
+      // The canvas is fixed to the viewport. Keeping it page-sized can allocate
+      // a very large bitmap on long pages, even though sparks are only visible
+      // in the viewport.
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      canvas.width = Math.ceil(width * pixelRatio);
+      canvas.height = Math.ceil(height * pixelRatio);
+      const context = canvas.getContext('2d');
+      context?.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     };
-
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resizeCanvas, 100);
-    };
-
-    const ro = new ResizeObserver(handleResize);
-    ro.observe(parent);
 
     resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
 
     return () => {
-      ro.disconnect();
-      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', resizeCanvas);
     };
   }, []);
 
@@ -64,15 +56,13 @@ const ClickSpark = ({
     [easing]
   );
 
-  const draw = useCallback((timestamp) => {
+  const draw = useCallback(function drawSparks(timestamp) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    if (!startTimeRef.current) {
-      startTimeRef.current = timestamp;
-    }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    ctx.clearRect(0, 0, canvas.width / pixelRatio, canvas.height / pixelRatio);
 
     sparksRef.current = sparksRef.current.filter(spark => {
       const elapsed = timestamp - spark.startTime;
@@ -102,7 +92,7 @@ const ClickSpark = ({
     });
 
     if (sparksRef.current.length > 0) {
-      animationIdRef.current = requestAnimationFrame(draw);
+      animationIdRef.current = requestAnimationFrame(drawSparks);
     } else {
       animationIdRef.current = null;
     }
@@ -132,6 +122,9 @@ const ClickSpark = ({
     }));
 
     sparksRef.current.push(...newSparks);
+    if (sparksRef.current.length > maxParticles) {
+      sparksRef.current.splice(0, sparksRef.current.length - maxParticles);
+    }
     
     if (!animationIdRef.current) {
       animationIdRef.current = requestAnimationFrame(draw);
@@ -154,7 +147,7 @@ const ClickSpark = ({
           height: '100%',
           display: 'block',
           userSelect: 'none',
-          position: 'absolute',
+          position: 'fixed',
           top: 0,
           left: 0,
           pointerEvents: 'none',

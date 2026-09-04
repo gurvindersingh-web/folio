@@ -25,6 +25,7 @@ const InfiniteSpiral = ({
   centerScale = 1.2,
   edgeFade = 0.3,
   edgeBlur = 6,
+  maxFps = 60,
   pauseOnHover = false,
   imageFit = 'cover',
   grayscale = 0,
@@ -40,6 +41,8 @@ const InfiniteSpiral = ({
   const draggingRef = useRef(false);
   const lastPointerYRef = useRef(0);
   const dragMovedRef = useRef(false);
+  const wakeRef = useRef(() => {});
+  const cardStyleCacheRef = useRef([]);
 
   const normalizedItems = useMemo(
     () =>
@@ -55,7 +58,10 @@ const InfiniteSpiral = ({
     const root = rootRef.current;
     if (!root || normalizedItems.length === 0) return;
 
-    let frameId;
+    let frameId = 0;
+    let throttleTimer = 0;
+    let lastRenderTime = 0;
+    let documentVisible = !document.hidden;
     let previousTime = performance.now();
     let bounds = root.getBoundingClientRect();
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -71,6 +77,7 @@ const InfiniteSpiral = ({
     const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) wakeRef.current();
       },
       { threshold: 0.02 }
     );
@@ -86,10 +93,56 @@ const InfiniteSpiral = ({
         -1.5,
         1.5
       );
+      wakeRef.current();
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
+    const shouldAnimate = () => {
+      const autoEnabled = animationMode === 'auto' || animationMode === 'all';
+      const isSettling = Math.abs(targetProgressRef.current - progressRef.current) > 0.001;
+      return documentVisible && visibleRef.current && (
+        (autoEnabled && !reducedMotion.matches && !(pauseOnHover && hoveredRef.current)) ||
+        draggingRef.current ||
+        isSettling
+      );
+    };
+
+    const schedule = () => {
+      if (frameId || throttleTimer || !shouldAnimate()) return;
+      const targetFps = clamp(maxFps, 20, 60);
+      // At 60 FPS, use the browser's native frame scheduler to avoid timer
+      // jitter. Lower caps still use a timer to save work on constrained pages.
+      if (targetFps >= 59) {
+        frameId = requestAnimationFrame(render);
+        return;
+      }
+      const frameInterval = 1000 / targetFps;
+      const remaining = frameInterval - (performance.now() - lastRenderTime);
+      if (remaining > 0) {
+        throttleTimer = window.setTimeout(() => {
+          throttleTimer = 0;
+          schedule();
+        }, remaining);
+      } else {
+        frameId = requestAnimationFrame(render);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      documentVisible = !document.hidden;
+      if (documentVisible) {
+        previousTime = performance.now();
+        schedule();
+      }
+    };
+    const handleMotionChange = () => schedule();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    reducedMotion.addEventListener('change', handleMotionChange);
+    wakeRef.current = schedule;
+
     const render = time => {
+      frameId = 0;
+      lastRenderTime = time;
       const delta = Math.min((time - previousTime) / 1000, 0.05);
       previousTime = time;
 
@@ -106,11 +159,6 @@ const InfiniteSpiral = ({
 
       const followBlend = 1 - Math.exp(-delta * (draggingRef.current ? 22 : 11));
       progressRef.current += (targetProgressRef.current - progressRef.current) * followBlend;
-
-      if (!visibleRef.current && Math.abs(autoSpeedRef.current) < 0.001 && Math.abs(targetProgressRef.current - progressRef.current) < 0.001) {
-        frameId = requestAnimationFrame(render);
-        return;
-      }
 
       const count = normalizedItems.length;
       const half = count / 2;
@@ -137,24 +185,35 @@ const InfiniteSpiral = ({
         const depthScale = clamp(perspective / Math.max(perspective - z, 1), 0.72, 1.45);
         const visualScale = scale * depthScale;
         const depth = (z / Math.max(responsiveRadius, 1) + 1) / 2;
-        const blur = edgeBlur * smoothstep(0.35, 1, edge);
-        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${offset * verticalSpacing * fit}px, 0) rotateZ(${cardTilt}deg) scale(${visualScale})`;
-        card.style.opacity = opacity.toFixed(3);
-        card.style.filter = blur > 0.01 ? `blur(${blur.toFixed(2)}px)` : 'none';
-        card.style.zIndex = String(Math.round(depth * 100000) + index);
-        card.style.pointerEvents = opacity > 0.25 ? 'auto' : 'none';
+        const blur = edgeBlur > 0 ? edgeBlur * smoothstep(0.35, 1, edge) : 0;
+        const nextStyles = {
+          transform: `translate(-50%, -50%) translate3d(${x.toFixed(2)}px, ${(offset * verticalSpacing * fit).toFixed(2)}px, 0) rotateZ(${cardTilt}deg) scale(${visualScale.toFixed(3)})`,
+          opacity: opacity.toFixed(3),
+          filter: blur > 0.01 ? `blur(${blur.toFixed(2)}px)` : 'none',
+          zIndex: String(Math.round(depth * 100000) + index),
+          pointerEvents: opacity > 0.25 ? 'auto' : 'none'
+        };
+        const previousStyles = cardStyleCacheRef.current[index] || {};
+        Object.entries(nextStyles).forEach(([property, value]) => {
+          if (previousStyles[property] !== value) card.style[property] = value;
+        });
+        cardStyleCacheRef.current[index] = nextStyles;
       });
 
-      frameId = requestAnimationFrame(render);
+      schedule();
     };
 
-    frameId = requestAnimationFrame(render);
+    schedule();
 
     return () => {
       cancelAnimationFrame(frameId);
+      clearTimeout(throttleTimer);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      reducedMotion.removeEventListener('change', handleMotionChange);
+      wakeRef.current = () => {};
     };
   }, [
     normalizedItems,
@@ -172,6 +231,7 @@ const InfiniteSpiral = ({
     centerScale,
     edgeFade,
     edgeBlur,
+    maxFps,
     pauseOnHover
   ]);
 
@@ -203,9 +263,11 @@ const InfiniteSpiral = ({
       style={rootStyle}
       onMouseEnter={() => {
         hoveredRef.current = true;
+        wakeRef.current();
       }}
       onMouseLeave={() => {
         hoveredRef.current = false;
+        wakeRef.current();
       }}
       onPointerDown={event => {
         if (!dragEnabled || event.button !== 0) return;
@@ -215,6 +277,7 @@ const InfiniteSpiral = ({
         targetProgressRef.current = progressRef.current;
         event.currentTarget.setPointerCapture(event.pointerId);
         event.currentTarget.style.cursor = 'grabbing';
+        wakeRef.current();
       }}
       onPointerMove={event => {
         if (!draggingRef.current) return;
@@ -222,6 +285,7 @@ const InfiniteSpiral = ({
         lastPointerYRef.current = event.clientY;
         if (Math.abs(pointerDelta) > 0.5) dragMovedRef.current = true;
         targetProgressRef.current -= pointerDelta / Math.max(verticalSpacing, 1);
+        wakeRef.current();
       }}
       onPointerUp={stopDragging}
       onPointerCancel={stopDragging}
@@ -253,7 +317,9 @@ const InfiniteSpiral = ({
                 className="infinite-spiral__image"
                 src={item.src}
                 alt={item.alt}
-                loading={index < 6 ? 'eager' : 'lazy'}
+                width={cardWidth}
+                height={cardHeight}
+                loading="lazy"
                 draggable={false}
                 style={{
                   width: cardWidth,

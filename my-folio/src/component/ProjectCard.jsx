@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import './ProjectCard.css';
 import { FiGithub, FiArrowUpRight } from 'react-icons/fi';
 
@@ -23,6 +23,9 @@ const ProjectCard = ({
   const rafRef = useRef(0);
   const targetRef = useRef({ x: 0, y: 0 });
   const currentRef = useRef({ x: 0, y: 0 });
+  const mediaHoveredRef = useRef(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const settle = () => {
     const frame = frameRef.current;
@@ -57,6 +60,7 @@ const ProjectCard = ({
   };
 
   const handlePointerMove = (event) => {
+    if (event.pointerType === 'touch' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const frame = frameRef.current;
     if (!frame) return;
 
@@ -79,12 +83,16 @@ const ProjectCard = ({
 
 
   const handlePointerEnter = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    mediaHoveredRef.current = true;
+    setShouldLoadVideo(true);
     if (videoRef.current) {
       videoRef.current.play().catch(e => console.log("Video play error:", e));
     }
   };
 
   const handlePointerLeave = () => {
+    mediaHoveredRef.current = false;
     targetRef.current = { x: 0, y: 0 };
     startSettle();
     if (videoRef.current) {
@@ -97,6 +105,25 @@ const ProjectCard = ({
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
   }, []);
 
+  useEffect(() => {
+    const card = frameRef.current?.closest('.project-card');
+    if (!card || !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsVisible(entry.isIntersecting);
+    }, { threshold: 0.01 });
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (shouldLoadVideo && mediaHoveredRef.current) {
+      videoRef.current?.play().catch(() => {});
+    }
+  }, [shouldLoadVideo]);
+
   const paddedIndex = String(index).padStart(2, '0');
   const specs = [
     year ? ['YEAR', year] : null,
@@ -106,7 +133,7 @@ const ProjectCard = ({
   ].filter(Boolean);
 
   return (
-    <article className={`project-card ${reverse ? 'project-card--reverse' : ''}`}>
+    <article className={`project-card ${reverse ? 'project-card--reverse' : ''} ${isVisible ? 'project-card--visible' : ''}`}>
       <div className="project-card__index" aria-hidden="true">
         {paddedIndex}
       </div>
@@ -123,8 +150,8 @@ const ProjectCard = ({
           <span className="project-card__corner project-card__corner--bl">+</span>
           <span className="project-card__corner project-card__corner--br">+</span>
           <div className="project-card__image-clip">
-            <img src={image} alt={title} className="project-card__image" loading="lazy" decoding="async" />
-            {video && (
+            <img src={image} alt={title} width="1024" height="507" className="project-card__image" loading="lazy" decoding="async" />
+            {video && shouldLoadVideo && (
               <video
                 ref={videoRef}
                 src={video}
@@ -132,7 +159,7 @@ const ProjectCard = ({
                 loop
                 muted
                 playsInline
-                preload="auto"
+                preload="none"
               />
             )}
             <div ref={shineRef} className="project-card__shine" />
@@ -197,4 +224,4 @@ const ProjectCard = ({
   );
 };
 
-export default ProjectCard;
+export default memo(ProjectCard);
