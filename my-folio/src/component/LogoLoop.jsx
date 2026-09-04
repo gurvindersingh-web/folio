@@ -69,12 +69,15 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
     if (!track) return;
 
     let observer;
+    let documentVisible = !document.hidden;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (container) {
       observer = new IntersectionObserver(([entry]) => {
         visibleRef.current = entry.isIntersecting;
         if (entry.isIntersecting && lastTimestampRef.current !== null) {
           lastTimestampRef.current = performance.now();
         }
+        schedule();
       }, { threshold: 0 });
       observer.observe(container);
     }
@@ -89,7 +92,19 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
       track.style.transform = transformValue;
     }
 
+    const canAnimate = () => visibleRef.current && documentVisible && !reducedMotion.matches;
+    const schedule = () => {
+      if (rafRef.current === null && canAnimate()) rafRef.current = requestAnimationFrame(animate);
+    };
+    const handleVisibilityChange = () => {
+      documentVisible = !document.hidden;
+      if (documentVisible) lastTimestampRef.current = performance.now();
+      schedule();
+    };
+    const handleMotionChange = () => schedule();
+
     const animate = timestamp => {
+      rafRef.current = null;
       if (lastTimestampRef.current === null) {
         lastTimestampRef.current = timestamp;
       }
@@ -97,10 +112,7 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
       const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
       lastTimestampRef.current = timestamp;
 
-      if (!visibleRef.current) {
-        rafRef.current = requestAnimationFrame(animate);
-        return;
-      }
+      if (!canAnimate()) return;
 
       const target = isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
 
@@ -118,10 +130,12 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
         track.style.transform = transformValue;
       }
 
-      rafRef.current = requestAnimationFrame(animate);
+      schedule();
     };
 
-    rafRef.current = requestAnimationFrame(animate);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    reducedMotion.addEventListener('change', handleMotionChange);
+    schedule();
 
     return () => {
       if (rafRef.current !== null) {
@@ -130,6 +144,8 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
       }
       lastTimestampRef.current = null;
       if (observer) observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      reducedMotion.removeEventListener('change', handleMotionChange);
     };
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef, containerRef]);
 };
@@ -262,8 +278,8 @@ export const LogoLoop = memo(
             src={item.src}
             srcSet={item.srcSet}
             sizes={item.sizes}
-            width={item.width}
-            height={item.height}
+            width={item.width ?? 48}
+            height={item.height ?? 48}
             alt={item.alt ?? ''}
             title={item.title}
             loading="lazy"

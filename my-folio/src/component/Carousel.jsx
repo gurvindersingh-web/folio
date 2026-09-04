@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 // replace icons with your own if needed
 import { FiCircle, FiCode, FiFileText, FiLayers, FiLayout } from 'react-icons/fi';
@@ -71,7 +71,7 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
   );
 }
 
-export default function Carousel({
+function Carousel({
   items = DEFAULT_ITEMS,
   baseWidth = 300,
   autoplay = false,
@@ -95,6 +95,10 @@ export default function Carousel({
   const [isJumping, setIsJumping] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  const [documentVisible, setDocumentVisible] = useState(() => !document.hidden);
 
   const containerRef = useRef(null);
   
@@ -110,6 +114,17 @@ export default function Carousel({
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = () => setReducedMotion(query.matches);
+    const updateDocumentVisibility = () => setDocumentVisible(!document.hidden);
+    query.addEventListener('change', updateMotionPreference);
+    document.addEventListener('visibilitychange', updateDocumentVisibility);
+    return () => {
+      query.removeEventListener('change', updateMotionPreference);
+      document.removeEventListener('visibilitychange', updateDocumentVisibility);
+    };
+  }, []);
+  useEffect(() => {
     if (pauseOnHover && containerRef.current) {
       const container = containerRef.current;
       const handleMouseEnter = () => setIsHovered(true);
@@ -121,10 +136,11 @@ export default function Carousel({
         container.removeEventListener('mouseleave', handleMouseLeave);
       };
     }
+
   }, [pauseOnHover]);
 
   useEffect(() => {
-    if (!autoplay || !isVisible || itemsForRender.length <= 1) return undefined;
+    if (!autoplay || reducedMotion || !documentVisible || !isVisible || itemsForRender.length <= 1) return undefined;
     if (pauseOnHover && isHovered) return undefined;
 
     const timer = setInterval(() => {
@@ -132,7 +148,7 @@ export default function Carousel({
     }, autoplayDelay);
 
     return () => clearInterval(timer);
-  }, [autoplay, autoplayDelay, isHovered, pauseOnHover, itemsForRender.length, isVisible]);
+  }, [autoplay, autoplayDelay, documentVisible, isHovered, pauseOnHover, itemsForRender.length, isVisible, reducedMotion]);
 
   useEffect(() => {
     const startingPosition = loop ? 1 : 0;
@@ -144,6 +160,7 @@ export default function Carousel({
     if (!loop && position > itemsForRender.length - 1) {
       setPosition(Math.max(0, itemsForRender.length - 1));
     }
+
   }, [itemsForRender.length, loop, position]);
 
   const effectiveTransition = isJumping ? { duration: 0 } : SPRING_OPTIONS;
@@ -276,3 +293,5 @@ export default function Carousel({
     </div>
   );
 }
+
+export default memo(Carousel);

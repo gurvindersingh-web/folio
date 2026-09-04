@@ -227,7 +227,10 @@ function App() {
             <div className="r-halo"></div>
             <div className="r-art">
               {/* The profile picture, uncropped, fading in from left */}
-              <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" fetchPriority="high" decoding="async" />
+              <picture>
+                <source srcSet="/imgs/ppf_1080p_fixed.webp" type="image/webp" />
+                <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" width="2010" height="1000" fetchPriority="high" decoding="async" />
+              </picture>
             </div>
             <div className="r-scroll-hint">
               <div className="r-scroll-text">SCROLL</div>
@@ -291,7 +294,8 @@ function App() {
                 cardRadius={12}
                 centerScale={1.35}
                 edgeFade={0.6}
-                edgeBlur={4}
+                edgeBlur={0}
+                maxFps={60}
                 pauseOnHover={false}
               />
             </Suspense>

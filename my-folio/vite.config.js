@@ -28,9 +28,11 @@ export default defineConfig({
           if (id.includes('node_modules/gsap/') || id.includes('node_modules/motion/') || id.includes('node_modules/ogl/')) {
             return 'animation';
           }
+          if (id.includes('node_modules/lenis/')) {
+            return 'lenis';
+          }
         }
       }
     }
   }
 })
-

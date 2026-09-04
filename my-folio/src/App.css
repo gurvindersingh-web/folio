@@ -10,7 +10,7 @@ html, body {
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   height: 100%;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 .ryoku-layout {
@@ -27,6 +27,7 @@ html, body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.045'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 100;
+  contain: paint;
 }
 
 /* ───────── Header ───────── */
@@ -41,8 +42,9 @@ html, body {
   left: 0;
   right: 0;
   background-color: rgba(30, 30, 30, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateZ(0);
 }
 
 .r-logo {
@@ -318,7 +320,7 @@ html, body {
   padding: 0.6rem 1.25rem;
   letter-spacing: 0.2em;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
 }
 
 .r-btn-primary {
@@ -656,6 +658,55 @@ html, body {
   scroll-margin-top: 70px;
 }
 
+.r-projects-header {
+  display: flex;
+  gap: 4vw;
+  align-items: flex-start;
+  margin-bottom: 4rem;
+}
+
+.r-projects-intro {
+  flex: 1;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.r-projects-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.8rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: #d4cebd;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.r-projects-lede {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #666459;
+  margin: 0;
+}
+
+/* Defer painting expensive below-the-fold sections until they approach view. */
+@supports (content-visibility: auto) {
+  .r-about,
+  .r-logo-loop-section,
+  .r-skills,
+  .r-projects-container {
+    content-visibility: auto;
+  }
+
+  .r-about { contain-intrinsic-size: auto 720px; }
+  .r-logo-loop-section { contain-intrinsic-size: auto 110px; }
+  .r-skills { contain-intrinsic-size: auto 1180px; }
+  .r-projects-container { contain-intrinsic-size: auto 980px; }
+}
+
 .r-projects-list {
   display: flex;
   flex-direction: column;
@@ -664,17 +715,6 @@ html, body {
   margin: 0 auto;
 }
 
-.r-projects-stack {
-  /* let ScrollStack handle overflow */
-}
-
-.r-project-stack-item {
-  /* allow natural height from ProjectCard */
-}
-
-.r-project-stack-item .project-card {
-  /* no forced margins — ScrollStack handles spacing via itemDistance */
-}
 
 .r-skills-grid {
   display: grid;
@@ -688,10 +728,10 @@ html, body {
   border: 1px solid rgba(212, 206, 189, 0.05);
   padding: 1.5rem;
   border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
 }
 
 .r-skill-category:hover {
@@ -892,4 +932,22 @@ html, body {
   .r-vitals { flex-wrap: wrap; }
   .r-vital-box { flex: 1 1 40%; border-bottom: 1px solid #2a2925; }
   .r-footer-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+
+  .r-noise { display: none; }
+  .r-header {
+    background-color: rgba(30, 30, 30, 0.97);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .r-noise { display: none; }
 }
