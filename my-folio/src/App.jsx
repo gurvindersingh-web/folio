@@ -77,55 +77,55 @@ function App() {
 
       {/* Header */}
       <header className="r-header">
-        <div className="r-logo">
-          <span className="r-logo-icon">水</span> Gurvinder Singh
-        </div>
-        <nav className="r-nav">
-          <a href="#about">ABOUT</a>
-          <a href="#skills">SKILLS</a>
-          <a href="#projects">PROJECTS</a>
-          <a href="#achievements">ACHIEVEMENTS</a>
-          <a href="#contact">CONTACT</a>
-        </nav>
-        <div className="r-version">
-          <span className="r-square">■</span> v1.0.0
-        </div>
+        <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0}>
+          <div className="r-logo">
+            <span className="r-logo-icon">水</span> Gurvinder Singh
+          </div>
+        </AnimatedContent>
+        <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
+          <nav className="r-nav">
+            <a href="#about">ABOUT</a>
+            <a href="#skills">SKILLS</a>
+            <a href="#projects">PROJECTS</a>
+            <a href="#achievements">ACHIEVEMENTS</a>
+            <a href="#contact">CONTACT</a>
+          </nav>
+        </AnimatedContent>
+        <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
+          <div className="r-version">
+            <span className="r-square">■</span> v1.0.0
+          </div>
+        </AnimatedContent>
       </header>
 
       <main>
         {/* Hero Section */}
         <section className="r-hero">
           {/* Left Content Area */}
-          <AnimatedContent
-            distance={100}
-            direction="horizontal"
-            reverse={false}
-            duration={1.2}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={0.95}
-            threshold={0.1}
-            delay={0.1}
-          >
-            <div className="r-left">
+          <div className="r-left">
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.2}>
               <div className="r-eyebrow">
                 <span className="r-plus">+</span>
                 <span className="r-char">水</span>
                 <span className="r-dot">-</span>
                 FULL-STACK DEVELOPER            <span className="r-star">❖</span>
               </div>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.3}>
               <h1 className="r-title">Gurvinder Singh</h1>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.4}>
               <div className="r-subtitle">
                 @ gurvindersingh-web · public beta
               </div>
-
               <div className="r-local-time">
                 <span className="r-pulse">●</span> LOCAL <Clock />
               </div>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.5}>
               <div className="r-specs">
                 <div className="r-spec-row">
                   <span>FRONTEND</span>
@@ -153,7 +153,9 @@ function App() {
                   <span>Security</span>
                 </div>
               </div>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.6}>
               <div className="r-vitals">
                 <div className="r-vital-box">
                   <div className="r-vital-num">3+</div>
@@ -172,7 +174,9 @@ function App() {
                   <div className="r-vital-lbl">DEV</div>
                 </div>
               </div>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.7}>
               <div className="r-ramp">
                 <div className="r-ramp-colors">
                   <div className="r-c1"></div>
@@ -185,7 +189,9 @@ function App() {
                   INK RAMP · 4.6:1 → 12:1
                 </div>
               </div>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.8}>
               <div className="r-actions">
                 <button 
                   className="r-btn-primary" 
@@ -200,7 +206,9 @@ function App() {
                   GITHUB
                 </button>
               </div>
+            </AnimatedContent>
 
+            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.9}>
               <div className="r-stars">
                 ★ Available for work · Full-Stack Developer · Linux · Web Sec
               </div>
@@ -219,11 +227,19 @@ function App() {
                   <div className="r-ed-ver">v0.49.2-beta.19</div>
                 </div>
               </div>
-            </div>
-          </AnimatedContent>
+            </AnimatedContent>
+          </div>
 
           {/* Right Art Area */}
-          <div className="r-right">
+          <AnimatedContent 
+            distance={50} 
+            direction="horizontal" 
+            reverse={true} 
+            duration={1.2} 
+            delay={0.6}
+            scale={1.05}
+            className="r-right"
+          >
             <div className="r-halo"></div>
             <div className="r-art">
               {/* The profile picture, uncropped, fading in from left */}
@@ -236,7 +252,7 @@ function App() {
               <div className="r-scroll-text">SCROLL</div>
               <div className="r-scroll-line"></div>
             </div>
-          </div>
+          </AnimatedContent>
         </section>
 
         {/* About Section */}

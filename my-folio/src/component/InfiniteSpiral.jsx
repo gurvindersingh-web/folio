@@ -191,7 +191,8 @@ const InfiniteSpiral = ({
           opacity: opacity.toFixed(3),
           filter: blur > 0.01 ? `blur(${blur.toFixed(2)}px)` : 'none',
           zIndex: String(Math.round(depth * 100000) + index),
-          pointerEvents: opacity > 0.25 ? 'auto' : 'none'
+          pointerEvents: opacity > 0.25 ? 'auto' : 'none',
+          willChange: 'transform, opacity'
         };
         const previousStyles = cardStyleCacheRef.current[index] || {};
         Object.entries(nextStyles).forEach(([property, value]) => {

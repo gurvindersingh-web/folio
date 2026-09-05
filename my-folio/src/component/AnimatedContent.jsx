@@ -56,7 +56,8 @@ const AnimatedContent = ({
         [axis]: offset,
         scale,
         opacity: animateOpacity ? initialOpacity : 1,
-        visibility: 'visible'
+        visibility: 'visible',
+        willChange: 'transform, opacity'
       });
 
       tl = gsap.timeline({
@@ -83,7 +84,8 @@ const AnimatedContent = ({
         scale: 1,
         opacity: 1,
         duration,
-        ease
+        ease,
+        clearProps: 'willChange'
       });
 
       st = ScrollTrigger.create({
