@@ -11,6 +11,28 @@ html, body {
   overflow-x: hidden;
   height: 100%;
   scroll-behavior: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #3c3a33 #1e1e1e;
+}
+
+/* Sleek custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3c3a33;
+  border-radius: 8px;
+  border: 2px solid #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666459;
 }
 
 .ryoku-layout {
@@ -28,6 +50,8 @@ html, body {
   pointer-events: none;
   z-index: 100;
   contain: paint;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* ───────── Header ───────── */
