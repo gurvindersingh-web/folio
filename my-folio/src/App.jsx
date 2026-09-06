@@ -523,10 +523,10 @@ function App() {
             </div>
             <div className="r-footer-column">
               <span className="r-footer-heading">CONNECT</span>
-              <a href="mailto:gurvindersingh.web@gmail.com">Email</a>
+              <a href="mailto:gurvindersingh.828384@gmail.com">Email</a>
               <a href="https://github.com/gurvindersingh-web" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="https://www.linkedin.com/in/gurvindersingh-web/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href="https://x.com/" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+              <a href="https://www.linkedin.com/in/gurvinder-singh-422032311/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://x.com/Gurvinder_web" target="_blank" rel="noopener noreferrer">X / Twitter</a>
             </div>
             <div className="r-footer-column">
               <span className="r-footer-heading">ELSEWHERE</span>
