@@ -508,12 +508,18 @@ html, body {
 .r-art img {
   position: absolute;
   bottom: 0;
-  right: 4vw;
+  right: 1vw;
   height: 95vh;
   width: auto;
   max-width: none;
   object-fit: contain;
-  filter: grayscale(100%) drop-shadow(-20px 20px 40px rgba(0, 0, 0, 0.8));
+  image-rendering: auto;
+  filter:
+    grayscale(100%)
+    contrast(1.04)
+    drop-shadow(-18px 18px 24px rgba(0, 0, 0, 0.9))
+    drop-shadow(0 10px 34px rgba(0, 0, 0, 0.48));
+  will-change: filter;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
@@ -739,6 +745,264 @@ html, body {
   margin: 0 auto;
 }
 
+/* ───────── Footer ───────── */
+.r-site-footer {
+  position: relative;
+  overflow: hidden;
+  padding: 5.75rem max(6vw, 2rem) 1.5rem;
+  background-color: #0d0d0d;
+  border-top: 1px solid rgba(212, 206, 189, 0.16);
+}
+
+.r-footer-main {
+  width: min(100%, 1580px);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 5rem;
+  min-height: 230px;
+}
+
+.r-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.r-footer-mark {
+  color: #d4cebd;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
+
+.r-footer-tagline {
+  color: #d4cebd;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.r-footer-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  color: #666459;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+}
+
+.r-footer-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.45);
+}
+
+.r-footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(110px, 1fr));
+  gap: clamp(2rem, 5vw, 6rem);
+  padding-top: 0.6rem;
+}
+
+.r-footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 110px;
+}
+
+.r-footer-heading {
+  margin-bottom: 0.75rem;
+  color: #d4cebd;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+}
+
+.r-footer-column a {
+  color: #77736a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.r-footer-column a:hover,
+.r-footer-bottom a:hover {
+  color: #d4cebd;
+  transform: translateX(3px);
+}
+
+.r-footer-wordmark {
+  width: min(100%, 1580px);
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 0;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  color: transparent;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(6rem, 17.5vw, 18rem);
+  font-weight: 400;
+  line-height: 0.72;
+  letter-spacing: -0.08em;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(212, 206, 189, 0.22);
+  user-select: none;
+}
+
+.r-footer-bottom {
+  width: min(100%, 1580px);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(212, 206, 189, 0.12);
+  color: #514e47;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+
+.r-footer-bottom a {
+  color: #77736a;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* ───────── Install artwork ───────── */
+.r-install-panel {
+  position: relative;
+  min-height: 540px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(18, 18, 18, 0.38), #090909 92%),
+    repeating-linear-gradient(0deg, rgba(212, 206, 189, 0.025) 0 1px, transparent 1px 4px),
+    #0b0b0b;
+  border-top: 1px solid rgba(212, 206, 189, 0.13);
+  border-bottom: 1px solid rgba(212, 206, 189, 0.13);
+}
+
+.r-install-panel::before,
+.r-install-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.r-install-panel::before {
+  z-index: -1;
+  opacity: 0.32;
+  background:
+    linear-gradient(90deg, transparent 0 9%, rgba(212, 206, 189, 0.2) 9.05% 9.1%, transparent 9.15% 23%, rgba(212, 206, 189, 0.12) 23.05% 23.1%, transparent 23.15% 73%, rgba(212, 206, 189, 0.16) 73.05% 73.1%, transparent 73.15%),
+    repeating-linear-gradient(90deg, transparent 0 4rem, rgba(212, 206, 189, 0.08) 4rem 4.06rem, transparent 4.06rem 7.5rem);
+  filter: blur(1px);
+}
+
+.r-install-panel::after {
+  z-index: 3;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.r-install-art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: rgba(212, 206, 189, 0.22);
+  opacity: 0.8;
+  transform: scale(1.35);
+  filter: blur(0.25px);
+}
+
+.r-install-art pre {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.45rem, 0.85vw, 0.8rem);
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  white-space: pre;
+  text-shadow: 0 0 12px rgba(212, 206, 189, 0.24);
+}
+
+.r-install-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(1) contrast(1.08);
+  opacity: 0.72;
+}
+
+.r-install-content {
+  position: absolute;
+  left: max(9vw, 2rem);
+  bottom: 4.5rem;
+  z-index: 4;
+}
+
+.r-install-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.25rem;
+  color: #77736a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+}
+
+.r-install-kicker span:first-child {
+  color: #d4cebd;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+}
+
+.r-install-content h2 {
+  margin: 0;
+  color: #d4cebd;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.3rem, 6vw, 6rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.r-install-content p {
+  margin: 1.2rem 0 0;
+  color: #77736a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.r-install-rule {
+  position: absolute;
+  z-index: 4;
+  right: 6vw;
+  bottom: 1.2rem;
+  left: 6vw;
+  border-bottom: 1px solid rgba(212, 206, 189, 0.22);
+}
+
 
 .r-skills-grid {
   display: grid;
@@ -956,6 +1220,16 @@ html, body {
   .r-vitals { flex-wrap: wrap; }
   .r-vital-box { flex: 1 1 40%; border-bottom: 1px solid #2a2925; }
   .r-footer-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .r-site-footer { padding: 4rem 1.5rem 1.5rem; }
+  .r-footer-main { flex-direction: column; gap: 3.5rem; }
+  .r-footer-links { width: 100%; gap: 1.5rem; }
+  .r-footer-wordmark { margin-top: 4rem; font-size: 20vw; }
+  .r-footer-bottom { flex-direction: column; gap: 0.8rem; }
+  .r-install-panel { min-height: 430px; }
+  .r-install-art { transform: scale(1.8); opacity: 0.55; }
+  .r-install-content { left: 1.5rem; bottom: 4rem; }
+  .r-install-content h2 { font-size: 3.5rem; }
+  .r-install-rule { right: 1.5rem; left: 1.5rem; }
 
   .r-noise { display: none; }
   .r-header {
