@@ -314,23 +314,29 @@ const InfiniteSpiral = ({
               role="listitem"
               aria-label={item.label ?? item.alt}
             >
-              <img
-                className="infinite-spiral__image"
-                src={item.src}
-                alt={item.alt}
-                width={cardWidth}
-                height={cardHeight}
-                loading="lazy"
-                draggable={false}
-                style={{
-                  width: cardWidth,
-                  height: cardHeight,
-                  maxWidth: 'none',
-                  maxHeight: 'none',
-                  objectFit: imageFit,
-                  filter: `grayscale(${Math.min(1, Math.max(0, grayscale))})`
-                }}
-              />
+              {item.node ? (
+                <div style={{ width: cardWidth, height: cardHeight, display: 'flex', alignItems: 'center', justifyContent: 'center', filter: `grayscale(${Math.min(1, Math.max(0, grayscale))})` }}>
+                  {item.node}
+                </div>
+              ) : (
+                <img
+                  className="infinite-spiral__image"
+                  src={item.src}
+                  alt={item.alt}
+                  width={cardWidth}
+                  height={cardHeight}
+                  loading="lazy"
+                  draggable={false}
+                  style={{
+                    width: cardWidth,
+                    height: cardHeight,
+                    maxWidth: 'none',
+                    maxHeight: 'none',
+                    objectFit: imageFit,
+                    filter: `grayscale(${Math.min(1, Math.max(0, grayscale))})`
+                  }}
+                />
+              )}
             </Card>
           );
         })}

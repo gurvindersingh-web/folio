@@ -6,6 +6,9 @@ import ProjectCard from "./component/ProjectCard.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
 import SmoothScroll from './component/SmoothScroll.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight } from 'react-icons/fi';
+import {
+  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiTailwindcss, SiQt, SiSpringboot, SiKubernetes, SiCloudflare, SiN8N
+} from 'react-icons/si';
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
@@ -244,8 +247,8 @@ function App() {
             <div className="r-art">
               {/* The profile picture, uncropped, fading in from left */}
               <picture>
-                <source srcSet="/imgs/ppf_1080p_fixed.webp" type="image/webp" />
-                <img src="/imgs/ppf_1080p_fixed.png" alt="Profile" width="2010" height="1000" fetchPriority="high" decoding="async" />
+                <source srcSet="/imgs/ppf_1080p_fixed-Picsart-AiImageEnhancer.webp" type="image/webp" />
+                <img src="/imgs/ppf_1080p_fixed-Picsart-AiImageEnhancer.webp" alt="Profile" width="2010" height="1000" fetchPriority="high" decoding="async" />
               </picture>
             </div>
             <div className="r-scroll-hint">
@@ -276,23 +279,23 @@ function App() {
             <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
               <InfiniteSpiral
                 items={[
-                  'https://cdn.simpleicons.org/react/c6c1b9',
-                  'https://cdn.simpleicons.org/typescript/c6c1b9',
-                  'https://cdn.simpleicons.org/archlinux/c6c1b9',
-                  'https://cdn.simpleicons.org/docker/c6c1b9',
-                  'https://cdn.simpleicons.org/github/c6c1b9',
-                  'https://cdn.simpleicons.org/spring/c6c1b9',
+                  { node: <SiReact size={70} color="#c6c1b9" /> },
+                  { node: <SiTypescript size={70} color="#c6c1b9" /> },
+                  { node: <SiArchlinux size={70} color="#c6c1b9" /> },
+                  { node: <SiDocker size={70} color="#c6c1b9" /> },
+                  { node: <SiGithub size={70} color="#c6c1b9" /> },
+                  { node: <SiSpring size={70} color="#c6c1b9" /> },
                   'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
-                  'https://cdn.simpleicons.org/nodedotjs/c6c1b9',
-                  'https://cdn.simpleicons.org/express/c6c1b9',
-                  'https://cdn.simpleicons.org/mongodb/c6c1b9',
-                  'https://cdn.simpleicons.org/postgresql/c6c1b9',
-                  'https://cdn.simpleicons.org/git/c6c1b9',
-                  'https://cdn.simpleicons.org/linux/c6c1b9',
-                  'https://cdn.simpleicons.org/javascript/c6c1b9',
-                  'https://cdn.simpleicons.org/html5/c6c1b9',
-                  'https://cdn.simpleicons.org/css/c6c1b9',
-                  'https://cdn.simpleicons.org/python/c6c1b9'
+                  { node: <SiNodedotjs size={70} color="#c6c1b9" /> },
+                  { node: <SiExpress size={70} color="#c6c1b9" /> },
+                  { node: <SiMongodb size={70} color="#c6c1b9" /> },
+                  { node: <SiPostgresql size={70} color="#c6c1b9" /> },
+                  { node: <SiGit size={70} color="#c6c1b9" /> },
+                  { node: <SiLinux size={70} color="#c6c1b9" /> },
+                  { node: <SiJavascript size={70} color="#c6c1b9" /> },
+                  { node: <SiHtml5 size={70} color="#c6c1b9" /> },
+                  { node: <SiCss size={70} color="#c6c1b9" /> },
+                  { node: <SiPython size={70} color="#c6c1b9" /> }
                 ]}
                 speed={0.3}
                 direction="up"
@@ -323,15 +326,15 @@ function App() {
           <Suspense fallback={<div style={{ height: '48px', width: '100%' }}></div>}>
             <LogoLoop
               logos={[
-                { src: 'https://cdn.simpleicons.org/vercel/c6c1b9', alt: 'Vercel', title: 'Vercel' },
-                { src: 'https://cdn.simpleicons.org/github/c6c1b9', alt: 'GitHub', title: 'GitHub' },
-                { src: 'https://cdn.simpleicons.org/docker/c6c1b9', alt: 'Docker', title: 'Docker' },
-                { src: 'https://cdn.simpleicons.org/prisma/c6c1b9', alt: 'Prisma', title: 'Prisma' },
-                { src: 'https://cdn.simpleicons.org/supabase/c6c1b9', alt: 'Supabase', title: 'Supabase' },
-                { src: 'https://cdn.simpleicons.org/stripe/c6c1b9', alt: 'Stripe', title: 'Stripe' },
-                { src: 'https://cdn.simpleicons.org/react/c6c1b9', alt: 'React', title: 'React' },
-                { src: 'https://cdn.simpleicons.org/nextdotjs/c6c1b9', alt: 'Next.js', title: 'Next.js' },
-                { src: 'https://cdn.simpleicons.org/typescript/c6c1b9', alt: 'TypeScript', title: 'TypeScript' }
+                { node: <SiVercel size={48} color="#c6c1b9" />, alt: 'Vercel', title: 'Vercel' },
+                { node: <SiGithub size={48} color="#c6c1b9" />, alt: 'GitHub', title: 'GitHub' },
+                { node: <SiDocker size={48} color="#c6c1b9" />, alt: 'Docker', title: 'Docker' },
+                { node: <SiPrisma size={48} color="#c6c1b9" />, alt: 'Prisma', title: 'Prisma' },
+                { node: <SiSupabase size={48} color="#c6c1b9" />, alt: 'Supabase', title: 'Supabase' },
+                { node: <SiStripe size={48} color="#c6c1b9" />, alt: 'Stripe', title: 'Stripe' },
+                { node: <SiReact size={48} color="#c6c1b9" />, alt: 'React', title: 'React' },
+                { node: <SiNextdotjs size={48} color="#c6c1b9" />, alt: 'Next.js', title: 'Next.js' },
+                { node: <SiTypescript size={48} color="#c6c1b9" />, alt: 'TypeScript', title: 'TypeScript' }
               ]}
               speed={40}
               direction="left"
@@ -397,32 +400,32 @@ function App() {
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
                 <h3><span className="r-pulse"></span>FRONTEND</h3>
                 <div className="r-skill-list r-skill-logos">
-                  <span><img src="https://cdn.simpleicons.org/react" alt="React" width="20" height="20"/> React 19</span>
-                  <span><img src="https://cdn.simpleicons.org/javascript" alt="JavaScript" width="20" height="20"/> JavaScript</span>
-                  <span><img src="https://cdn.simpleicons.org/typescript" alt="TypeScript" width="20" height="20"/> TypeScript</span>
-                  <span><img src="https://cdn.simpleicons.org/tailwindcss" alt="Tailwind CSS" width="20" height="20"/> Tailwind CSS</span>
-                  <span><img src="https://cdn.simpleicons.org/qt" alt="Quickshell" width="20" height="20"/> Quickshell</span>
+                  <span><SiReact size={20} style={{ marginRight: '8px' }} /> React 19</span>
+                  <span><SiJavascript size={20} style={{ marginRight: '8px' }} /> JavaScript</span>
+                  <span><SiTypescript size={20} style={{ marginRight: '8px' }} /> TypeScript</span>
+                  <span><SiTailwindcss size={20} style={{ marginRight: '8px' }} /> Tailwind CSS</span>
+                  <span><SiQt size={20} style={{ marginRight: '8px' }} /> Quickshell</span>
                 </div>
               </BorderGlow>
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
                 <h3><span className="r-pulse-red"></span>BACKEND</h3>
                 <div className="r-skill-list r-skill-logos">
-                  <span><img src="https://cdn.simpleicons.org/springboot" alt="Spring Boot" width="20" height="20"/> Spring Boot</span>
-                  <span><img src="https://cdn.simpleicons.org/nodedotjs" alt="Node.js" width="20" height="20"/> Node.js</span>
-                  <span><img src="https://cdn.simpleicons.org/spring" alt="Spring Frameworks" width="20" height="20"/> Spring Frameworks</span>
-                  <span><img src="https://cdn.simpleicons.org/postgresql" alt="PostgreSQL" width="20" height="20"/> PostgreSQL</span>
-                  <span><img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB" width="20" height="20"/> MongoDB</span>
+                  <span><SiSpringboot size={20} style={{ marginRight: '8px' }} /> Spring Boot</span>
+                  <span><SiNodedotjs size={20} style={{ marginRight: '8px' }} /> Node.js</span>
+                  <span><SiSpring size={20} style={{ marginRight: '8px' }} /> Spring Frameworks</span>
+                  <span><SiPostgresql size={20} style={{ marginRight: '8px' }} /> PostgreSQL</span>
+                  <span><SiMongodb size={20} style={{ marginRight: '8px' }} /> MongoDB</span>
                 </div>
               </BorderGlow>
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
                 <h3><span className="r-pulse-blue"></span>PLATFORMS & TOOLS</h3>
                 <div className="r-skill-list r-skill-logos">
-                  <span><img src="https://cdn.simpleicons.org/archlinux" alt="Arch Linux" width="20" height="20"/> Arch Linux</span>
-                  <span><img src="https://cdn.simpleicons.org/git" alt="Git" width="20" height="20"/> Git</span>
-                  <span><img src="https://cdn.simpleicons.org/docker" alt="Docker" width="20" height="20"/> Docker</span>
-                  <span><img src="https://cdn.simpleicons.org/kubernetes" alt="Kubernetes" width="20" height="20"/> Kubernetes</span>
-                  <span><img src="https://cdn.simpleicons.org/cloudflare" alt="Cloudflare" width="20" height="20"/> Cloudflare</span>
-                  <span><img src="https://cdn.simpleicons.org/n8n" alt="n8n" width="20" height="20"/> n8n</span>
+                  <span><SiArchlinux size={20} style={{ marginRight: '8px' }} /> Arch Linux</span>
+                  <span><SiGit size={20} style={{ marginRight: '8px' }} /> Git</span>
+                  <span><SiDocker size={20} style={{ marginRight: '8px' }} /> Docker</span>
+                  <span><SiKubernetes size={20} style={{ marginRight: '8px' }} /> Kubernetes</span>
+                  <span><SiCloudflare size={20} style={{ marginRight: '8px' }} /> Cloudflare</span>
+                  <span><SiN8N size={20} style={{ marginRight: '8px' }} /> n8n</span>
                 </div>
               </BorderGlow>
             </div>
@@ -482,6 +485,67 @@ function App() {
         </section>
 
       </main>
+
+      <section className="r-install-panel" aria-labelledby="install-heading">
+        <div className="r-install-art" aria-hidden="true">
+          <img src="/imgs/bone/torii.png" alt="" />
+        </div>
+        <div className="r-install-content">
+          <div className="r-install-kicker"><span>水</span><span>·</span><span>INSTALL</span></div>
+          <h2 id="install-heading">Two ways in.</h2>
+          <p>Explore the work or start a conversation.</p>
+        </div>
+        <div className="r-install-rule"></div>
+      </section>
+
+      {/* Footer */}
+      <footer className="r-site-footer" id="contact">
+        <div className="r-footer-main">
+          <div className="r-footer-brand">
+            <span className="r-footer-mark">水</span>
+            <p className="r-footer-tagline">
+              Building thoughtful digital<br />
+              experiences, one system at a time.
+            </p>
+            <div className="r-footer-status">
+              <span className="r-footer-status-dot"></span>
+              AVAILABLE FOR SELECTED WORK
+            </div>
+          </div>
+
+          <div className="r-footer-links">
+            <div className="r-footer-column">
+              <span className="r-footer-heading">EXPLORE</span>
+              <a href="#about">About</a>
+              <a href="#skills">Skills</a>
+              <a href="#projects">Projects</a>
+              <a href="#contact">Contact</a>
+            </div>
+            <div className="r-footer-column">
+              <span className="r-footer-heading">CONNECT</span>
+              <a href="mailto:gurvindersingh.web@gmail.com">Email</a>
+              <a href="https://github.com/gurvindersingh-web" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://www.linkedin.com/in/gurvindersingh-web/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+            </div>
+            <div className="r-footer-column">
+              <span className="r-footer-heading">ELSEWHERE</span>
+              <a href="#projects">Case studies</a>
+              <a href="https://github.com/gurvindersingh-web?tab=repositories" target="_blank" rel="noopener noreferrer">Open source</a>
+              <a href="#about">Now</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="r-footer-wordmark" aria-hidden="true">GURVINDER</div>
+
+        <div className="r-footer-bottom">
+          <span>© 2026 Gurvinder Singh</span>
+          <span>Designed &amp; built with intent · India</span>
+          <a href="#about">Back to top ↑</a>
+        </div>
+      </footer>
+
       {/* Side Text */}
       <div className="r-side-text">
         PORTFOLIO · BETA 18 · ARCH LINUX · SHOT ON BLACK
