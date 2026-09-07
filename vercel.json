@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd my-folio && npm run build",
+  "outputDirectory": "my-folio/dist",
+  "framework": "vite"
+}
