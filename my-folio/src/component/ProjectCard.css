@@ -116,7 +116,7 @@
 .project-card__media:hover .project-card__video,
 .project-card__media:focus-within .project-card__video {
   opacity: 1;
-  transform: scale(1.2) translateZ(0);
+  transform: scale(1.04) translateZ(0);
 }
 
 .project-card__image-overlay {

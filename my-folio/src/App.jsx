@@ -41,6 +41,18 @@ function App() {
       role: "Full-Stack",
       engine: "Three.js",
       status: "Public"
+    },
+    {
+      title: "Omarchy System Stats Widget",
+      description: "A clean, responsive, Waybar-style system statistics widget for the Omarchy Linux desktop shell. Provides at-a-glance system metrics directly in your bar with beautiful icons and color-coded health indicators.",
+      stack: ["QML", "Bash", "Linux", "Quickshell"],
+      image: "/imgs/omarchy.png",
+      video: "/videos/omarchy.mp4",
+      link: "https://github.com/gurvindersingh-web/quickshellomarchy",
+      year: "2025",
+      role: "Front-End",
+      engine: "Quickshell",
+      status: "Public"
     }
   ];
 
