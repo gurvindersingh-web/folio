@@ -23,7 +23,7 @@
 .project-card__index {
   position: absolute;
   top: -2.5rem;
-  right: 0;
+  left: 0;
   font-family: 'Playfair Display', serif;
   font-size: clamp(5rem, 12vw, 9rem);
   line-height: 0.8;
@@ -34,14 +34,15 @@
 }
 
 .project-card--reverse .project-card__index {
-  right: auto;
-  left: 0;
+  left: auto;
+  right: 0;
 }
 
 .project-card__media {
   position: relative;
   z-index: 1;
   perspective: 1400px;
+  min-width: 0;
 }
 
 .project-card__frame {
@@ -172,6 +173,7 @@
   display: flex;
   gap: 2.25rem;
   align-items: flex-start;
+  min-width: 0;
 }
 
 .project-card__eyebrow {
@@ -210,6 +212,8 @@
   letter-spacing: -0.03em;
   margin: 0;
   line-height: 1.08;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .project-card__description {
@@ -219,6 +223,7 @@
   color: #8c897d;
   margin: 0;
   max-width: 38rem;
+  overflow-wrap: break-word;
 }
 
 .project-card__specs {
