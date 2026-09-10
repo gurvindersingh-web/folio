@@ -297,7 +297,7 @@ function App() {
                   { node: <SiDocker size={70} color="#c6c1b9" /> },
                   { node: <SiGithub size={70} color="#c6c1b9" /> },
                   { node: <SiSpring size={70} color="#c6c1b9" /> },
-                  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
+                  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="22.5" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
                   { node: <SiNodedotjs size={70} color="#c6c1b9" /> },
                   { node: <SiExpress size={70} color="#c6c1b9" /> },
                   { node: <SiMongodb size={70} color="#c6c1b9" /> },
