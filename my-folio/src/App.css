@@ -833,6 +833,68 @@ html, body {
   margin: 0 auto;
 }
 
+/* ───────── Timeline (Achievements/Education) ───────── */
+.r-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.r-timeline-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 2.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.r-timeline-meta {
+  flex: 0 0 160px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  color: #666459;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding-top: 0.2rem;
+}
+
+.r-timeline-content {
+  flex: 1;
+}
+
+.r-timeline-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: #d4cebd;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.r-timeline-content p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #8c897d;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .r-timeline-item {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1rem;
+  }
+  .r-timeline-meta {
+    flex: none;
+    padding-top: 0;
+  }
+}
+
 /* ───────── Footer ───────── */
 .r-site-footer {
   position: relative;
