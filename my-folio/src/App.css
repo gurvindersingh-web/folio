@@ -849,7 +849,7 @@ html, body {
   position: relative;
   z-index: 0;
   margin-top: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: clamp(4rem, 8vw, 8rem);
   color: rgba(212, 206, 189, 0.1);
   font-family: 'Playfair Display', serif;
   font-size: clamp(7.5rem, 21.875vw, 22.5rem);
