@@ -53,6 +53,18 @@ function App() {
       role: "Front-End",
       engine: "Quickshell",
       status: "Public"
+    },
+    {
+      title: "Turn-based Text RPG Battle Engine",
+      description: "An immersive, terminal-based RPG battle engine featuring turn-based combat. Built with a classic text-adventure aesthetic, complete with dynamic ASCII art and strategic gameplay mechanics inspired by the Star Wars universe.",
+      stack: ["C++", "CLI", "ASCII Art"],
+      image: "/imgs/starwars_rpg.jpg",
+      video: "/videos/screenrecording-2026-09-11_21-59-54.mp4",
+      link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine.git",
+      year: "2026",
+      role: "Core Developer",
+      engine: "Terminal",
+      status: "Public"
     }
   ];
 
