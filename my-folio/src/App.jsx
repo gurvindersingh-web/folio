@@ -1,14 +1,32 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy, Component } from 'react';
 import './App.css';
 import AnimatedContent from "./component/AnimatedContent.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
 import SmoothScroll from './component/SmoothScroll.jsx';
-import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight } from 'react-icons/fi';
+import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi';
 import {
   SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiTailwindcss, SiQt, SiSpringboot, SiKubernetes, SiCloudflare, SiN8N
 } from 'react-icons/si';
+
+// Error boundary for lazy-loaded components
+class LazyErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || <div style={{ width: '100%', height: '100%' }} />;
+    }
+    return this.props.children;
+  }
+}
+
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
@@ -34,7 +52,7 @@ function App() {
       title: "Dynamic Memory Management Visualiser",
       description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO and LRU, with live statistics and an immersive 3D stage.",
       stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
-      image: "/imgs/dynamic_memory.png",
+      image: "/imgs/dynamic_memory.webp",
       video: "/videos/screenrecording-2026-09-04_22-01-08.mp4",
       link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management",
       year: "2025",
@@ -58,7 +76,7 @@ function App() {
       title: "Turn-based Text RPG Battle Engine",
       description: "A console-based RPG battle engine set in the Star Wars universe, written in Java. Features a turn-based combat system with Attack, Defend, and Heal actions, a critical hit system with 15% chance for double damage, dynamic enemy scaling, a level-up progression system, and a final boss showdown — all rendered with immersive ASCII art visuals.",
       stack: ["Java", "Maven", "JDK 21", "OOP"],
-      image: "/imgs/starwars_rpg.jpg",
+      image: "/imgs/starwars_rpg.webp",
       video: "/videos/screenrecording-2026-09-11_21-59-54.mp4",
       link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine",
       year: "2026",
@@ -95,12 +113,36 @@ function App() {
     }
   ];
 
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  const toggleMobileNav = useCallback(() => {
+    setMobileNavOpen(prev => !prev);
+  }, []);
+
+  const closeMobileNav = useCallback(() => {
+    setMobileNavOpen(false);
+  }, []);
+
+  // Close mobile nav on Escape key
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setMobileNavOpen(false);
+    };
+    document.addEventListener('keydown', handleEscape);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [mobileNavOpen]);
+
   return (
     <SmoothScroll>
     <ClickSpark sparkColor="#d4cebd" sparkSize={8} sparkRadius={18} sparkCount={9} duration={420}>
     <div className="ryoku-layout">
       {/* Texture overlay */}
-      <div className="r-noise"></div>
+      <div className="r-noise" aria-hidden="true"></div>
 
       {/* Header */}
       <header className="r-header">
@@ -110,7 +152,7 @@ function App() {
           </div>
         </AnimatedContent>
         <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
-          <nav className="r-nav">
+          <nav className="r-nav" aria-label="Main navigation">
             <a href="#about">ABOUT</a>
             <a href="#skills">SKILLS</a>
             <a href="#projects">PROJECTS</a>
@@ -124,7 +166,31 @@ function App() {
             <span className="r-square">■</span> v1.0.0
           </div>
         </AnimatedContent>
+        {/* Mobile hamburger */}
+        <button
+          className="r-mobile-toggle"
+          onClick={toggleMobileNav}
+          aria-expanded={mobileNavOpen}
+          aria-controls="mobile-nav"
+          aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
+        >
+          {mobileNavOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+        </button>
       </header>
+
+      {/* Mobile nav overlay */}
+      <nav
+        id="mobile-nav"
+        className={`r-mobile-nav ${mobileNavOpen ? 'r-mobile-nav--open' : ''}`}
+        aria-label="Mobile navigation"
+      >
+        <a href="#about" onClick={closeMobileNav}>ABOUT</a>
+        <a href="#skills" onClick={closeMobileNav}>SKILLS</a>
+        <a href="#projects" onClick={closeMobileNav}>PROJECTS</a>
+        <a href="#education" onClick={closeMobileNav}>EDUCATION</a>
+        <a href="#achievements" onClick={closeMobileNav}>ACHIEVEMENTS</a>
+        <a href="#contact" onClick={closeMobileNav}>CONTACT</a>
+      </nav>
 
       <main>
         {/* Hero Section */}
@@ -301,6 +367,7 @@ function App() {
           </div>
 
           <div className="r-about-graphic">
+            <LazyErrorBoundary>
             <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
               <InfiniteSpiral
                 items={[
@@ -343,11 +410,13 @@ function App() {
                 pauseOnHover={false}
               />
             </Suspense>
+            </LazyErrorBoundary>
           </div>
         </section>
 
         {/* Logo Loop & Skills Section */}
         <section id="skills" className="r-logo-loop-section" style={{ padding: '3rem 0', overflow: 'hidden' }}>
+          <LazyErrorBoundary>
           <Suspense fallback={<div style={{ height: '48px', width: '100%' }}></div>}>
             <LogoLoop
               logos={[
@@ -367,6 +436,7 @@ function App() {
               logoHeight={48}
             />
           </Suspense>
+          </LazyErrorBoundary>
         </section>
 
         {/* Skills Section */}
@@ -382,9 +452,9 @@ function App() {
               </div>
               
               <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '550px' }}>
-                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.8rem', fontWeight: 400, lineHeight: 1.1, color: '#d4cebd', letterSpacing: '-0.02em', margin: 0 }}>
+                <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.8rem', fontWeight: 400, lineHeight: 1.1, color: '#d4cebd', letterSpacing: '-0.02em', margin: 0 }}>
                   This is a public beta.<br />It shows its cracks.
-                </h1>
+                </h2>
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', lineHeight: 1.6, color: '#666459', margin: 0 }}>
                   Unfinished on purpose, in the open. You are seeing<br/>
                   Ryoku while it is still being built, not a frozen release.
@@ -401,6 +471,7 @@ function App() {
 
             <div className="r-status-image-container" style={{ position: 'relative', width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <BorderGlow borderRadius={210} backgroundColor="#121212" className="carousel-border-glow" autoAnimate={true}>
+                <LazyErrorBoundary>
                 <Suspense fallback={<div style={{ width: 420, height: 420, borderRadius: '50%' }}></div>}>
                   <Carousel
                     items={carouselItems}
@@ -412,6 +483,7 @@ function App() {
                     pauseOnHover={false}
                   />
                 </Suspense>
+                </LazyErrorBoundary>
               </BorderGlow>
             </div>
           </div>
@@ -513,7 +585,7 @@ function App() {
 
       <section className="r-install-panel" aria-labelledby="install-heading">
         <div className="r-install-art" aria-hidden="true">
-          <img src="/imgs/bone/torii.png" alt="" />
+          <img src="/imgs/bone/torii.webp" alt="" width="1600" height="893" loading="lazy" decoding="async" />
         </div>
         <div className="r-install-content">
           <div className="r-install-kicker"><span>水</span><span>·</span><span>INSTALL</span></div>
@@ -572,7 +644,7 @@ function App() {
       </footer>
 
       {/* Side Text */}
-      <div className="r-side-text">
+      <div className="r-side-text" aria-hidden="true">
         PORTFOLIO · BETA 18 · ARCH LINUX · SHOT ON BLACK
       </div>
 
