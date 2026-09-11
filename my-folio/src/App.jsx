@@ -56,14 +56,14 @@ function App() {
     },
     {
       title: "Turn-based Text RPG Battle Engine",
-      description: "A console-based, turn-based RPG battle engine built in Java, inspired by fast-paced magical combat and squad-based adventures from fantasy anime. Players become Magic Knights, wield unique grimoires, master elemental spells and transformations, and battle increasingly challenging enemies in strategic turn-based combat.",
-      stack: ["Java", "OOP", "CLI", "Game Engine"],
+      description: "A console-based RPG battle engine set in the Star Wars universe, written in Java. Features a turn-based combat system with Attack, Defend, and Heal actions, a critical hit system with 15% chance for double damage, dynamic enemy scaling, a level-up progression system, and a final boss showdown — all rendered with immersive ASCII art visuals.",
+      stack: ["Java", "Maven", "JDK 21", "OOP"],
       image: "/imgs/starwars_rpg.jpg",
       video: "/videos/screenrecording-2026-09-11_21-59-54.mp4",
       link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine",
       year: "2026",
       role: "Core Developer",
-      engine: "Terminal / JVM",
+      engine: "JVM / Maven",
       status: "Public"
     }
   ];
@@ -114,6 +114,7 @@ function App() {
             <a href="#about">ABOUT</a>
             <a href="#skills">SKILLS</a>
             <a href="#projects">PROJECTS</a>
+            <a href="#education">EDUCATION</a>
             <a href="#achievements">ACHIEVEMENTS</a>
             <a href="#contact">CONTACT</a>
           </nav>
