@@ -1,70 +1,94 @@
 <div align="center">
+  <img src="./public/imgs/readme-profile.png" width="200" alt="Gurvinder Singh Profile">
+  <h1>Folio: Ryoku Theme</h1>
+  <p><strong>A modern, high-performance developer portfolio built with React 19, Vite, and GSAP.</strong></p>
+  
+  <p>
+    <a href="https://gurvindersingh-web.github.io">Live Demo</a> •
+    <a href="#features">Features</a> •
+    <a href="#tech-stack">Tech Stack</a> •
+    <a href="#getting-started">Getting Started</a>
+  </p>
 
-# ❖ Gurvinder Singh ❖
-
-**FULL-STACK DEVELOPER** | **WEB SECURITY** | **LINUX ENTHUSIAST**
-
-<img src="./public/imgs/readme-profile.png" width="200" alt="Gurvinder Singh Profile">
-
-<p align="center">
-  <i>Building thoughtful digital experiences, one system at a time.</i>
-</p>
-
-[![Portfolio](https://img.shields.io/badge/Portfolio-Live-121212?style=for-the-badge&logo=vercel&logoColor=d4cebd)](https://gurvindersingh-web.github.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-121212?style=for-the-badge&logo=linkedin&logoColor=d4cebd)](https://www.linkedin.com/in/gurvinder-singh-422032311/)
-[![X/Twitter](https://img.shields.io/badge/Twitter-Follow-121212?style=for-the-badge&logo=x&logoColor=d4cebd)](https://x.com/Gurvinder_web)
-[![Email](https://img.shields.io/badge/Email-Contact-121212?style=for-the-badge&logo=mail.ru&logoColor=d4cebd)](mailto:gurvindersingh.828384@gmail.com)
+  [![Portfolio](https://img.shields.io/badge/Portfolio-Live-121212?style=for-the-badge&logo=vercel&logoColor=d4cebd)](https://gurvindersingh-web.github.io)
+  [![React](https://img.shields.io/badge/React_19-121212?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+  [![Vite](https://img.shields.io/badge/Vite-121212?style=for-the-badge&logo=vite&logoColor=646CFF)](#)
 </div>
 
 ---
 
 ## ✜ ABOUT
 
-A passionate Full Stack Developer building robust web applications and seamless digital experiences. Specializing in modern JavaScript frameworks and scalable backend architectures. I craft elegant solutions to complex problems, focusing on performance, clean code, and user-centric design. Always learning, always building.
+**Folio (Ryoku Theme)** is a showcase of my personal projects, technical skills, and professional experience. Designed with a "brutalist dark" aesthetic ("Ryoku"), this portfolio emphasizes performance, immersive animations, and clean, responsive layouts.
 
-Currently tracked as **BETA - v0.48.0-beta.18**.
-
----
-
-## ✜ TECHNICAL ARSENAL
-
-### Frontend
-![React](https://img.shields.io/badge/React_19-121212?style=for-the-badge&logo=react&logoColor=61DAFB)
-![JavaScript](https://img.shields.io/badge/JavaScript-121212?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
-![TypeScript](https://img.shields.io/badge/TypeScript-121212?style=for-the-badge&logo=typescript&logoColor=3178C6)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-121212?style=for-the-badge&logo=tailwind-css&logoColor=38B2AC)
-![Quickshell](https://img.shields.io/badge/Quickshell-121212?style=for-the-badge&logo=qt&logoColor=41CD52)
-
-### Backend
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-121212?style=for-the-badge&logo=spring-boot&logoColor=6DB33F)
-![Node.js](https://img.shields.io/badge/Node.js-121212?style=for-the-badge&logo=node.js&logoColor=339933)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-121212?style=for-the-badge&logo=postgresql&logoColor=4169E1)
-![MongoDB](https://img.shields.io/badge/MongoDB-121212?style=for-the-badge&logo=mongodb&logoColor=47A248)
-
-### Platforms & Tools
-![Arch Linux](https://img.shields.io/badge/Arch_Linux-121212?style=for-the-badge&logo=arch-linux&logoColor=1793D1)
-![Docker](https://img.shields.io/badge/Docker-121212?style=for-the-badge&logo=docker&logoColor=2496ED)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-121212?style=for-the-badge&logo=kubernetes&logoColor=326CE5)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-121212?style=for-the-badge&logo=cloudflare&logoColor=F38020)
-![Git](https://img.shields.io/badge/Git-121212?style=for-the-badge&logo=git&logoColor=F05032)
+*"Unfinished on purpose, in the open."* - The project is constantly evolving as a living showcase of my web development journey.
 
 ---
 
-## ✜ SELECTED WORK
+## ✜ FEATURES
 
-### 1. Dynamic Memory Management Visualiser
-A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO and LRU, with live statistics and an immersive 3D stage.
-* **Stack**: React, Vite, GSAP, Framer Motion, Three.js, Tailwind CSS
-* [View Repository](https://github.com/gurvindersingh-web/Dynamic-Memory-Management)
+- ⚡️ **Blazing Fast**: Built on React 19 and Vite for instant load times and hot module replacement.
+- 🎨 **Ryoku Aesthetic**: A custom, brutalist dark theme featuring custom noise textures, sleek typography, and high-contrast accents.
+- 🎢 **Smooth Scrolling**: Implemented using [Lenis](https://lenis.darkroom.engineering/) for a fluid, premium browsing experience.
+- 🎞️ **Advanced Animations**: Complex scroll-driven animations and interactions powered by GSAP and Motion.
+- 🧱 **Responsive Design**: Fully optimized for desktop, tablet, and mobile devices with a flexible CSS grid architecture.
 
-### 2. Omarchy System Stats Widget
-A clean, responsive, Waybar-style system statistics widget for the Omarchy Linux desktop shell. Provides at-a-glance system metrics directly in your bar with beautiful icons and color-coded health indicators.
-* **Stack**: QML, Bash, Linux, Quickshell
-* [View Repository](https://github.com/gurvindersingh-web/quickshellomarchy)
+---
+
+## ✜ TECH STACK
+
+- **Frontend**: React 19, Vite, JavaScript / TypeScript
+- **Styling**: Modern CSS (Variables, Grid, Flexbox), Tailwind CSS
+- **Animation & 3D**: GSAP, Motion, OGL, Lenis (Smooth Scroll)
+- **Tooling**: Oxlint, Git, Docker, Kubernetes
+
+---
+
+## ✜ GETTING STARTED
+
+To run this project locally, follow these steps:
+
+### Prerequisites
+
+- Node.js (v18 or higher recommended)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/gurvindersingh-web/folio.git
+   cd folio/my-folio
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser:**
+   Navigate to `http://localhost:5173` to view the site.
+
+---
+
+## ✜ SELECTED WORK SHOWCASE
+
+This portfolio highlights key projects such as:
+- **Dynamic Memory Management Visualiser**: A 3D, real-time simulation of OS memory management algorithms.
+- **Omarchy System Stats Widget**: A responsive Waybar-style widget for Linux desktop environments.
 
 ---
 
 <div align="center">
-  <p><i>"Unfinished on purpose, in the open."</i></p>
   <b>© 2026 Gurvinder Singh · Designed & built with intent · India</b>
+  <br>
+  <br>
+  <a href="https://github.com/gurvindersingh-web">GitHub</a> • 
+  <a href="https://www.linkedin.com/in/gurvinder-singh-422032311/">LinkedIn</a> • 
+  <a href="https://x.com/Gurvinder_web">X (Twitter)</a>
 </div>
