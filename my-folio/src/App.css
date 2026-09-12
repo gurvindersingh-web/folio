@@ -895,6 +895,145 @@ html, body {
   }
 }
 
+/* ───────── Achievements & Certificates ───────── */
+.r-achievements-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+  marginTop: 2rem;
+  flex-wrap: nowrap; /* We'll let media queries handle wrap */
+  align-items: stretch;
+}
+
+.r-cert-grid-wrap {
+  flex: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  align-content: start;
+}
+
+.r-driftwall-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  /* Add a dark gradient at top and bottom to blend seamlessly into the section edges */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+/* Certificate Card Micro-interactions */
+.r-cert-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.r-cert-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.r-cert-card__img-wrap {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #0b0b12;
+}
+
+.r-cert-card__img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+  filter: grayscale(20%);
+}
+
+.r-cert-card:hover .r-cert-card__img-wrap img {
+  transform: scale(1.06);
+  filter: grayscale(0%);
+}
+
+.r-cert-card__meta {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.r-cert-card__tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #a49e8d;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  align-self: flex-start;
+  text-transform: uppercase;
+}
+
+.r-cert-card__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8c897d;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.r-cert-card:hover .r-cert-card__title {
+  color: #d4cebd;
+}
+
+/* Skeleton Placeholder */
+.r-driftwall-skeleton {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #060010 0%, #121212 50%, #060010 100%);
+  background-size: 200% 100%;
+  animation: pulse-skeleton 2s infinite linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+@keyframes pulse-skeleton {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@media (max-width: 1024px) {
+  .r-achievements-layout {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .r-achievements-layout {
+    gap: 3rem;
+  }
+  .r-cert-grid-wrap {
+    grid-template-columns: 1fr;
+  }
+  /* Hide DriftWall completely on small screens to save performance & layout */
+  .r-driftwall-bg {
+    display: none;
+  }
+}
+
 /* ───────── Footer ───────── */
 .r-site-footer {
   position: relative;
