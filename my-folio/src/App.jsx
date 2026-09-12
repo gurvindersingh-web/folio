@@ -163,7 +163,7 @@ function App() {
         </AnimatedContent>
         <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-version" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <span className="r-square">■</span> OPEN FOR WORK
+            <span className="r-pulse" style={{ margin: 0 }}></span> OPEN FOR WORK
           </a>
         </AnimatedContent>
         {/* Mobile hamburger */}
