@@ -30,6 +30,7 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
+const DriftWall = lazy(() => import("./component/DriftWall.jsx"));
 const Clock = () => {
   const [time, setTime] = useState("");
   
@@ -111,6 +112,24 @@ function App() {
       id: 4,
       icon: <FiTerminal className="carousel-icon" />
     }
+  ];
+
+  
+  const certificateItems = [
+    // Row 1
+    { image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Cipher - Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" }, // Col 0: Cipher
+    { image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Udemy - Complete Web Dev", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" }, // Col 1: Udemy
+    { image: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png", title: "GFG - DSA", href: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png" }, // Col 2: GFG
+
+    // Row 2
+    { image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Cipher - Low-Level System Design", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" }, // Col 0: Cipher
+    { image: "/imgs/certificates/Pasted image.png", title: "Udemy - Node.js", href: "/imgs/certificates/Pasted image.png" }, // Col 1: Udemy
+    { image: "/imgs/certificates/Pasted image (2).png", title: "GFG - Java", href: "/imgs/certificates/Pasted image (2).png" }, // Col 2: GFG
+
+    // Row 3
+    { image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Cipher - Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" }, // Col 0: Cipher (Repeated)
+    { image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Udemy - Complete Web Dev", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" }, // Col 1: Udemy (Repeated)
+    { image: "/imgs/certificates/Pasted image (3).png", title: "GFG - C++", href: "/imgs/certificates/Pasted image (3).png" } // Col 2: GFG
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -594,39 +613,51 @@ function App() {
             </div>
           </div>
 
-          <div className="r-timeline">
-            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2}>
-              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12}>
-                <div className="r-timeline-meta">2026</div>
-                <div className="r-timeline-content">
-                  <h4>Top Developer Award</h4>
-                  <p>Awarded for excellence in system design and open-source contributions.</p>
-                </div>
-              </BorderGlow>
-            </AnimatedContent>
-            
-            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.1}>
-              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12}>
-                <div className="r-timeline-meta">2025</div>
-                <div className="r-timeline-content">
-                  <h4>Hackathon Winner</h4>
-                  <p>First place in the national web performance and accessibility challenge.</p>
-                </div>
-              </BorderGlow>
-            </AnimatedContent>
-          </div>
-        </section>
-
-        {/* Education Section */}
-        <section id="education" className="r-projects-container" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
-          <div className="r-projects-header">
-            <div className="r-about-eyebrow">
-              <span className="r-about-eyebrow-text">EDUCATION</span>
-              <span className="r-about-eyebrow-icon">水</span>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '4rem', marginTop: '2rem', flexWrap: 'wrap' }}>
+            {/* Left and Center: Static Certificates Grid */}
+            <div style={{ flex: '2 1 600px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '2rem', alignContent: 'start' }}>
+              {certificateItems.slice(0, 7).map((cert, index) => (
+                <AnimatedContent key={index} distance={30} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
+                  <BorderGlow borderRadius={12} backgroundColor="#121212">
+                    <div style={{ padding: '12px' }}>
+                      <a href={cert.href} target="_blank" rel="noopener noreferrer">
+                        <img src={cert.image} alt={cert.title} style={{ width: '100%', height: 'auto', borderRadius: '8px', display: 'block', border: '1px solid rgba(255,255,255,0.05)' }} loading="lazy" />
+                      </a>
+                    </div>
+                  </BorderGlow>
+                </AnimatedContent>
+              ))}
             </div>
-            <div className="r-projects-intro">
-              <h2 className="r-section-heading">ACADEMICS</h2>
-              <h3 className="r-projects-title">Background</h3>
+
+            {/* Right Side: DriftWall Component */}
+            <div style={{ flex: '1 1 350px', height: '800px', position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+              <LazyErrorBoundary>
+                <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
+                  <DriftWall
+                    items={certificateItems}
+                    columns={3}
+                    tileWidth={180}
+                    tileHeight={120}
+                    gap={15}
+                    radius={12}
+                    speed={30}
+                    direction="up"
+                    variance={0.4}
+                    tilt={12}
+                    turn={-10}
+                    roll={0}
+                    perspective={1000}
+                    depth={100}
+                    parallax={0.5}
+                    lift={40}
+                    fade={0.6}
+                    dim={0.55} 
+                    grayscale={false}
+                    pauseOnHover={true}
+                    overlayColor="#060010"
+                  />
+                </Suspense>
+              </LazyErrorBoundary>
             </div>
           </div>
 
