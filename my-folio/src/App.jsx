@@ -30,7 +30,6 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
-const DriftWall = lazy(() => import("./component/DriftWall.jsx"));
 const Clock = () => {
   const [time, setTime] = useState("");
   
@@ -595,36 +594,6 @@ function App() {
 
         {/* Achievements Section */}
         <section id="achievements" className="r-projects-container" style={{ paddingTop: '8rem', position: 'relative', overflow: 'hidden' }}>
-          {/* Background DriftWall */}
-          <div className="r-driftwall-bg">
-            <LazyErrorBoundary>
-              <Suspense fallback={<div className="r-driftwall-skeleton"></div>}>
-                <DriftWall
-                  items={certificateItems}
-                  columns={5}
-                  tileWidth={180}
-                  tileHeight={120}
-                  gap={20}
-                  radius={12}
-                  speed={20}
-                  direction="up"
-                  variance={0.5}
-                  tilt={10}
-                  turn={-5}
-                  roll={0}
-                  perspective={1200}
-                  depth={150}
-                  parallax={0.3}
-                  lift={40}
-                  fade={0.8}
-                  dim={0.2} 
-                  grayscale={true}
-                  pauseOnHover={false}
-                  overlayColor="#121212"
-                />
-              </Suspense>
-            </LazyErrorBoundary>
-          </div>
           
           <div style={{ position: 'relative', zIndex: 10, width: '100%' }}>
             <div className="r-projects-header">
