@@ -162,9 +162,9 @@ function App() {
           </nav>
         </AnimatedContent>
         <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
-          <div className="r-version">
-            <span className="r-square">■</span> v1.0.0
-          </div>
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-version" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <span className="r-square">■</span> OPEN FOR WORK
+          </a>
         </AnimatedContent>
         {/* Mobile hamburger */}
         <button
@@ -581,8 +581,34 @@ function App() {
           </div>
         </section>
 
+        {/* Education Section */}
+        <section id="education" className="r-projects-container" style={{ paddingTop: '8rem' }}>
+          <div className="r-projects-header">
+            <div className="r-about-eyebrow">
+              <span className="r-about-eyebrow-text">EDUCATION</span>
+              <span className="r-about-eyebrow-icon">水</span>
+            </div>
+            <div className="r-projects-intro">
+              <h2 className="r-section-heading">ACADEMICS</h2>
+              <h3 className="r-projects-title">Background</h3>
+            </div>
+          </div>
+
+          <div className="r-timeline">
+            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2}>
+              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12}>
+                <div className="r-timeline-meta">2022 — 2026</div>
+                <div className="r-timeline-content">
+                  <h4>Bachelor of Science in Computer Science</h4>
+                  <p>University Name · Specialization in Software Engineering and Distributed Systems.</p>
+                </div>
+              </BorderGlow>
+            </AnimatedContent>
+          </div>
+        </section>
+
         {/* Achievements Section */}
-        <section id="achievements" className="r-projects-container" style={{ paddingTop: '8rem' }}>
+        <section id="achievements" className="r-projects-container" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
           <div className="r-projects-header">
             <div className="r-about-eyebrow">
               <span className="r-about-eyebrow-text">ACHIEVEMENTS</span>
@@ -611,32 +637,6 @@ function App() {
                 <div className="r-timeline-content">
                   <h4>Hackathon Winner</h4>
                   <p>First place in the national web performance and accessibility challenge.</p>
-                </div>
-              </BorderGlow>
-            </AnimatedContent>
-          </div>
-        </section>
-
-        {/* Education Section */}
-        <section id="education" className="r-projects-container" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
-          <div className="r-projects-header">
-            <div className="r-about-eyebrow">
-              <span className="r-about-eyebrow-text">EDUCATION</span>
-              <span className="r-about-eyebrow-icon">水</span>
-            </div>
-            <div className="r-projects-intro">
-              <h2 className="r-section-heading">ACADEMICS</h2>
-              <h3 className="r-projects-title">Background</h3>
-            </div>
-          </div>
-
-          <div className="r-timeline">
-            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2}>
-              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12}>
-                <div className="r-timeline-meta">2022 — 2026</div>
-                <div className="r-timeline-content">
-                  <h4>Bachelor of Science in Computer Science</h4>
-                  <p>University Name · Specialization in Software Engineering and Distributed Systems.</p>
                 </div>
               </BorderGlow>
             </AnimatedContent>
