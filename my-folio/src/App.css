@@ -914,18 +914,7 @@ html, body {
   align-content: start;
 }
 
-.r-driftwall-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  overflow: hidden;
-  /* Add a dark gradient at top and bottom to blend seamlessly into the section edges */
-  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-}
+
 
 /* Certificate Card Micro-interactions */
 .r-cert-card {
@@ -994,26 +983,7 @@ html, body {
   color: #d4cebd;
 }
 
-/* Skeleton Placeholder */
-.r-driftwall-skeleton {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, #060010 0%, #121212 50%, #060010 100%);
-  background-size: 200% 100%;
-  animation: pulse-skeleton 2s infinite linear;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-}
 
-@keyframes pulse-skeleton {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
 
 @media (max-width: 1024px) {
   .r-achievements-layout {
@@ -1027,10 +997,6 @@ html, body {
   }
   .r-cert-grid-wrap {
     grid-template-columns: 1fr;
-  }
-  /* Hide DriftWall completely on small screens to save performance & layout */
-  .r-driftwall-bg {
-    display: none;
   }
 }
 
