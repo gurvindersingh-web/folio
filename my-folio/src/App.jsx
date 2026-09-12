@@ -700,7 +700,7 @@ function App() {
 
         <div className="r-footer-bottom">
           <span>© 2026 Gurvinder Singh</span>
-          <span>Designed &amp; built with intent · India</span>
+          <span>"Creativity is the greatest rebellion in existence." — Osho</span>
           <a href="#about">Back to top ↑</a>
         </div>
       </footer>
