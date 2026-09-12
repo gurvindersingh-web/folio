@@ -99,10 +99,29 @@ html, body {
   letter-spacing: 0.25em;
   font-weight: 600;
   transition: color 0.2s;
+  position: relative;
+}
+
+.r-nav a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: #d4cebd;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
 }
 
 .r-nav a:hover {
   color: #d4cebd;
+}
+
+.r-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 /* ───────── Mobile Navigation ───────── */
