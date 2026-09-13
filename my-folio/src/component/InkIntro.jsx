@@ -12,52 +12,53 @@ const InkIntro = ({ onComplete }) => {
     const videoBot = videoBotRef.current;
     if (!videoTop || !videoBot) return;
 
-    let fadeTimeout;
     let hardTimeout;
     let started = false;
+    let endedCount = 0;
 
-    const start = (fadeDelay = 3600) => {
+    const start = () => {
       if (started) return;
       started = true;
       clearTimeout(hardTimeout);
-      clearTimeout(fadeTimeout);
       videoTop.playbackRate = 1.45;
       videoBot.playbackRate = 1.45;
       setPhase('playing');
       void videoTop.play().catch(() => {});
       void videoBot.play().catch(() => {});
-      fadeTimeout = setTimeout(() => setPhase('fading'), fadeDelay);
     };
 
     const handleCanPlay = () => start();
     const handleLoadedData = () => start();
+    const handleEnded = () => {
+      endedCount += 1;
+      if (endedCount === 2) {
+        setPhase('done');
+        onComplete?.();
+      }
+    };
     videoTop.addEventListener('canplay', handleCanPlay, { once: true });
     videoBot.addEventListener('canplay', handleCanPlay, { once: true });
     videoTop.addEventListener('loadeddata', handleLoadedData, { once: true });
     videoBot.addEventListener('loadeddata', handleLoadedData, { once: true });
+    videoTop.addEventListener('ended', handleEnded);
+    videoBot.addEventListener('ended', handleEnded);
 
     hardTimeout = setTimeout(() => {
-      start(900);
-    }, 1800);
+      setPhase('done');
+      onComplete?.();
+    }, 5000);
 
     return () => {
-      clearTimeout(fadeTimeout);
       clearTimeout(hardTimeout);
       videoTop.removeEventListener('canplay', handleCanPlay);
       videoBot.removeEventListener('canplay', handleCanPlay);
       videoTop.removeEventListener('loadeddata', handleLoadedData);
       videoBot.removeEventListener('loadeddata', handleLoadedData);
+      videoTop.removeEventListener('ended', handleEnded);
+      videoBot.removeEventListener('ended', handleEnded);
       document.body.style.overflow = '';
     };
   }, []);
-
-  useEffect(() => {
-    if (phase !== 'fading') return;
-
-    document.body.style.overflow = '';
-    setPhase('done');
-    onComplete?.();
-  }, [phase, onComplete]);
 
   if (phase === 'done') return null;
 
