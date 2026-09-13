@@ -8,13 +8,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  will-change: opacity;
+  contain: layout style paint;
 
-  /* Erase the overlay using the ink mask */
+  /* Erase the overlay using the ink mask — applied via JS var */
   -webkit-mask-image: linear-gradient(black, black), var(--ink-mask);
   -webkit-mask-size: 100% 100%, cover;
   -webkit-mask-position: center, center;
   -webkit-mask-repeat: no-repeat, no-repeat;
   -webkit-mask-composite: destination-out;
+  mask-image: linear-gradient(black, black), var(--ink-mask);
+  mask-size: 100% 100%, cover;
+  mask-position: center, center;
+  mask-repeat: no-repeat, no-repeat;
   mask-composite: exclude;
 }
 
