@@ -8,13 +8,13 @@
   justify-content: center;
   align-items: center;
   will-change: opacity, transform;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
 .ink-intro-overlay.fade-out {
   opacity: 0;
-  transform: scale(1.05);
+  transform: scale(1.5);
   pointer-events: none;
 }
 
@@ -70,7 +70,7 @@
   align-items: center;
   
   /* Fast text fade out early in the animation */
-  animation: textFadeOut 1s ease forwards;
+  animation: textFadeOut 1.2s ease forwards;
   animation-delay: 1.2s;
 }
 

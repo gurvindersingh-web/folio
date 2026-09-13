@@ -7,10 +7,10 @@ const InkIntro = ({ onComplete }) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     
-    // The GIF loops continuously. We fade out and unmount after 4.5 seconds to reveal the website.
+    // The GIF is exactly 6.24s long. We start fading just before it loops.
     const hardTimeout = setTimeout(() => {
       setPhase('fading');
-    }, 4500);
+    }, 6200);
 
     return () => {
       clearTimeout(hardTimeout);
@@ -24,7 +24,7 @@ const InkIntro = ({ onComplete }) => {
         setPhase('done');
         onComplete?.();
         document.body.style.overflow = '';
-      }, 600); // match CSS fade-out duration
+      }, 3000); // match longest CSS fade-out duration (transform is 3s)
       return () => clearTimeout(timer);
     }
   }, [phase, onComplete]);
