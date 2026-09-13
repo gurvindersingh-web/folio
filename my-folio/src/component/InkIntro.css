@@ -8,13 +8,13 @@
   justify-content: center;
   align-items: center;
   will-change: opacity, transform;
-  transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1), transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity var(--fade-opacity-duration) cubic-bezier(0.4, 0, 0.2, 1), transform var(--fade-transform-duration) cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
 .ink-intro-overlay.fade-out {
   opacity: 0;
-  transform: scale(1.5);
+  transform: scale(2.5);
   pointer-events: none;
 }
 
@@ -36,8 +36,8 @@
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  -webkit-mask-image: url(/imgs/intro/ink_lv2.gif), linear-gradient(#fff, #fff);
-  mask-image: url(/imgs/intro/ink_lv2.gif), linear-gradient(#fff, #fff);
+  -webkit-mask-image: url(/imgs/intro/ink_lv2_slow.gif), linear-gradient(#fff, #fff);
+  mask-image: url(/imgs/intro/ink_lv2_slow.gif), linear-gradient(#fff, #fff);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   -webkit-mask-size: 200vw 200vh, cover;
@@ -70,7 +70,7 @@
   align-items: center;
   
   /* Fast text fade out early in the animation */
-  animation: textFadeOut 2.2s ease forwards;
+  animation: textFadeOut 4.2s ease forwards;
   animation-delay: 2.2s;
 }
 
