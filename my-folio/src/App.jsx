@@ -72,39 +72,39 @@ const Clock = () => {
 function App() {
   const projects = [
     {
+      title: "Star Wars Text-Based RPG Battle Engine",
+      description: "Built a console-based, turn-based RPG battle engine in Java set in the Star Wars universe, with Attack/Defend/Heal actions and a 15% critical-hit system. Implemented dynamic enemy scaling and a level-up system, culminating in a final boss battle. Rendered battles with ASCII art visuals.",
+      stack: ["Java", "Maven", "JDK 21", "OOP"],
+      image: "/imgs/starwars_rpg.webp",
+      video: "/videos/screenrecording-2026-09-11_21-59-54.mp4",
+      link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine",
+      year: "Aug 2026",
+      role: "Core Developer",
+      engine: "JVM / Maven",
+      status: "Public"
+    },
+    {
       title: "Dynamic Memory Management Visualiser",
-      description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of FIFO and LRU, with live statistics and an immersive 3D stage.",
+      description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of page replacement algorithms, segmentation, virtual memory, dynamic partitioning, and thrashing.",
       stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
       image: "/imgs/dynamic_memory.webp",
       video: "/videos/screenrecording-2026-09-04_22-01-08.mp4",
       link: "https://github.com/gurvindersingh-web/Dynamic-Memory-Management",
-      year: "2025",
+      year: "Apr 2026",
       role: "Full-Stack",
       engine: "Three.js",
       status: "Public"
     },
     {
-      title: "Omarchy System Stats Widget",
-      description: "A clean, responsive, Waybar-style system statistics widget for the Omarchy Linux desktop shell. Provides at-a-glance system metrics directly in your bar with beautiful icons and color-coded health indicators.",
-      stack: ["QML", "Bash", "Linux", "Quickshell"],
+      title: "Wi-Fi Deauthentication Attack Detector",
+      description: "Built a Python/Scapy deauthentication-attack detector using a 7-signal heuristic engine with EMA-based adaptive baselines to flag anomalous Wi-Fi traffic. Added NVIDIA NIM-based AI classification exposed through FastAPI endpoints. Automated alerting with n8n cloud workflows.",
+      stack: ["Python", "Scapy", "FastAPI", "React", "Docker"],
       image: "/imgs/omarchy.png",
-      video: "/videos/omarchy.mp4",
-      link: "https://github.com/gurvindersingh-web/quickshellomarchy",
-      year: "2025",
-      role: "Front-End",
-      engine: "Quickshell",
-      status: "Public"
-    },
-    {
-      title: "Turn-based Text RPG Battle Engine",
-      description: "A console-based RPG battle engine set in the Star Wars universe, written in Java. Features a turn-based combat system with Attack, Defend, and Heal actions, a critical hit system with 15% chance for double damage, dynamic enemy scaling, a level-up progression system, and a final boss showdown — all rendered with immersive ASCII art visuals.",
-      stack: ["Java", "Maven", "JDK 21", "OOP"],
-      image: "/imgs/starwars_rpg.webp",
-      video: "/videos/screenrecording-2026-09-11_21-59-54.mp4",
-      link: "https://github.com/gurvindersingh-web/Turn-base-text-RPG-battle-engine",
-      year: "2026",
-      role: "Core Developer",
-      engine: "JVM / Maven",
+      video: "", 
+      link: "https://github.com/gurvindersingh-web",
+      year: "Mar 2026",
+      role: "Full-Stack",
+      engine: "NVIDIA NIM",
       status: "Public"
     }
   ];
@@ -138,12 +138,10 @@ function App() {
 
   const certificateItems = [
     { issuer: "CIPHER", wallPosition: "anchor-left", image: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png", title: "Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png" },
-    { issuer: "CIPHER", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image.png", title: "Low-Level System Design", href: "/imgs/certificates/Pasted image.png" },
-    { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Complete Web Development", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
-    { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Node.js Advanced Concepts", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
-    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Data Structures & Algorithms", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
-    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/Pasted image (2).png", title: "Java Backend Development", href: "/imgs/certificates/Pasted image (2).png" },
-    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/Pasted image (3).png", title: "C++ Standard Template Library", href: "/imgs/certificates/Pasted image (3).png" }
+    { issuer: "IIT KGP", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image.png", title: "Ethics in Engineering Practice", href: "/imgs/certificates/Pasted image.png" },
+    { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Full Stack Development", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
+    { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Node.js", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
+    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Java Spring Boot", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" }
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -578,34 +576,29 @@ function App() {
             </h3>
             <div className="r-skills-grid">
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
-                <h3><span className="r-pulse"></span>FRONTEND</h3>
+                <h3><span className="r-pulse"></span>LANGUAGES</h3>
                 <div className="r-skill-list r-skill-logos">
-                  <span><SiReact size={20} style={{ marginRight: '8px' }} /> React 19</span>
                   <span><SiJavascript size={20} style={{ marginRight: '8px' }} /> JavaScript</span>
                   <span><SiTypescript size={20} style={{ marginRight: '8px' }} /> TypeScript</span>
-                  <span><SiTailwindcss size={20} style={{ marginRight: '8px' }} /> Tailwind CSS</span>
-                  <span><SiQt size={20} style={{ marginRight: '8px' }} /> Quickshell</span>
+                  <span><SiSpring size={20} style={{ marginRight: '8px' }} /> Java</span>
+                  <span><SiPostgresql size={20} style={{ marginRight: '8px' }} /> SQL</span>
                 </div>
               </BorderGlow>
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
-                <h3><span className="r-pulse-red"></span>BACKEND</h3>
+                <h3><span className="r-pulse-red"></span>FRAMEWORKS</h3>
                 <div className="r-skill-list r-skill-logos">
                   <span><SiSpringboot size={20} style={{ marginRight: '8px' }} /> Spring Boot</span>
+                  <span><SiReact size={20} style={{ marginRight: '8px' }} /> React.js</span>
                   <span><SiNodedotjs size={20} style={{ marginRight: '8px' }} /> Node.js</span>
-                  <span><SiSpring size={20} style={{ marginRight: '8px' }} /> Spring Frameworks</span>
-                  <span><SiPostgresql size={20} style={{ marginRight: '8px' }} /> PostgreSQL</span>
-                  <span><SiMongodb size={20} style={{ marginRight: '8px' }} /> MongoDB</span>
                 </div>
               </BorderGlow>
               <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
-                <h3><span className="r-pulse-blue"></span>PLATFORMS & TOOLS</h3>
+                <h3><span className="r-pulse-blue"></span>TOOLS & PLATFORMS</h3>
                 <div className="r-skill-list r-skill-logos">
-                  <span><SiArchlinux size={20} style={{ marginRight: '8px' }} /> Arch Linux</span>
-                  <span><SiGit size={20} style={{ marginRight: '8px' }} /> Git</span>
+                  <span><SiGit size={20} style={{ marginRight: '8px' }} /> Git/GitHub</span>
                   <span><SiDocker size={20} style={{ marginRight: '8px' }} /> Docker</span>
-                  <span><SiKubernetes size={20} style={{ marginRight: '8px' }} /> Kubernetes</span>
-                  <span><SiCloudflare size={20} style={{ marginRight: '8px' }} /> Cloudflare</span>
-                  <span><SiN8N size={20} style={{ marginRight: '8px' }} /> n8n</span>
+                  <span><SiLinux size={20} style={{ marginRight: '8px' }} /> Linux</span>
+                  <span><SiN8N size={20} style={{ marginRight: '8px' }} /> CI/CD, n8n</span>
                 </div>
               </BorderGlow>
             </div>
@@ -761,6 +754,14 @@ function App() {
               </div>
             </div>
           </div>
+          
+          <div className="r-achievements-text-list" style={{ marginTop: '5rem', padding: '0 2rem' }}>
+            <h3 className="r-projects-title" style={{ fontSize: '2rem', marginBottom: '1.5rem', color: '#d4cebd', fontFamily: 'Playfair Display, serif', fontWeight: 400 }}>Other Achievements</h3>
+            <ul style={{ color: '#d4cebd', fontSize: '1.1rem', lineHeight: '1.8', fontFamily: 'Inter, sans-serif', paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <li><strong>Omarchy</strong> — open-source system-stats plugin contribution (Live) <span style={{ color: '#666459', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Aug 2026</span></li>
+              <li><strong>GitHub Achievements</strong> — YOLO, Quickdraw, Pair Extraordinaire, Pull Shark <span style={{ color: '#666459', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Jan 2026 – Aug 2026</span></li>
+            </ul>
+          </div>
           </div>
         </section>
 
@@ -780,10 +781,28 @@ function App() {
           <div className="r-timeline">
             <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2}>
               <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12}>
-                <div className="r-timeline-meta">2022 — 2026</div>
+                <div className="r-timeline-meta">Aug 2024 — Present</div>
                 <div className="r-timeline-content">
-                  <h4>Bachelor of Science in Computer Science</h4>
-                  <p>University Name · Specialization in Software Engineering and Distributed Systems.</p>
+                  <h4>Bachelor of Technology in Computer Science</h4>
+                  <p>Lovely Professional University · Phagwara, Punjab. CGPA: 6.8</p>
+                </div>
+              </BorderGlow>
+            </AnimatedContent>
+            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.1}>
+              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12} style={{ marginTop: '2rem' }}>
+                <div className="r-timeline-meta">Mar 2022 — May 2024</div>
+                <div className="r-timeline-content">
+                  <h4>Senior Secondary (12th)</h4>
+                  <p>Dhawan International Public School · Hariana, Punjab. Percentage: 71%</p>
+                </div>
+              </BorderGlow>
+            </AnimatedContent>
+            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.2}>
+              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12} style={{ marginTop: '2rem' }}>
+                <div className="r-timeline-meta">Mar 2021 — May 2022</div>
+                <div className="r-timeline-content">
+                  <h4>Matriculation (10th)</h4>
+                  <p>St.Solder Divine public school · Garhdiwala, Punjab. Percentage: 72%</p>
                 </div>
               </BorderGlow>
             </AnimatedContent>
