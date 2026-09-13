@@ -183,12 +183,12 @@ function App() {
 
       {/* Header */}
       <header className="r-header">
-        <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0}>
+        <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0}>
           <div className="r-logo">
             <span className="r-logo-icon">水</span> Gurvinder Singh
           </div>
         </AnimatedContent>
-        <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
+        <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
           <nav className="r-nav" aria-label="Main navigation">
             <a href="#about">ABOUT</a>
             <a href="#skills">SKILLS</a>
@@ -198,7 +198,7 @@ function App() {
             <a href="#contact">CONTACT</a>
           </nav>
         </AnimatedContent>
-        <AnimatedContent distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
+        <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-version" style={{ textDecoration: 'none', color: 'inherit' }}>
             <span className="r-pulse" style={{ margin: 0 }}></span> OPEN FOR WORK
           </a>
@@ -234,7 +234,7 @@ function App() {
         <section className="r-hero">
           {/* Left Content Area */}
           <div className="r-left">
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.2}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.2}>
               <div className="r-eyebrow">
                 <span className="r-plus">+</span>
                 <span className="r-char">水</span>
@@ -243,11 +243,11 @@ function App() {
               </div>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.3}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.3}>
               <h1 className="r-title">Gurvinder Singh</h1>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.4}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.4}>
               <div className="r-subtitle">
                 @ gurvindersingh-web · public beta
               </div>
@@ -256,7 +256,7 @@ function App() {
               </div>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.5}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.5}>
               <div className="r-specs">
                 <div className="r-spec-row">
                   <span>FRONTEND</span>
@@ -286,7 +286,7 @@ function App() {
               </div>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.6}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.6}>
               <div className="r-vitals">
                 <div className="r-vital-box">
                   <div className="r-vital-num">3+</div>
@@ -307,7 +307,7 @@ function App() {
               </div>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.7}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.7}>
               <div className="r-ramp">
                 <div className="r-ramp-colors">
                   <div className="r-c1"></div>
@@ -322,7 +322,7 @@ function App() {
               </div>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.8}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.8}>
               <div className="r-actions">
                 <button 
                   className="r-btn-primary" 
@@ -339,7 +339,7 @@ function App() {
               </div>
             </AnimatedContent>
 
-            <AnimatedContent distance={30} direction="horizontal" duration={0.8} delay={0.9}>
+            <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.9}>
               <div className="r-stars">
                 ★ Available for work · Full-Stack Developer · Linux · Web Sec
               </div>
@@ -362,7 +362,7 @@ function App() {
           </div>
 
           {/* Right Art Area */}
-          <AnimatedContent 
+          <AnimatedContent eager
             distance={50} 
             direction="horizontal" 
             reverse={true} 

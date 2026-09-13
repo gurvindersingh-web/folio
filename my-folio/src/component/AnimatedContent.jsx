@@ -19,6 +19,7 @@ const AnimatedContent = ({
   onComplete,
   onDisappearanceComplete,
   className = '',
+  eager = false,
   ...props
 }) => {
   const ref = useRef(null);
@@ -26,6 +27,7 @@ const AnimatedContent = ({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (eager) return;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       el.style.visibility = 'visible';
@@ -119,11 +121,12 @@ const AnimatedContent = ({
     disappearDuration,
     disappearEase,
     onComplete,
-    onDisappearanceComplete
+    onDisappearanceComplete,
+    eager
   ]);
 
   return (
-    <div ref={ref} className={className} style={{ visibility: 'hidden' }} {...props}>
+    <div ref={ref} className={className} style={{ visibility: eager ? 'visible' : 'hidden' }} {...props}>
       {children}
     </div>
   );
