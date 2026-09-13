@@ -30,6 +30,7 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
+const InkIntro = lazy(() => import('./component/InkIntro.jsx'));
 
 if (typeof window !== 'undefined') {
   const prefetch = () => {
@@ -126,9 +127,25 @@ function App() {
     }
   ];
 
-  
+    const certificateItems = [
+    { issuer: "CIPHER", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
+    { issuer: "UDEMY", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Complete Web Development", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
+    { issuer: "GFG", image: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png", title: "Data Structures & Algorithms", href: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png" },
+    { issuer: "CIPHER", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Low-Level System Design", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
+    { issuer: "UDEMY", image: "/imgs/certificates/Pasted image.png", title: "Node.js Advanced Concepts", href: "/imgs/certificates/Pasted image.png" },
+    { issuer: "GFG", image: "/imgs/certificates/Pasted image (2).png", title: "Java Backend Development", href: "/imgs/certificates/Pasted image (2).png" },
+    { issuer: "GFG", image: "/imgs/certificates/Pasted image (3).png", title: "C++ Standard Template Library", href: "/imgs/certificates/Pasted image (3).png" }
+  ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [showInkIntro, setShowInkIntro] = useState(false);
+
+  useEffect(() => {
+    const show = () => setShowInkIntro(true);
+    const timer = window.setTimeout(show, 1200);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   const toggleMobileNav = useCallback(() => {
     setMobileNavOpen(prev => !prev);
   }, []);
@@ -153,6 +170,11 @@ function App() {
 
   return (
     <>
+    {showInkIntro && (
+      <Suspense fallback={null}>
+        <InkIntro onComplete={() => setShowInkIntro(false)} />
+      </Suspense>
+    )}
     <SmoothScroll>
     <ClickSpark sparkColor="#d4cebd" sparkSize={8} sparkRadius={18} sparkCount={9} duration={420}>
     <div className="ryoku-layout">
@@ -171,6 +193,7 @@ function App() {
             <a href="#about">ABOUT</a>
             <a href="#skills">SKILLS</a>
             <a href="#projects">PROJECTS</a>
+            <a href="#achievements">ACHIEVEMENTS</a>
             <a href="#education">EDUCATION</a>
             <a href="#contact">CONTACT</a>
           </nav>
@@ -201,6 +224,7 @@ function App() {
         <a href="#about" onClick={closeMobileNav}>ABOUT</a>
         <a href="#skills" onClick={closeMobileNav}>SKILLS</a>
         <a href="#projects" onClick={closeMobileNav}>PROJECTS</a>
+        <a href="#achievements" onClick={closeMobileNav}>ACHIEVEMENTS</a>
         <a href="#education" onClick={closeMobileNav}>EDUCATION</a>
         <a href="#contact" onClick={closeMobileNav}>CONTACT</a>
       </nav>
@@ -591,6 +615,48 @@ function App() {
               GitHub
               <FiArrowUpRight size={14} />
             </a>
+          </div>
+        </section>
+
+        {/* Achievements Section */}
+        <section id="achievements" className="r-projects-container" style={{ paddingTop: '8rem', position: 'relative' }}>
+
+          <div style={{ position: 'relative', zIndex: 10, width: '100%' }}>
+            <div className="r-projects-header">
+            <div className="r-about-eyebrow">
+              <span className="r-about-eyebrow-text">ACHIEVEMENTS</span>
+              <span className="r-about-eyebrow-icon">水</span>
+            </div>
+            <div className="r-projects-intro">
+              <h2 className="r-section-heading">MILESTONES</h2>
+              <h3 className="r-projects-title">Recognition</h3>
+              <p className="r-projects-lede">
+                A collection of certifications, awards, and continuous learning milestones. This section reflects my dedication to mastering new technologies, system design, and open-source contributions.
+              </p>
+            </div>
+          </div>
+
+          <div className="r-achievements-layout">
+            <div className="r-cert-stack-wrap">
+              {certificateItems.map((cert, index) => (
+                <div key={index} className="r-cert-stack-item">
+                  <AnimatedContent distance={30} direction="vertical" duration={0.6} threshold={0.2} delay={0.1}>
+                    <BorderGlow borderRadius={8} backgroundColor="#121212" className="r-cert-card r-cert-card--stacked">
+                      <div className="r-cert-card__img-wrap">
+                        <a href={cert.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block' }}>
+                          <img src={cert.image} alt={cert.title} loading="lazy" />
+                        </a>
+                      </div>
+                      <div className="r-cert-card__meta">
+                        <span className="r-cert-card__tag">{cert.issuer}</span>
+                        <span className="r-cert-card__title">{cert.title}</span>
+                      </div>
+                    </BorderGlow>
+                  </AnimatedContent>
+                </div>
+              ))}
+            </div>
+          </div>
           </div>
         </section>
 
