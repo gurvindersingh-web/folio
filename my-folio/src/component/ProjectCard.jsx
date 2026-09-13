@@ -25,6 +25,7 @@ const ProjectCard = ({
   const currentRef = useRef({ x: 0, y: 0 });
   const mediaHoveredRef = useRef(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const settle = () => {
@@ -85,9 +86,8 @@ const ProjectCard = ({
   const handlePointerEnter = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     mediaHoveredRef.current = true;
-    setShouldLoadVideo(true);
-    if (videoRef.current) {
-      videoRef.current.play().catch(e => console.log("Video play error:", e));
+    if (videoRef.current && videoReady) {
+      videoRef.current.play().catch(() => {});
     }
   };
 
@@ -113,16 +113,20 @@ const ProjectCard = ({
     }
     const observer = new IntersectionObserver(([entry]) => {
       setIsVisible(entry.isIntersecting);
+      // Start loading video when card enters viewport (not on hover)
+      if (entry.isIntersecting && video) {
+        setShouldLoadVideo(true);
+      }
     }, { threshold: 0.01 });
     observer.observe(card);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    if (shouldLoadVideo && mediaHoveredRef.current) {
+    if (shouldLoadVideo && mediaHoveredRef.current && videoReady) {
       videoRef.current?.play().catch(() => {});
     }
-  }, [shouldLoadVideo]);
+  }, [shouldLoadVideo, videoReady]);
 
   const paddedIndex = String(index).padStart(2, '0');
   const specs = [
@@ -159,7 +163,8 @@ const ProjectCard = ({
                 loop
                 muted
                 playsInline
-                preload="none"
+                preload="metadata"
+                onCanPlay={() => setVideoReady(true)}
               />
             )}
             <div ref={shineRef} className="project-card__shine" />
