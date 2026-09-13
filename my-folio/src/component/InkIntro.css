@@ -1,34 +1,89 @@
+/* ─── Animatable ink-blob radii via CSS @property ─── */
+@property --ink-r1 {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+@property --ink-r2 {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+@property --ink-r3 {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+@property --ink-r4 {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+@property --ink-r5 {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+
+/* ─── Overlay base ─── */
 .ink-intro-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
   background-color: #d3cdbd;
   color: #121212;
-  transition: opacity 0.8s ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
   will-change: opacity;
   contain: layout style paint;
+  transition: opacity 0.8s ease-in-out;
 
-  /* Erase the overlay using the ink mask — applied via JS var */
-  -webkit-mask-image: linear-gradient(black, black), var(--ink-mask);
-  -webkit-mask-size: 100% 100%, cover;
-  -webkit-mask-position: center, center;
-  -webkit-mask-repeat: no-repeat, no-repeat;
-  -webkit-mask-composite: destination-out;
-  mask-image: linear-gradient(black, black), var(--ink-mask);
-  mask-size: 100% 100%, cover;
-  mask-position: center, center;
-  mask-repeat: no-repeat, no-repeat;
-  mask-composite: exclude;
+  /* ─── Multi-blob ink mask ───
+     Each radial-gradient creates a circle that starts at 0% radius and
+     expands outward. The transparent center punches a hole in the overlay.
+     mask-composite: intersect ensures the overlay is hidden wherever
+     ANY single blob has expanded to (not just where all overlap). */
+
+  -webkit-mask-image:
+    radial-gradient(circle at 50% 50%, transparent var(--ink-r1), black calc(var(--ink-r1) + 4%)),
+    radial-gradient(circle at 22% 28%, transparent var(--ink-r2), black calc(var(--ink-r2) + 4%)),
+    radial-gradient(circle at 82% 72%, transparent var(--ink-r3), black calc(var(--ink-r3) + 4%)),
+    radial-gradient(circle at 8%  85%, transparent var(--ink-r4), black calc(var(--ink-r4) + 4%)),
+    radial-gradient(circle at 92% 12%, transparent var(--ink-r5), black calc(var(--ink-r5) + 4%));
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-composite: source-in;
+
+  mask-image:
+    radial-gradient(circle at 50% 50%, transparent var(--ink-r1), black calc(var(--ink-r1) + 4%)),
+    radial-gradient(circle at 22% 28%, transparent var(--ink-r2), black calc(var(--ink-r2) + 4%)),
+    radial-gradient(circle at 82% 72%, transparent var(--ink-r3), black calc(var(--ink-r3) + 4%)),
+    radial-gradient(circle at 8%  85%, transparent var(--ink-r4), black calc(var(--ink-r4) + 4%)),
+    radial-gradient(circle at 92% 12%, transparent var(--ink-r5), black calc(var(--ink-r5) + 4%));
+  mask-size: 100% 100%;
+  mask-composite: intersect;
+
+  animation:
+    ink1 3.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards,
+    ink2 2.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards,
+    ink3 2.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards,
+    ink4 2.5s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards,
+    ink5 2.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
 }
 
+@keyframes ink1 { to { --ink-r1: 120%; } }
+@keyframes ink2 { to { --ink-r2: 100%; } }
+@keyframes ink3 { to { --ink-r3: 100%; } }
+@keyframes ink4 { to { --ink-r4: 85%; } }
+@keyframes ink5 { to { --ink-r5: 85%; } }
+
+/* ─── Fade out residual overlay ─── */
 .ink-intro-overlay.fade-out {
   opacity: 0;
   pointer-events: none;
 }
 
+/* ─── Banner & typography ─── */
 .ink-banner {
   display: flex;
   justify-content: center;
