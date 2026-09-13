@@ -1322,3 +1322,93 @@ html, body {
 
   .r-noise { display: none; }
 }
+/* ==========================================================================
+   ACHIEVEMENTS SECTION (Scroll Stack)
+   ========================================================================== */
+
+.r-achievements-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.r-cert-stack-wrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8vh;
+  padding-bottom: 20vh;
+}
+
+.r-cert-stack-item {
+  position: sticky;
+  top: 15vh;
+  width: 100%;
+  max-width: 500px;
+}
+
+.r-cert-card--stacked {
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.r-cert-card {
+  position: relative;
+  background: #121212;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.r-cert-card__img-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 66.66%; /* 3:2 Aspect Ratio */
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.r-cert-card__img-wrap img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.r-cert-card:hover .r-cert-card__img-wrap img {
+  transform: scale(1.05);
+}
+
+.r-cert-card__meta {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+  background: linear-gradient(180deg, rgba(18,18,18,0) 0%, #121212 100%);
+}
+
+.r-cert-card__tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.r-cert-card__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  line-height: 1.3;
+}

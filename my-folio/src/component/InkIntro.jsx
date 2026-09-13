@@ -7,11 +7,11 @@ const InkIntro = ({ onComplete }) => {
   const videoBotRef = useRef(null);
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
     const videoTop = videoTopRef.current;
     const videoBot = videoBotRef.current;
     if (!videoTop || !videoBot) return;
 
+    document.body.style.overflow = 'hidden';
     let fadeTimeout;
     let readyCount = 0;
 
@@ -27,8 +27,8 @@ const InkIntro = ({ onComplete }) => {
         .catch(() => setPhase('fading'));
     };
 
-    // Hard timeout: skip if videos haven't loaded in 2.5s
-    const hardTimeout = setTimeout(() => setPhase('fading'), 2500);
+    // Keep the intro short so it never becomes a second loading screen.
+    const hardTimeout = setTimeout(() => setPhase('fading'), 2200);
 
     videoTop.addEventListener('canplay', tryStart, { once: true });
     videoBot.addEventListener('canplay', tryStart, { once: true });
@@ -68,7 +68,7 @@ const InkIntro = ({ onComplete }) => {
         src="/imgs/intro/ink.mp4"
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
       />
 
       {/* Bottom-right ink — rotated 180° so it spreads from the opposite corner */}
@@ -78,7 +78,7 @@ const InkIntro = ({ onComplete }) => {
         src="/imgs/intro/ink.mp4"
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
       />
     </div>
   );
