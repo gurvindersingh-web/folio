@@ -351,8 +351,8 @@ function App() {
             <div className="r-art">
               {/* The profile picture, uncropped, fading in from left */}
               <picture>
-                <source srcSet="/imgs/ppf_1080p_fixed-Picsart-AiImageEnhancer.webp" type="image/webp" />
-                <img src="/imgs/ppf_1080p_fixed-Picsart-AiImageEnhancer.webp" alt="Profile" width="2010" height="1000" fetchPriority="high" decoding="async" />
+                <source srcSet="/imgs/profile-hero.webp" type="image/webp" />
+                <img src="/imgs/profile-hero.webp" alt="Profile" width="1200" height="597" fetchPriority="high" decoding="async" />
               </picture>
             </div>
             <div className="r-scroll-hint">
