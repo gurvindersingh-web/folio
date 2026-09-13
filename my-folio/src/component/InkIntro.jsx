@@ -1,50 +1,23 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './InkIntro.css';
 
 const InkIntro = ({ onComplete }) => {
-  const [phase, setPhase] = useState('loading'); // loading | playing | fading | done
-  const overlayRef = useRef(null);
+  const [phase, setPhase] = useState('playing'); // playing | fading | done
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    
-    // We use a simple Image object to wait for the preloaded image to decode.
-    // We do NOT use fetch(), because fetch() can bypass the <link rel="preload"> cache 
-    // and cause a double-download on Vercel.
-    const img = new Image();
-    const src = '/imgs/intro/ink_lv2.webp';
-    
-    img.onload = () => {
-      if (overlayRef.current) {
-        // Force browser to re-trigger the animation from frame 1 by setting it dynamically
-        overlayRef.current.style.setProperty('--ink-mask', `url(${src})`);
-      }
-      setPhase('playing');
-    };
-    
-    img.onerror = () => {
-      // Fallback to GIF if WebP fails
-      const fallbackSrc = '/imgs/intro/ink_lv2.gif';
-      if (overlayRef.current) {
-        overlayRef.current.style.setProperty('--ink-mask', `url(${fallbackSrc})`);
-      }
-      setPhase('playing');
-    };
 
-    img.src = src;
+    // Pure CSS @property animation drives the ink reveal.
+    // Zero network dependency — starts painting on first frame.
+    // Longest blob animation: 3.2s duration + 0.2s delay = ends ~3.4s
+    // Add buffer → fade at 3.6s
+    const fadeTimer = setTimeout(() => setPhase('fading'), 3600);
 
     return () => {
+      clearTimeout(fadeTimer);
       document.body.style.overflow = '';
     };
   }, []);
-
-  useEffect(() => {
-    if (phase !== 'playing') return;
-
-    // Start fading out right as the ink animation reaches its maximum expansion (~3.8s)
-    const fadeTimer = setTimeout(() => setPhase('fading'), 3800);
-    return () => clearTimeout(fadeTimer);
-  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'fading') return;
@@ -60,13 +33,7 @@ const InkIntro = ({ onComplete }) => {
   if (phase === 'done') return null;
 
   return (
-    <div
-      ref={overlayRef}
-      className={`ink-intro-overlay ${phase === 'fading' ? 'fade-out' : ''}`}
-      style={{
-        // The mask is applied dynamically in useEffect to ensure it starts at frame 1
-      }}
-    >
+    <div className={`ink-intro-overlay ${phase === 'fading' ? 'fade-out' : ''}`}>
       <div className="ink-banner">
         <div className="ink-content">
           <h1 className="ink-title">Gurvinder<br/>Singh</h1>
