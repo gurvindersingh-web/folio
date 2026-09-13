@@ -55,11 +55,8 @@ const InkIntro = ({ onComplete }) => {
     if (phase !== 'fading') return;
 
     document.body.style.overflow = '';
-    const timer = setTimeout(() => {
-      setPhase('done');
-      onComplete?.();
-    }, 900);
-    return () => clearTimeout(timer);
+    setPhase('done');
+    onComplete?.();
   }, [phase, onComplete]);
 
   if (phase === 'done') return null;
