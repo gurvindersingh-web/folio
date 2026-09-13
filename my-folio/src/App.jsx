@@ -231,6 +231,10 @@ function App() {
                 href={href}
                 className={activeSection === id ? 'is-active' : undefined}
                 aria-current={activeSection === id ? 'location' : undefined}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToAnchor(id);
+                }}
               >
                 {label}
               </a>
