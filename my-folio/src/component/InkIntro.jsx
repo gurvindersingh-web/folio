@@ -2,49 +2,46 @@ import { useState, useEffect, useRef } from 'react';
 import './InkIntro.css';
 
 const InkIntro = ({ onComplete }) => {
-  const [phase, setPhase] = useState('loading'); // loading | playing | fading | done
-  const videoRef = useRef(null);
+  const [phase, setPhase] = useState('loading');
+  const videoTopRef = useRef(null);
+  const videoBotRef = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    const video = videoRef.current;
-    if (!video) return;
+    const videoTop = videoTopRef.current;
+    const videoBot = videoBotRef.current;
+    if (!videoTop || !videoBot) return;
 
     let fadeTimeout;
+    let readyCount = 0;
 
-    const startPlaying = () => {
-      setPhase('playing');
-      // Ink fully covers the screen by ~4s, then we fade
-      fadeTimeout = setTimeout(() => setPhase('fading'), 4200);
+    const tryStart = () => {
+      readyCount++;
+      if (readyCount < 2) return; // Wait for both videos
+
+      Promise.all([videoTop.play(), videoBot.play()])
+        .then(() => {
+          setPhase('playing');
+          fadeTimeout = setTimeout(() => setPhase('fading'), 4200);
+        })
+        .catch(() => setPhase('fading'));
     };
 
-    const onCanPlay = () => {
-      video.play()
-        .then(startPlaying)
-        .catch(() => {
-          // Autoplay blocked (rare for muted) — skip intro
-          setPhase('fading');
-        });
-    };
+    // Hard timeout: skip if videos haven't loaded in 2.5s
+    const hardTimeout = setTimeout(() => setPhase('fading'), 2500);
 
-    // Hard timeout: if video hasn't loaded in 2.5s, skip intro entirely
-    const hardTimeout = setTimeout(() => {
-      setPhase('fading');
-    }, 2500);
-
-    video.addEventListener('canplay', onCanPlay, { once: true });
+    videoTop.addEventListener('canplay', tryStart, { once: true });
+    videoBot.addEventListener('canplay', tryStart, { once: true });
 
     return () => {
       clearTimeout(fadeTimeout);
       clearTimeout(hardTimeout);
-      video.removeEventListener('canplay', onCanPlay);
       document.body.style.overflow = '';
     };
   }, []);
 
   useEffect(() => {
     if (phase !== 'fading') return;
-
     document.body.style.overflow = '';
     const timer = setTimeout(() => {
       setPhase('done');
@@ -57,7 +54,6 @@ const InkIntro = ({ onComplete }) => {
 
   return (
     <div className={`ink-intro-overlay ${phase === 'fading' ? 'fade-out' : ''}`}>
-      {/* Text layer — sits behind the video */}
       <div className="ink-banner">
         <div className="ink-content">
           <h1 className="ink-title">Gurvinder<br/>Singh</h1>
@@ -65,12 +61,20 @@ const InkIntro = ({ onComplete }) => {
         </div>
       </div>
 
-      {/* Ink video — mix-blend-mode: multiply makes white areas invisible
-          against the beige background, while black ink areas turn everything
-          dark, creating the reveal effect */}
+      {/* Top-left ink — plays normally */}
       <video
-        ref={videoRef}
-        className="ink-video"
+        ref={videoTopRef}
+        className="ink-video ink-video--top-left"
+        src="/imgs/intro/ink.mp4"
+        muted
+        playsInline
+        preload="auto"
+      />
+
+      {/* Bottom-right ink — rotated 180° so it spreads from the opposite corner */}
+      <video
+        ref={videoBotRef}
+        className="ink-video ink-video--bottom-right"
         src="/imgs/intro/ink.mp4"
         muted
         playsInline

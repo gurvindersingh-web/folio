@@ -10,6 +10,7 @@
   align-items: center;
   will-change: opacity;
   transition: opacity 0.8s ease-in-out;
+  overflow: hidden;
 }
 
 .ink-intro-overlay.fade-out {
@@ -17,20 +18,28 @@
   pointer-events: none;
 }
 
-/* ─── Ink video layer ───
-   mix-blend-mode: multiply makes:
-     - white video pixels × beige bg = beige (invisible)
-     - black ink pixels × anything = black (darkens)
-   Result: the ink "eats" the overlay as it spreads */
+/* ─── Ink video layers ─── */
 .ink-video {
   position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   mix-blend-mode: multiply;
   pointer-events: none;
   z-index: 3;
+}
+
+/* Top-left: ink spreads from top-left corner naturally */
+.ink-video--top-left {
+  inset: 0;
+  transform-origin: top left;
+}
+
+/* Bottom-right: rotated 180° so the same animation spreads from bottom-right */
+.ink-video--bottom-right {
+  inset: 0;
+  transform: rotate(180deg);
+  transform-origin: center;
 }
 
 /* ─── Banner & typography ─── */
