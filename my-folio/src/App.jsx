@@ -142,7 +142,7 @@ function App() {
 
   useEffect(() => {
     const show = () => setShowInkIntro(true);
-    const timer = window.setTimeout(show, 1200);
+    const timer = window.setTimeout(show, 2500);
     return () => window.clearTimeout(timer);
   }, []);
 
