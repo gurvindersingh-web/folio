@@ -3,38 +3,19 @@
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background-color: rgba(211, 205, 189, 0.62);
-  color: #121212;
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  will-change: opacity;
+  will-change: opacity, transform;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
-/* ─── Ink video layers ─── */
-.ink-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  mix-blend-mode: multiply;
-  opacity: 0.72;
+.ink-intro-overlay.fade-out {
+  opacity: 0;
+  transform: scale(1.05);
   pointer-events: none;
-  z-index: 3;
-}
-
-/* Top-left: ink spreads from top-left corner naturally */
-.ink-video--top-left {
-  inset: 0;
-  transform-origin: top left;
-}
-
-/* Bottom-right: rotated 180° so the same animation spreads from bottom-right */
-.ink-video--bottom-right {
-  inset: 0;
-  transform: rotate(180deg);
-  transform-origin: center;
 }
 
 /* ─── Banner & typography ─── */
@@ -42,10 +23,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   position: relative;
   z-index: 2;
+}
+
+/* Dual ink mask layers */
+.ink-layer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  -webkit-mask-image: url(/imgs/intro/ink_lv2.gif), linear-gradient(#fff, #fff);
+  mask-image: url(/imgs/intro/ink_lv2.gif), linear-gradient(#fff, #fff);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  -webkit-mask-size: 200vw 200vh, cover;
+  mask-size: 200vw 200vh, cover;
+  -webkit-mask-repeat: no-repeat, no-repeat;
+  mask-repeat: no-repeat, no-repeat;
+}
+
+.ink-layer--tl {
+  /* Natural direction (top left) */
+  background-color: transparent; /* Parent provides structural clip */
+  -webkit-mask-position: -100vw -100vh, center;
+  mask-position: -100vw -100vh, center;
+}
+
+.ink-layer--br {
+  /* Fades from bottom right */
+  transform: rotate(180deg);
+  background-color: #d5cebe; /* Child holds the actual background color */
+  /* Center of mask at top-left, rotated makes it bottom-right */
+  -webkit-mask-position: -100vw -100vh, center; 
+  mask-position: -100vw -100vh, center;
 }
 
 .ink-banner .ink-content {
@@ -54,6 +68,14 @@
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+  
+  /* Fast text fade out early in the animation */
+  animation: textFadeOut 1s ease forwards;
+  animation-delay: 1.2s;
+}
+
+@keyframes textFadeOut {
+  to { opacity: 0; visibility: hidden; transform: scale(0.95); }
 }
 
 .ink-banner .ink-content .ink-title {
