@@ -31,6 +31,19 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
+
+if (typeof window !== 'undefined') {
+  const prefetch = () => {
+    void import("./component/LogoLoop.jsx");
+    void import("./component/InfiniteSpiral.jsx");
+    void import("./component/Carousel.jsx");
+  };
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(prefetch, { timeout: 1500 });
+  } else {
+    window.setTimeout(prefetch, 1000);
+  }
+}
 const Clock = () => {
   const [time, setTime] = useState("");
   
