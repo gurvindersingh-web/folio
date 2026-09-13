@@ -138,13 +138,7 @@ function App() {
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [showInkIntro, setShowInkIntro] = useState(false);
-
-  useEffect(() => {
-    const show = () => setShowInkIntro(true);
-    const timer = window.setTimeout(show, 2500);
-    return () => window.clearTimeout(timer);
-  }, []);
+  const [showInkIntro, setShowInkIntro] = useState(true);
 
   const toggleMobileNav = useCallback(() => {
     setMobileNavOpen(prev => !prev);
