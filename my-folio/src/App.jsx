@@ -5,6 +5,7 @@ import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
 import SmoothScroll from './component/SmoothScroll.jsx';
+import InkIntro from './component/InkIntro.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi';
 import {
   SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiTailwindcss, SiQt, SiSpringboot, SiKubernetes, SiCloudflare, SiN8N
@@ -30,7 +31,6 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
-const InkIntro = lazy(() => import('./component/InkIntro.jsx'));
 
 if (typeof window !== 'undefined') {
   const prefetch = () => {

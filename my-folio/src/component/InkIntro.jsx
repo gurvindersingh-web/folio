@@ -7,46 +7,58 @@ const InkIntro = ({ onComplete }) => {
   const videoBotRef = useRef(null);
 
   useEffect(() => {
+    document.body.style.overflow = 'hidden';
     const videoTop = videoTopRef.current;
     const videoBot = videoBotRef.current;
     if (!videoTop || !videoBot) return;
 
-    document.body.style.overflow = 'hidden';
     let fadeTimeout;
-    let readyCount = 0;
+    let hardTimeout;
+    let started = false;
 
-    const tryStart = () => {
-      readyCount++;
-      if (readyCount < 2) return; // Wait for both videos
-
-      Promise.all([videoTop.play(), videoBot.play()])
-        .then(() => {
-          setPhase('playing');
-          fadeTimeout = setTimeout(() => setPhase('fading'), 4200);
-        })
-        .catch(() => setPhase('fading'));
+    const start = (fadeDelay = 4200) => {
+      if (started) return;
+      started = true;
+      clearTimeout(hardTimeout);
+      clearTimeout(fadeTimeout);
+      videoTop.playbackRate = 1.35;
+      videoBot.playbackRate = 1.35;
+      setPhase('playing');
+      void videoTop.play().catch(() => {});
+      void videoBot.play().catch(() => {});
+      fadeTimeout = setTimeout(() => setPhase('fading'), fadeDelay);
     };
 
-    // Keep the intro short so it never becomes a second loading screen.
-    const hardTimeout = setTimeout(() => setPhase('fading'), 2200);
+    const handleCanPlay = () => start();
+    const handleLoadedData = () => start();
+    videoTop.addEventListener('canplay', handleCanPlay, { once: true });
+    videoBot.addEventListener('canplay', handleCanPlay, { once: true });
+    videoTop.addEventListener('loadeddata', handleLoadedData, { once: true });
+    videoBot.addEventListener('loadeddata', handleLoadedData, { once: true });
 
-    videoTop.addEventListener('canplay', tryStart, { once: true });
-    videoBot.addEventListener('canplay', tryStart, { once: true });
+    hardTimeout = setTimeout(() => {
+      start(900);
+    }, 1800);
 
     return () => {
       clearTimeout(fadeTimeout);
       clearTimeout(hardTimeout);
+      videoTop.removeEventListener('canplay', handleCanPlay);
+      videoBot.removeEventListener('canplay', handleCanPlay);
+      videoTop.removeEventListener('loadeddata', handleLoadedData);
+      videoBot.removeEventListener('loadeddata', handleLoadedData);
       document.body.style.overflow = '';
     };
   }, []);
 
   useEffect(() => {
     if (phase !== 'fading') return;
+
     document.body.style.overflow = '';
     const timer = setTimeout(() => {
       setPhase('done');
       onComplete?.();
-    }, 800);
+    }, 900);
     return () => clearTimeout(timer);
   }, [phase, onComplete]);
 
@@ -68,7 +80,7 @@ const InkIntro = ({ onComplete }) => {
         src="/imgs/intro/ink.mp4"
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
       />
 
       {/* Bottom-right ink — rotated 180° so it spreads from the opposite corner */}
@@ -78,7 +90,7 @@ const InkIntro = ({ onComplete }) => {
         src="/imgs/intro/ink.mp4"
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
       />
     </div>
   );
