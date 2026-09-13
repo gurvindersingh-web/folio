@@ -4,7 +4,7 @@ import AnimatedContent from "./component/AnimatedContent.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
-import SmoothScroll from './component/SmoothScroll.jsx';
+import SmoothScroll, { scrollToAnchor } from './component/SmoothScroll.jsx';
 import InkIntro from './component/InkIntro.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi';
 import {
@@ -44,6 +44,15 @@ if (typeof window !== 'undefined') {
     window.setTimeout(prefetch, 1000);
   }
 }
+const NAV_ITEMS = [
+  { href: '#about', id: 'about', label: 'ABOUT' },
+  { href: '#skills', id: 'skills', label: 'SKILLS' },
+  { href: '#projects', id: 'projects', label: 'PROJECTS' },
+  { href: '#achievements', id: 'achievements', label: 'ACHIEVEMENTS' },
+  { href: '#education', id: 'education', label: 'EDUCATION' },
+  { href: '#contact', id: 'contact', label: 'CONTACT' },
+];
+
 const Clock = () => {
   const [time, setTime] = useState("");
   
@@ -141,6 +150,7 @@ function App() {
   const [introComplete, setIntroComplete] = useState(false);
   const [showInkIntro, setShowInkIntro] = useState(true);
   const [lightboxCert, setLightboxCert] = useState(null);
+  const [activeSection, setActiveSection] = useState('');
 
   const toggleMobileNav = useCallback(() => {
     setMobileNavOpen(prev => !prev);
@@ -170,6 +180,31 @@ function App() {
     }
   }, [mobileNavOpen]);
 
+  useEffect(() => {
+    let ticking = false;
+
+    const updateActiveSection = () => {
+      ticking = false;
+      const line = (document.querySelector('.r-header')?.offsetHeight ?? 80) + 24;
+      let current = '';
+      for (const { id } of NAV_ITEMS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      setActiveSection(current);
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateActiveSection);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateActiveSection();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <>
     {showInkIntro && (
@@ -192,12 +227,16 @@ function App() {
         </AnimatedContent>
         <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
           <nav className="r-nav" aria-label="Main navigation">
-            <a href="#about">ABOUT</a>
-            <a href="#skills">SKILLS</a>
-            <a href="#projects">PROJECTS</a>
-            <a href="#achievements">ACHIEVEMENTS</a>
-            <a href="#education">EDUCATION</a>
-            <a href="#contact">CONTACT</a>
+            {NAV_ITEMS.map(({ href, id, label }) => (
+              <a
+                key={id}
+                href={href}
+                className={activeSection === id ? 'is-active' : undefined}
+                aria-current={activeSection === id ? 'location' : undefined}
+              >
+                {label}
+              </a>
+            ))}
           </nav>
         </AnimatedContent>
         <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
@@ -223,12 +262,17 @@ function App() {
         className={`r-mobile-nav ${mobileNavOpen ? 'r-mobile-nav--open' : ''}`}
         aria-label="Mobile navigation"
       >
-        <a href="#about" onClick={closeMobileNav}>ABOUT</a>
-        <a href="#skills" onClick={closeMobileNav}>SKILLS</a>
-        <a href="#projects" onClick={closeMobileNav}>PROJECTS</a>
-        <a href="#achievements" onClick={closeMobileNav}>ACHIEVEMENTS</a>
-        <a href="#education" onClick={closeMobileNav}>EDUCATION</a>
-        <a href="#contact" onClick={closeMobileNav}>CONTACT</a>
+        {NAV_ITEMS.map(({ href, id, label }) => (
+          <a
+            key={id}
+            href={href}
+            onClick={closeMobileNav}
+            className={activeSection === id ? 'is-active' : undefined}
+            aria-current={activeSection === id ? 'location' : undefined}
+          >
+            {label}
+          </a>
+        ))}
       </nav>
 
       <main>
@@ -328,7 +372,7 @@ function App() {
               <div className="r-actions">
                 <button 
                   className="r-btn-primary" 
-                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => scrollToAnchor('projects')}
                 >
                   VIEW PROJECTS
                 </button>
