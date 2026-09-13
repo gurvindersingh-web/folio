@@ -183,7 +183,7 @@ function App() {
 
     const updateActiveSection = () => {
       ticking = false;
-      const line = (document.querySelector('.r-header')?.offsetHeight ?? 80) + 24;
+      const line = (document.querySelector('.r-header')?.offsetHeight ?? 88) + 80; // Matches smooth scroll offset
       let current = '';
       for (const { id } of NAV_ITEMS) {
         const el = document.getElementById(id);
