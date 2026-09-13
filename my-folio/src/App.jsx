@@ -4,7 +4,6 @@ import AnimatedContent from "./component/AnimatedContent.jsx"
 import BorderGlow from "./component/BorderGlow.jsx"
 import ProjectCard from "./component/ProjectCard.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
-import InkIntro from './component/InkIntro.jsx';
 import SmoothScroll from './component/SmoothScroll.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi';
 import {
@@ -130,8 +129,6 @@ function App() {
   
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [introComplete, setIntroComplete] = useState(false);
-
   const toggleMobileNav = useCallback(() => {
     setMobileNavOpen(prev => !prev);
   }, []);
@@ -156,7 +153,6 @@ function App() {
 
   return (
     <>
-    {!introComplete && <InkIntro onComplete={() => setIntroComplete(true)} />}
     <SmoothScroll>
     <ClickSpark sparkColor="#d4cebd" sparkSize={8} sparkRadius={18} sparkCount={9} duration={420}>
     <div className="ryoku-layout">
