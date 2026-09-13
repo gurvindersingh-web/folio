@@ -62,7 +62,7 @@ const InkIntro = ({ onComplete }) => {
   if (phase === 'done') return null;
 
   return (
-    <div className={`ink-intro-overlay ${phase === 'fading' ? 'fade-out' : ''}`}>
+    <div className="ink-intro-overlay">
       <div className="ink-banner">
         <div className="ink-content">
           <h1 className="ink-title">Gurvinder<br/>Singh</h1>
