@@ -36,6 +36,9 @@
     }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/((?!assets/|imgs/|videos/|favicon\\.ico|favicon\\.svg|resume\\.pdf|sitemap\\.xml).*)",
+      "destination": "/index.html"
+    }
   ]
 }
