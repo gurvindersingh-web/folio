@@ -127,18 +127,20 @@ function App() {
     }
   ];
 
-    const certificateItems = [
-    { issuer: "CIPHER", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
-    { issuer: "UDEMY", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Complete Web Development", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
-    { issuer: "GFG", image: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png", title: "Data Structures & Algorithms", href: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png" },
-    { issuer: "CIPHER", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Low-Level System Design", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
-    { issuer: "UDEMY", image: "/imgs/certificates/Pasted image.png", title: "Node.js Advanced Concepts", href: "/imgs/certificates/Pasted image.png" },
-    { issuer: "GFG", image: "/imgs/certificates/Pasted image (2).png", title: "Java Backend Development", href: "/imgs/certificates/Pasted image (2).png" },
-    { issuer: "GFG", image: "/imgs/certificates/Pasted image (3).png", title: "C++ Standard Template Library", href: "/imgs/certificates/Pasted image (3).png" }
+  const certificateItems = [
+    { issuer: "CIPHER", wallPosition: "anchor-left", image: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png", title: "Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png" },
+    { issuer: "CIPHER", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image.png", title: "Low-Level System Design", href: "/imgs/certificates/Pasted image.png" },
+    { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Complete Web Development", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
+    { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Node.js Advanced Concepts", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
+    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Data Structures & Algorithms", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
+    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/Pasted image (2).png", title: "Java Backend Development", href: "/imgs/certificates/Pasted image (2).png" },
+    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/Pasted image (3).png", title: "C++ Standard Template Library", href: "/imgs/certificates/Pasted image (3).png" }
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [introComplete, setIntroComplete] = useState(false);
   const [showInkIntro, setShowInkIntro] = useState(true);
+  const [lightboxCert, setLightboxCert] = useState(null);
 
   const toggleMobileNav = useCallback(() => {
     setMobileNavOpen(prev => !prev);
@@ -150,16 +152,22 @@ function App() {
 
   // Close mobile nav on Escape key
   useEffect(() => {
-    if (!mobileNavOpen) return;
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') setMobileNavOpen(false);
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (lightboxCert) setLightboxCert(null);
+        else if (mobileNavOpen) setMobileNavOpen(false);
+      }
     };
-    document.addEventListener('keydown', handleEscape);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileNavOpen, lightboxCert]);
+
+  useEffect(() => {
+    if (mobileNavOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
       document.body.style.overflow = '';
-    };
+    }
   }, [mobileNavOpen]);
 
   return (
@@ -631,24 +639,82 @@ function App() {
           </div>
 
           <div className="r-achievements-layout">
-            <div className="r-cert-stack-wrap">
-              {certificateItems.map((cert, index) => (
-                <div key={index} className="r-cert-stack-item">
-                  <AnimatedContent distance={30} direction="vertical" duration={0.6} threshold={0.2} delay={0.1}>
-                    <BorderGlow borderRadius={8} backgroundColor="#121212" className="r-cert-card r-cert-card--stacked">
-                      <div className="r-cert-card__img-wrap">
-                        <a href={cert.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block' }}>
-                          <img src={cert.image} alt={cert.title} loading="lazy" />
-                        </a>
-                      </div>
-                      <div className="r-cert-card__meta">
-                        <span className="r-cert-card__tag">{cert.issuer}</span>
-                        <span className="r-cert-card__title">{cert.title}</span>
-                      </div>
-                    </BorderGlow>
-                  </AnimatedContent>
-                </div>
-              ))}
+            <div className="r-gallery-wall">
+              {/* Anchor Left */}
+              <div className="r-gallery-region r-gallery-region--cipherLeft">
+                {certificateItems.filter(c => c.wallPosition === 'anchor-left').map((cert, index) => (
+                  <div key={index} className="r-cert-frame r-cert-frame--anchor-left" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
+                    <AnimatedContent distance={20} direction="vertical" duration={0.6} threshold={0.2}>
+                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                        <div className="r-cert-card__matting">
+                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
+                        </div>
+                        <div className="r-cert-card__meta">
+                          <span className="r-cert-card__tag">{cert.issuer}</span>
+                          <span className="r-cert-card__title">{cert.title}</span>
+                        </div>
+                      </BorderGlow>
+                    </AnimatedContent>
+                  </div>
+                ))}
+              </div>
+
+              {/* Middle */}
+              <div className="r-gallery-region r-gallery-region--middle">
+                {certificateItems.filter(c => c.wallPosition === 'middle').map((cert, index) => (
+                  <div key={index} className="r-cert-frame r-cert-frame--middle" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
+                    <AnimatedContent distance={30} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
+                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                        <div className="r-cert-card__matting">
+                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
+                        </div>
+                        <div className="r-cert-card__meta">
+                          <span className="r-cert-card__tag">{cert.issuer}</span>
+                          <span className="r-cert-card__title">{cert.title}</span>
+                        </div>
+                      </BorderGlow>
+                    </AnimatedContent>
+                  </div>
+                ))}
+              </div>
+
+              {/* Anchor Right */}
+              <div className="r-gallery-region r-gallery-region--cipherRight">
+                {certificateItems.filter(c => c.wallPosition === 'anchor-right').map((cert, index) => (
+                  <div key={index} className="r-cert-frame r-cert-frame--anchor-right" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
+                    <AnimatedContent distance={20} direction="vertical" duration={0.6} threshold={0.2}>
+                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                        <div className="r-cert-card__matting">
+                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
+                        </div>
+                        <div className="r-cert-card__meta">
+                          <span className="r-cert-card__tag">{cert.issuer}</span>
+                          <span className="r-cert-card__title">{cert.title}</span>
+                        </div>
+                      </BorderGlow>
+                    </AnimatedContent>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom */}
+              <div className="r-gallery-region r-gallery-region--bottom">
+                {certificateItems.filter(c => c.wallPosition === 'bottom').map((cert, index) => (
+                  <div key={index} className="r-cert-frame r-cert-frame--bottom" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
+                    <AnimatedContent distance={40} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
+                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                        <div className="r-cert-card__matting">
+                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="lazy" className="r-cert-card__img" />
+                        </div>
+                        <div className="r-cert-card__meta">
+                          <span className="r-cert-card__tag">{cert.issuer}</span>
+                          <span className="r-cert-card__title">{cert.title}</span>
+                        </div>
+                      </BorderGlow>
+                    </AnimatedContent>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           </div>

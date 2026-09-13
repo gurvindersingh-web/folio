@@ -1334,27 +1334,27 @@ html, body {
   margin-top: 2rem;
 }
 
-.r-cert-stack-wrap {
-  flex: 1;
+.r-gallery-wall {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1.25fr;
+  grid-template-areas:
+    "cipherLeft middle cipherRight"
+    "bottom bottom bottom";
+  gap: 2rem;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8vh;
-  padding-bottom: 20vh;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-.r-cert-stack-item {
-  position: sticky;
-  top: 15vh;
-  width: 100%;
-  max-width: 500px;
-}
-
-.r-cert-card--stacked {
-  width: 100%;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.05);
+@media (max-width: 768px) {
+  .r-gallery-wall {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "cipherLeft"
+      "middle"
+      "cipherRight"
+      "bottom";
+  }
 }
 
 .r-cert-card {
@@ -1412,3 +1412,181 @@ html, body {
   color: #fff;
   line-height: 1.3;
 }
+
+/* ==========================================================================
+   PHASE 2: GALLERY WALL STYLING
+   ========================================================================== */
+
+/* Wall Texture */
+#achievements {
+  position: relative;
+}
+#achievements::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(30,30,30,0.4) 0%, #1e1e1e 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Base region layout for masonry feel */
+.r-gallery-region {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  z-index: 1;
+}
+
+.r-gallery-region--middle {
+  margin-top: 4rem; /* Offset middle slightly */
+}
+
+.r-gallery-region--bottom {
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  grid-area: bottom;
+}
+
+.r-cert-frame--bottom {
+  flex: 1 1 300px; /* Forces them to sit horizontally side-by-side */
+  max-width: 500px;
+}
+
+.r-gallery-region--cipherLeft { grid-area: cipherLeft; }
+.r-gallery-region--middle { grid-area: middle; }
+.r-gallery-region--cipherRight { grid-area: cipherRight; }
+
+/* Interactive Frame */
+.r-cert-frame {
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 8px;
+}
+
+.r-cert-frame:focus-visible {
+  outline: 2px solid #d4cebd;
+  outline-offset: 4px;
+}
+
+.r-cert-card {
+  box-shadow: 12px 16px 24px -10px rgba(0, 0, 0, 0.6), 
+              0 4px 8px -4px rgba(0, 0, 0, 0.5);
+}
+
+/* Rotations for anchors */
+@media (prefers-reduced-motion: no-preference) {
+  .r-cert-frame--anchor-left {
+    transform: rotate(-1.5deg);
+  }
+  .r-cert-frame--anchor-right {
+    transform: rotate(1.5deg);
+  }
+  .r-cert-frame:hover {
+    transform: scale(1.03) translateY(-4px) !important;
+    z-index: 10;
+  }
+}
+
+/* Matting */
+.r-cert-card__matting {
+  background: #2a2a2a; /* Outer dark matting */
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Hairline inner border */
+  border-bottom: none;
+  aspect-ratio: 4/3; /* Keeps landscape shape standard */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specifically adjust aspect ratios for anchor certs which are portrait-ish */
+.r-cert-frame--anchor-left .r-cert-card__matting,
+.r-cert-frame--anchor-right .r-cert-card__matting {
+  aspect-ratio: 3/4; 
+}
+
+.r-cert-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #0f0f0f;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); /* Recessed inner look */
+}
+
+/* Lightbox Modal */
+.r-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: lightboxFadeIn 0.3s ease-out forwards;
+}
+
+.r-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.r-lightbox-img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+
+.r-lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.r-lightbox-close:hover {
+  opacity: 1;
+}
+
+.r-lightbox-caption {
+  text-align: center;
+}
+
+.r-lightbox-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #d4cebd;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.r-lightbox-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+@keyframes lightboxFadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
