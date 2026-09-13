@@ -16,13 +16,13 @@ const InkIntro = ({ onComplete }) => {
     let hardTimeout;
     let started = false;
 
-    const start = (fadeDelay = 4200) => {
+    const start = (fadeDelay = 3600) => {
       if (started) return;
       started = true;
       clearTimeout(hardTimeout);
       clearTimeout(fadeTimeout);
-      videoTop.playbackRate = 1.35;
-      videoBot.playbackRate = 1.35;
+      videoTop.playbackRate = 1.45;
+      videoBot.playbackRate = 1.45;
       setPhase('playing');
       void videoTop.play().catch(() => {});
       void videoBot.play().catch(() => {});
