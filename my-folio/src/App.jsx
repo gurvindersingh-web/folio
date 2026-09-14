@@ -6,7 +6,8 @@ import ProjectCard from "./component/ProjectCard.jsx"
 import ClickSpark from './component/ClickSpark.jsx';
 import SmoothScroll, { scrollToAnchor } from './component/SmoothScroll.jsx';
 import InkIntro from './component/InkIntro.jsx';
-import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi';
+import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
+import { useTheme } from './theme.jsx';
 import {
   SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiTailwindcss, SiQt, SiSpringboot, SiKubernetes, SiCloudflare, SiN8N
 } from 'react-icons/si';
@@ -45,6 +46,7 @@ if (typeof window !== 'undefined') {
   }
 }
 const NAV_ITEMS = [
+  { href: '#home', id: 'home', label: 'HOME' },
   { href: '#about', id: 'about', label: 'ABOUT' },
   { href: '#skills', id: 'skills', label: 'SKILLS' },
   { href: '#projects', id: 'projects', label: 'PROJECTS' },
@@ -67,9 +69,30 @@ const Clock = () => {
   return <>{time || "11:20:47"}</>;
 };
 
+const ThemeToggle = ({ mobile = false }) => {
+  const { theme, toggleTheme } = useTheme();
+  const nextTheme = theme === 'dark' ? 'light' : 'dark';
+
+  return (
+    <button
+      type="button"
+      className={`r-theme-toggle${mobile ? ' r-theme-toggle--mobile' : ''}`}
+      onClick={toggleTheme}
+      aria-label={`Switch to ${nextTheme} theme`}
+      aria-pressed={theme === 'light'}
+      title={`Switch to ${nextTheme} theme`}
+    >
+      <FiSun aria-hidden="true" />
+      <FiMoon aria-hidden="true" />
+      <span className="sr-only">{`Switch to ${nextTheme} theme`}</span>
+    </button>
+  );
+};
+
 
 
 function App() {
+  const { theme } = useTheme();
   const projects = [
     {
       title: "Star Wars Text-Based RPG Battle Engine",
@@ -211,8 +234,8 @@ function App() {
       </Suspense>
     )}
     <SmoothScroll>
-    <ClickSpark sparkColor="#d4cebd" sparkSize={8} sparkRadius={18} sparkCount={9} duration={420}>
-    <div className="ryoku-layout">
+    <ClickSpark sparkColor="var(--color-accent)" sparkSize={8} sparkRadius={18} sparkCount={9} duration={420}>
+    <div className="ryoku-layout" data-theme={theme}>
       {/* Texture overlay */}
       <div className="r-noise" aria-hidden="true"></div>
 
@@ -246,6 +269,7 @@ function App() {
             <span className="r-pulse" style={{ margin: 0 }}></span> OPEN FOR WORK
           </a>
         </AnimatedContent>
+        <ThemeToggle />
         {/* Mobile hamburger */}
         <button
           className="r-mobile-toggle"
@@ -275,11 +299,12 @@ function App() {
             {label}
           </a>
         ))}
+        <ThemeToggle mobile />
       </nav>
 
       <main>
         {/* Hero Section */}
-        <section className="r-hero">
+        <section id="home" className="r-hero">
           {/* Left Content Area */}
           <div className="r-left">
             <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.2}>
@@ -456,23 +481,23 @@ function App() {
             <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
               <InfiniteSpiral
                 items={[
-                  { node: <SiReact size={70} color="#c6c1b9" /> },
-                  { node: <SiTypescript size={70} color="#c6c1b9" /> },
-                  { node: <SiArchlinux size={70} color="#c6c1b9" /> },
-                  { node: <SiDocker size={70} color="#c6c1b9" /> },
-                  { node: <SiGithub size={70} color="#c6c1b9" /> },
-                  { node: <SiSpring size={70} color="#c6c1b9" /> },
-                  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="50%" y="50%" font-family="Playfair Display, serif" font-size="22.5" font-weight="600" fill="%23c6c1b9" text-anchor="middle" dominant-baseline="central">水</text></svg>',
-                  { node: <SiNodedotjs size={70} color="#c6c1b9" /> },
-                  { node: <SiExpress size={70} color="#c6c1b9" /> },
-                  { node: <SiMongodb size={70} color="#c6c1b9" /> },
-                  { node: <SiPostgresql size={70} color="#c6c1b9" /> },
-                  { node: <SiGit size={70} color="#c6c1b9" /> },
-                  { node: <SiLinux size={70} color="#c6c1b9" /> },
-                  { node: <SiJavascript size={70} color="#c6c1b9" /> },
-                  { node: <SiHtml5 size={70} color="#c6c1b9" /> },
-                  { node: <SiCss size={70} color="#c6c1b9" /> },
-                  { node: <SiPython size={70} color="#c6c1b9" /> }
+                  { node: <SiReact size={70} color="var(--color-icon)" /> },
+                  { node: <SiTypescript size={70} color="var(--color-icon)" /> },
+                  { node: <SiArchlinux size={70} color="var(--color-icon)" /> },
+                  { node: <SiDocker size={70} color="var(--color-icon)" /> },
+                  { node: <SiGithub size={70} color="var(--color-icon)" /> },
+                  { node: <SiSpring size={70} color="var(--color-icon)" /> },
+                  { node: <span className="r-watermark-icon">水</span> },
+                  { node: <SiNodedotjs size={70} color="var(--color-icon)" /> },
+                  { node: <SiExpress size={70} color="var(--color-icon)" /> },
+                  { node: <SiMongodb size={70} color="var(--color-icon)" /> },
+                  { node: <SiPostgresql size={70} color="var(--color-icon)" /> },
+                  { node: <SiGit size={70} color="var(--color-icon)" /> },
+                  { node: <SiLinux size={70} color="var(--color-icon)" /> },
+                  { node: <SiJavascript size={70} color="var(--color-icon)" /> },
+                  { node: <SiHtml5 size={70} color="var(--color-icon)" /> },
+                  { node: <SiCss size={70} color="var(--color-icon)" /> },
+                  { node: <SiPython size={70} color="var(--color-icon)" /> }
                 ]}
                 speed={0.3}
                 direction="up"
@@ -505,15 +530,15 @@ function App() {
           <Suspense fallback={<div style={{ height: '48px', width: '100%' }}></div>}>
             <LogoLoop
               logos={[
-                { node: <SiVercel size={48} color="#c6c1b9" />, alt: 'Vercel', title: 'Vercel' },
-                { node: <SiGithub size={48} color="#c6c1b9" />, alt: 'GitHub', title: 'GitHub' },
-                { node: <SiDocker size={48} color="#c6c1b9" />, alt: 'Docker', title: 'Docker' },
-                { node: <SiPrisma size={48} color="#c6c1b9" />, alt: 'Prisma', title: 'Prisma' },
-                { node: <SiSupabase size={48} color="#c6c1b9" />, alt: 'Supabase', title: 'Supabase' },
-                { node: <SiStripe size={48} color="#c6c1b9" />, alt: 'Stripe', title: 'Stripe' },
-                { node: <SiReact size={48} color="#c6c1b9" />, alt: 'React', title: 'React' },
-                { node: <SiNextdotjs size={48} color="#c6c1b9" />, alt: 'Next.js', title: 'Next.js' },
-                { node: <SiTypescript size={48} color="#c6c1b9" />, alt: 'TypeScript', title: 'TypeScript' }
+                { node: <SiVercel size={48} color="var(--color-icon)" />, alt: 'Vercel', title: 'Vercel' },
+                { node: <SiGithub size={48} color="var(--color-icon)" />, alt: 'GitHub', title: 'GitHub' },
+                { node: <SiDocker size={48} color="var(--color-icon)" />, alt: 'Docker', title: 'Docker' },
+                { node: <SiPrisma size={48} color="var(--color-icon)" />, alt: 'Prisma', title: 'Prisma' },
+                { node: <SiSupabase size={48} color="var(--color-icon)" />, alt: 'Supabase', title: 'Supabase' },
+                { node: <SiStripe size={48} color="var(--color-icon)" />, alt: 'Stripe', title: 'Stripe' },
+                { node: <SiReact size={48} color="var(--color-icon)" />, alt: 'React', title: 'React' },
+                { node: <SiNextdotjs size={48} color="var(--color-icon)" />, alt: 'Next.js', title: 'Next.js' },
+                { node: <SiTypescript size={48} color="var(--color-icon)" />, alt: 'TypeScript', title: 'TypeScript' }
               ]}
               speed={40}
               direction="left"
@@ -537,25 +562,25 @@ function App() {
               </div>
               
               <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '550px' }}>
-                <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.8rem', fontWeight: 400, lineHeight: 1.1, color: '#d4cebd', letterSpacing: '-0.02em', margin: 0 }}>
+                <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.8rem', fontWeight: 400, lineHeight: 1.1, color: 'var(--color-text)', letterSpacing: '-0.02em', margin: 0 }}>
                   This is a public beta.<br />It shows its cracks.
                 </h2>
-                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', lineHeight: 1.6, color: '#666459', margin: 0 }}>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--color-muted)', margin: 0 }}>
                   Unfinished on purpose, in the open. You are seeing<br/>
                   Ryoku while it is still being built, not a frozen release.
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem' }}>
-                  <div style={{ backgroundColor: '#d4cebd', color: '#121212', padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>
-                    <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: '#121212', borderRadius: '50%' }}></span>
+                  <div style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-accent-contrast)', padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>
+                    <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-accent-contrast)', borderRadius: '50%' }}></span>
                     BETA - v0.48.0-beta.18
                   </div>
-                  <span style={{ fontSize: '0.8rem', color: '#666459', fontFamily: 'JetBrains Mono, monospace' }}>tracked live from GitHub</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontFamily: 'JetBrains Mono, monospace' }}>tracked live from GitHub</span>
                 </div>
               </div>
             </div>
 
             <div className="r-status-image-container" style={{ position: 'relative', width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <BorderGlow borderRadius={210} backgroundColor="#121212" className="carousel-border-glow" autoAnimate={true}>
+              <BorderGlow borderRadius={210} className="carousel-border-glow" autoAnimate={true}>
                 <LazyErrorBoundary>
                 <Suspense fallback={<div style={{ width: 420, height: 420, borderRadius: '50%' }}></div>}>
                   <Carousel
@@ -575,11 +600,11 @@ function App() {
 
           <div className="r-skills-content" style={{ width: '100%', maxWidth: 'none', marginLeft: 0 }}>
             <h2 className="r-section-heading">SKILLS</h2>
-            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.5rem', fontWeight: 400, marginBottom: '3rem', letterSpacing: '-0.02em', color: '#d4cebd', marginTop: '1rem' }}>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.5rem', fontWeight: 400, marginBottom: '3rem', letterSpacing: '-0.02em', color: 'var(--color-text)', marginTop: '1rem' }}>
               Technical Arsenal
             </h3>
             <div className="r-skills-grid">
-              <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
+              <BorderGlow className="r-skill-category" borderRadius={12}>
                 <h3><span className="r-pulse"></span>LANGUAGES</h3>
                 <div className="r-skill-list r-skill-logos">
                   <span><SiJavascript size={20} style={{ marginRight: '8px' }} /> JavaScript</span>
@@ -588,7 +613,7 @@ function App() {
                   <span><SiPostgresql size={20} style={{ marginRight: '8px' }} /> SQL</span>
                 </div>
               </BorderGlow>
-              <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
+              <BorderGlow className="r-skill-category" borderRadius={12}>
                 <h3><span className="r-pulse-red"></span>FRAMEWORKS</h3>
                 <div className="r-skill-list r-skill-logos">
                   <span><SiSpringboot size={20} style={{ marginRight: '8px' }} /> Spring Boot</span>
@@ -596,7 +621,7 @@ function App() {
                   <span><SiNodedotjs size={20} style={{ marginRight: '8px' }} /> Node.js</span>
                 </div>
               </BorderGlow>
-              <BorderGlow className="r-skill-category" backgroundColor="#121212" borderRadius={12}>
+              <BorderGlow className="r-skill-category" borderRadius={12}>
                 <h3><span className="r-pulse-blue"></span>TOOLS & PLATFORMS</h3>
                 <div className="r-skill-list r-skill-logos">
                   <span><SiGit size={20} style={{ marginRight: '8px' }} /> Git/GitHub</span>
@@ -686,7 +711,7 @@ function App() {
                 {certificateItems.filter(c => c.wallPosition === 'anchor-left').map((cert, index) => (
                   <div key={index} className="r-cert-frame r-cert-frame--anchor-left" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
                     <AnimatedContent distance={20} direction="vertical" duration={0.6} threshold={0.2}>
-                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                      <BorderGlow borderRadius={8} className="r-cert-card">
                         <div className="r-cert-card__matting">
                           <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
                         </div>
@@ -705,7 +730,7 @@ function App() {
                 {certificateItems.filter(c => c.wallPosition === 'middle').map((cert, index) => (
                   <div key={index} className="r-cert-frame r-cert-frame--middle" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
                     <AnimatedContent distance={30} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
-                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                      <BorderGlow borderRadius={8} className="r-cert-card">
                         <div className="r-cert-card__matting">
                           <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
                         </div>
@@ -724,7 +749,7 @@ function App() {
                 {certificateItems.filter(c => c.wallPosition === 'anchor-right').map((cert, index) => (
                   <div key={index} className="r-cert-frame r-cert-frame--anchor-right" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
                     <AnimatedContent distance={20} direction="vertical" duration={0.6} threshold={0.2}>
-                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                      <BorderGlow borderRadius={8} className="r-cert-card">
                         <div className="r-cert-card__matting">
                           <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
                         </div>
@@ -743,7 +768,7 @@ function App() {
                 {certificateItems.filter(c => c.wallPosition === 'bottom').map((cert, index) => (
                   <div key={index} className="r-cert-frame r-cert-frame--bottom" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
                     <AnimatedContent distance={40} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
-                      <BorderGlow borderRadius={8} backgroundColor="#1e1e1e" className="r-cert-card">
+                      <BorderGlow borderRadius={8} className="r-cert-card">
                         <div className="r-cert-card__matting">
                           <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="lazy" className="r-cert-card__img" />
                         </div>
@@ -760,10 +785,10 @@ function App() {
           </div>
           
           <div className="r-achievements-text-list" style={{ marginTop: '5rem', padding: '0 2rem' }}>
-            <h3 className="r-projects-title" style={{ fontSize: '2rem', marginBottom: '1.5rem', color: '#d4cebd', fontFamily: 'Playfair Display, serif', fontWeight: 400 }}>Other Achievements</h3>
-            <ul style={{ color: '#d4cebd', fontSize: '1.1rem', lineHeight: '1.8', fontFamily: 'Inter, sans-serif', paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <li><strong>Omarchy</strong> — open-source system-stats plugin contribution (Live) <span style={{ color: '#666459', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Aug 2026</span></li>
-              <li><strong>GitHub Achievements</strong> — YOLO, Quickdraw, Pair Extraordinaire, Pull Shark <span style={{ color: '#666459', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Jan 2026 – Aug 2026</span></li>
+            <h3 className="r-projects-title" style={{ fontSize: '2rem', marginBottom: '1.5rem', color: 'var(--color-text)', fontFamily: 'Playfair Display, serif', fontWeight: 400 }}>Other Achievements</h3>
+            <ul style={{ color: 'var(--color-text)', fontSize: '1.1rem', lineHeight: '1.8', fontFamily: 'Inter, sans-serif', paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <li><strong>Omarchy</strong> — open-source system-stats plugin contribution (Live) <span style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Aug 2026</span></li>
+              <li><strong>GitHub Achievements</strong> — YOLO, Quickdraw, Pair Extraordinaire, Pull Shark <span style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Jan 2026 – Aug 2026</span></li>
             </ul>
           </div>
           </div>
@@ -784,7 +809,7 @@ function App() {
 
           <div className="r-timeline">
             <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2}>
-              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12}>
+              <BorderGlow className="r-timeline-item" borderRadius={12}>
                 <div className="r-timeline-meta">Aug 2024 — Present</div>
                 <div className="r-timeline-content">
                   <h4>Bachelor of Technology in Computer Science</h4>
@@ -793,7 +818,7 @@ function App() {
               </BorderGlow>
             </AnimatedContent>
             <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.1}>
-              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12} style={{ marginTop: '2rem' }}>
+              <BorderGlow className="r-timeline-item" borderRadius={12}>
                 <div className="r-timeline-meta">Mar 2022 — May 2024</div>
                 <div className="r-timeline-content">
                   <h4>Senior Secondary (12th)</h4>
@@ -802,7 +827,7 @@ function App() {
               </BorderGlow>
             </AnimatedContent>
             <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.2}>
-              <BorderGlow className="r-timeline-item" backgroundColor="#121212" borderRadius={12} style={{ marginTop: '2rem' }}>
+              <BorderGlow className="r-timeline-item" borderRadius={12}>
                 <div className="r-timeline-meta">Mar 2021 — May 2022</div>
                 <div className="r-timeline-content">
                   <h4>Matriculation (10th)</h4>

@@ -32,6 +32,7 @@
 - 🎢 **Smooth Scrolling**: Implemented using [Lenis](https://lenis.darkroom.engineering/) for a fluid, premium browsing experience.
 - 🎞️ **Advanced Animations**: Complex scroll-driven animations and interactions powered by GSAP and Motion.
 - 🧱 **Responsive Design**: Fully optimized for desktop, tablet, and mobile devices with a flexible CSS grid architecture.
+- ☀️ **Warm Light Theme**: Accessible sun/moon theme switching with local preference persistence, system-theme detection, and theme-aware canvas effects while preserving the Ryoku dark theme.
 
 ---
 

@@ -63,14 +63,14 @@ const BorderGlow = ({
   className = '',
   edgeSensitivity = 30,
   glowColor = '40 80 80',
-  backgroundColor = '#120F17',
+  backgroundColor = 'var(--color-surface)',
   borderRadius = 28,
   glowRadius = 40,
   glowIntensity = 1.0,
   coneSpread = 25,
   animated = true,
   autoAnimate = false,
-  colors = ['#101010ff', '#c6c1b9', '#ffffffff'],
+  colors,
   fillOpacity = 0.5,
 }) => {
   const cardRef = useRef(null);
@@ -214,7 +214,13 @@ const BorderGlow = ({
   }, [animated, autoAnimate]);
 
   const glowVars = buildGlowVars(glowColor, glowIntensity);
-  const lightSurface = isLightColor(backgroundColor);
+  const isLightTheme = typeof document !== 'undefined' && document.documentElement.dataset.theme === 'light';
+  const gradientColors = colors || (
+    isLightTheme
+      ? ['#d7c9b5', '#8e7356', '#fffaf2']
+      : ['#101010ff', '#c6c1b9', '#ffffffff']
+  );
+  const lightSurface = isLightTheme || isLightColor(backgroundColor);
 
   return (
     <div
@@ -229,7 +235,7 @@ const BorderGlow = ({
         '--cone-spread': coneSpread,
         '--fill-opacity': fillOpacity,
         ...glowVars,
-        ...buildGradientVars(colors),
+        ...buildGradientVars(gradientColors),
       }}
     >
       <span className="edge-light" />
