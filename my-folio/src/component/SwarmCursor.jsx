@@ -1,8 +1,15 @@
 import { useEffect, useRef } from 'react';
+import { useTheme } from '../theme.jsx';
+
+const resolveCssColor = (value) => (
+  value?.startsWith('var(') && typeof document !== 'undefined'
+    ? getComputedStyle(document.documentElement).getPropertyValue(value.slice(4, -1).trim()).trim()
+    : value
+);
 
 const SwarmCursor = ({
-  color = '#d3cebd',
-  accentColor = '#d3cebd',
+  color = 'var(--color-accent)',
+  accentColor = 'var(--color-accent)',
   count = 5,
   size = 5,
   opacity = 1,
@@ -18,6 +25,8 @@ const SwarmCursor = ({
   className = '',
   children
 }) => {
+  const themeContext = useTheme();
+  const theme = themeContext?.theme;
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const mouseRef = useRef({ 
@@ -52,7 +61,7 @@ const SwarmCursor = ({
       height = rect.height;
       canvas.width = width;
       canvas.height = height;
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = resolveCssColor('var(--color-canvas-clear)');
       ctx.fillRect(0, 0, width, height);
 
       if (!mouseRef.current.isActive) {
@@ -88,7 +97,8 @@ const SwarmCursor = ({
 
     // Pre-parse colors to avoid doing it in the loop
     const parseHex = (hexCode) => {
-      const h = hexCode.replace('#', '');
+      const resolved = resolveCssColor(hexCode);
+      const h = resolved.replace('#', '');
       return {
         r: parseInt(h.substring(0, 2), 16),
         g: parseInt(h.substring(2, 4), 16),
@@ -113,7 +123,7 @@ const SwarmCursor = ({
     const update = () => {
       // Premium Fade Trail: 
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `rgba(0, 0, 0, ${1 - trail})`;
+      ctx.fillStyle = `rgba(${getComputedStyle(document.documentElement).getPropertyValue('--color-canvas-trail-rgb')}, ${1 - trail})`;
       ctx.fillRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'lighter';
 
@@ -253,7 +263,7 @@ const SwarmCursor = ({
   }, [
     color, accentColor, count, size, opacity, speed, 
     merge, spread, wander, glow, separation, trail, 
-    scatterOnClick, enabled
+    scatterOnClick,     enabled, theme
   ]);
 
   if (!enabled) return null;
@@ -271,7 +281,7 @@ const SwarmCursor = ({
           height: '100%',
           pointerEvents: 'none',
           zIndex: 0,
-          mixBlendMode: 'screen'
+          mixBlendMode: 'var(--color-canvas-blend)'
         }}
       />
       <div style={{ position: 'relative', zIndex: 1 }}>

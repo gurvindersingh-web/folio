@@ -1,7 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react';
 
 const ClickSpark = ({
-  sparkColor = '#fff',
+  sparkColor = 'var(--color-text-strong)',
   sparkSize = 10,
   sparkRadius = 15,
   sparkCount = 8,
@@ -14,6 +14,11 @@ const ClickSpark = ({
   const canvasRef = useRef(null);
   const sparksRef = useRef([]);
   const animationIdRef = useRef(null);
+  const resolveSparkColor = useCallback(() => (
+    sparkColor?.startsWith('var(') && typeof document !== 'undefined'
+      ? getComputedStyle(document.documentElement).getPropertyValue(sparkColor.slice(4, -1).trim()).trim()
+      : sparkColor
+  ), [sparkColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,7 +86,7 @@ const ClickSpark = ({
       const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
       const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
 
-      ctx.strokeStyle = sparkColor;
+      ctx.strokeStyle = resolveSparkColor();
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -96,7 +101,7 @@ const ClickSpark = ({
     } else {
       animationIdRef.current = null;
     }
-  }, [sparkColor, sparkSize, sparkRadius, duration, easeFunc, extraScale]);
+  }, [sparkSize, sparkRadius, duration, easeFunc, extraScale, resolveSparkColor]);
 
   useEffect(() => {
     return () => {

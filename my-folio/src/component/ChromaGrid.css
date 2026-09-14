@@ -19,8 +19,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--card-bg, #1a1a1a);
-  border: 1px solid var(--card-border, #333);
+  background: var(--card-bg, var(--color-surface-elevated));
+  border: 1px solid var(--card-border, var(--color-border));
   border-radius: 12px;
   overflow: hidden;
   transition: border-color 0.3s ease;
@@ -68,7 +68,7 @@
   position: relative;
   z-index: 1;
   padding: 1.5rem;
-  color: #fff;
+  color: var(--color-text-strong);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -79,12 +79,12 @@
   font-size: 1.875rem;
   font-weight: 400;
   margin: 0;
-  color: #d4cebd;
+  color: var(--color-text);
 }
 
 .chroma-info .role {
   font-family: 'Inter', sans-serif;
-  color: #8c897d;
+  color: var(--color-muted-strong);
   font-size: 1.1875rem;
   line-height: 1.5;
   margin: 0;
@@ -102,9 +102,9 @@
   font-size: 0.9375rem;
   padding: 0.3rem 0.6rem;
   background: transparent;
-  border: 1px solid rgba(212, 206, 189, 0.2);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
-  color: #8c897d;
+  color: var(--color-muted-strong);
 }
 
 .chroma-overlay {

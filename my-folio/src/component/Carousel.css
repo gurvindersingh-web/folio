@@ -1,7 +1,7 @@
 .carousel-container {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(212, 206, 189, 0.05);
+  border: 1px solid var(--border-faint);
   border-radius: 24px;
   padding: 16px;
   --outer-r: 24px;
@@ -19,9 +19,9 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  border: 1px solid rgba(212, 206, 189, 0.05);
+  border: 1px solid var(--border-faint);
   border-radius: calc(var(--outer-r) - var(--p-distance));
-  background-color: rgba(212, 206, 189, 0.02);
+  background-color: var(--surface-tint);
   overflow: hidden;
   cursor: grab;
 }
@@ -37,7 +37,7 @@
 }
 
 .carousel-item.round {
-  background-color: rgba(212, 206, 189, 0.02);
+  background-color: var(--surface-tint);
   position: relative;
   justify-content: center;
   align-items: center;
@@ -58,11 +58,11 @@
 }
 
 .carousel-indicator.active {
-  background-color: #333333;
+  background-color: var(--color-border-strong);
 }
 
 .carousel-indicator.inactive {
-  background-color: rgba(51, 51, 51, 0.4);
+  background-color: var(--border-accent);
 }
 
 .carousel-item-header {
@@ -78,14 +78,14 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: #1e1e1e;
-  border: 1px solid rgba(212, 206, 189, 0.1);
+  background-color: var(--color-bg);
+  border: 1px solid var(--border-subtle);
 }
 
 .carousel-icon {
   height: 18px;
   width: 18px;
-  color: #d4cebd;
+  color: var(--color-text);
 }
 
 .carousel-item-content {
@@ -97,7 +97,7 @@
   margin-bottom: 6px;
   font-weight: 600;
   font-size: 1.25rem;
-  color: #666459;
+  color: var(--color-muted);
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -105,7 +105,7 @@
 
 .carousel-item-description {
   font-size: 1.1875rem;
-  color: #d4cebd;
+  color: var(--color-text);
   font-family: 'Inter', sans-serif;
   font-weight: 300;
 }
@@ -136,14 +136,14 @@
 }
 
 .carousel-indicator:focus-visible {
-  outline: 2px solid #666459;
+  outline: 2px solid var(--color-muted);
   outline-offset: 2px;
 }
 
 .carousel-indicator.active {
-  background-color: #666459;
+  background-color: var(--color-muted);
 }
 
 .carousel-indicator.inactive {
-  background-color: rgba(212, 206, 189, 0.1);
+  background-color: var(--border-subtle);
 }

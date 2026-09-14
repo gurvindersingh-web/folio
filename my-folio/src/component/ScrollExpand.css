@@ -52,7 +52,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.1) 45%, rgba(0, 0, 0, 0.35));
+  background: linear-gradient(to top, var(--overlay-modal), transparent 45%, var(--surface-tint-strong));
   opacity: 0;
 }
 
@@ -82,8 +82,8 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
-  color: #fff;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+  color: var(--color-text-strong);
+  text-shadow: 0 2px 24px var(--border-accent);
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -96,7 +96,7 @@
   text-align: center;
   font-size: 1.0156rem;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-muted-strong);
   pointer-events: none;
   will-change: opacity, transform;
 }

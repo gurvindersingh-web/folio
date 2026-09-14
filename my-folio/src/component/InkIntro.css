@@ -56,7 +56,7 @@
 .ink-layer--br {
   /* Fades from bottom right */
   transform: rotate(180deg);
-  background-color: #d3cdbd; /* Child holds the actual background color */
+  background-color: var(--color-intro-ink); /* Child holds the actual background color */
   /* Center of mask at top-left, rotated makes it bottom-right */
   -webkit-mask-position: -100vw -100vh, center; 
   mask-position: -100vw -100vh, center;
@@ -84,14 +84,14 @@
   font-weight: 500;
   line-height: 0.85;
   letter-spacing: -0.04em;
-  color: #121212;
+  color: var(--color-intro-text);
   margin: 0;
 }
 
 .ink-banner .ink-content p {
   font-family: 'JetBrains Mono', monospace;
   font-size: 1.1rem;
-  color: #333333;
+  color: var(--color-intro-muted);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-top: 1.5rem;

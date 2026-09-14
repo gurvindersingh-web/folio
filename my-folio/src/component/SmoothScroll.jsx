@@ -122,6 +122,7 @@ const SmoothScroll = ({ children }) => {
     let disposed = false;
     let lenis;
     let gsap;
+    let scrollTrigger;
     let onTick;
     let handleVisibilityChange;
     let handleChange;
@@ -133,7 +134,9 @@ const SmoothScroll = ({ children }) => {
     ]).then(([{ default: Lenis }, { gsap: loadedGsap }, { ScrollTrigger }]) => {
       if (disposed) return;
       gsap = loadedGsap;
+      scrollTrigger = ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
+      window.__portfolioScrollTrigger = ScrollTrigger;
       lenis = new Lenis({
         duration: 1.05,
         lerp: 0.1,
@@ -168,6 +171,7 @@ const SmoothScroll = ({ children }) => {
       if (handleChange) motionQuery.removeEventListener('change', handleChange);
       if (handleVisibilityChange) document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (gsap && onTick) gsap.ticker.remove(onTick);
+      if (window.__portfolioScrollTrigger === scrollTrigger) window.__portfolioScrollTrigger = null;
       if (lenisInstance === lenis) lenisInstance = null;
       lenis?.destroy();
     };

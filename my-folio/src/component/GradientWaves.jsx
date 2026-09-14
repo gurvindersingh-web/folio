@@ -1,8 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 import './GradientWaves.css';
+import { useTheme } from '../theme.jsx';
 
-const hexToRgb = hex => {
+const resolveCssColor = color => {
+  if (!color?.startsWith('var(') || typeof document === 'undefined') return color;
+  return getComputedStyle(document.documentElement).getPropertyValue(color.slice(4, -1).trim()).trim();
+};
+
+const hexToRgb = value => {
+  const hex = resolveCssColor(value);
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return [1, 1, 1];
   return [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255];
@@ -151,6 +158,8 @@ const GradientWaves = ({
   grainIntensity = 0.05,
   className = ''
 }) => {
+  const themeContext = useTheme();
+  const theme = themeContext?.theme;
   const containerRef = useRef(null);
   const enableMouseRef = useRef(mouseInteraction);
 
@@ -359,7 +368,8 @@ const GradientWaves = ({
     grain,
     grainIntensity,
     mouseInteraction,
-    parallaxStrength
+    parallaxStrength,
+    theme
   ]);
 
   return <div ref={containerRef} className={`gradient-waves-container ${className}`.trim()} />;
