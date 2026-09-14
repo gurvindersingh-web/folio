@@ -96,15 +96,17 @@
 .carousel-item-title {
   margin-bottom: 6px;
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: var(--type-subheading-size);
+  line-height: var(--type-subheading-leading);
   color: var(--color-muted);
   font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--type-subheading-tracking);
   text-transform: uppercase;
 }
 
 .carousel-item-description {
-  font-size: 1.1875rem;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
   color: var(--color-text);
   font-family: 'Inter', sans-serif;
   font-weight: 300;
