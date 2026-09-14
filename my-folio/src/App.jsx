@@ -9,7 +9,7 @@ import InkIntro from './component/InkIntro.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from './theme.jsx';
 import {
-  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiTailwindcss, SiQt, SiSpringboot, SiKubernetes, SiCloudflare, SiN8N
+  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N
 } from 'react-icons/si';
 
 // Error boundary for lazy-loaded components
@@ -168,7 +168,6 @@ function App() {
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [introComplete, setIntroComplete] = useState(false);
   const [showInkIntro, setShowInkIntro] = useState(true);
   const [lightboxCert, setLightboxCert] = useState(null);
   const [activeSection, setActiveSection] = useState('');
