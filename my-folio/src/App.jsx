@@ -93,6 +93,14 @@ const ThemeToggle = ({ mobile = false }) => {
 
 function App() {
   const { theme } = useTheme();
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      window.__portfolioScrollTrigger?.refresh?.();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   const projects = [
     {
       title: "Star Wars Text-Based RPG Battle Engine",
@@ -123,7 +131,7 @@ function App() {
       description: "Built a Python/Scapy deauthentication-attack detector using a 7-signal heuristic engine with EMA-based adaptive baselines to flag anomalous Wi-Fi traffic. Added NVIDIA NIM-based AI classification exposed through FastAPI endpoints. Automated alerting with n8n cloud workflows.",
       stack: ["Python", "Scapy", "FastAPI", "React", "Docker"],
       image: "/imgs/omarchy.png",
-      video: "", 
+      video: "/videos/omarchy.mp4",
       link: "https://github.com/gurvindersingh-web",
       year: "Mar 2026",
       role: "Full-Stack",
@@ -205,13 +213,13 @@ function App() {
 
     const updateActiveSection = () => {
       ticking = false;
-      const line = (document.querySelector('.r-header')?.offsetHeight ?? 88) + 80; // Matches smooth scroll offset
+      const line = (document.querySelector('.r-header')?.offsetHeight ?? 88) + 64;
       let current = '';
       for (const { id } of NAV_ITEMS) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
-      setActiveSection(current);
+      setActiveSection((previous) => previous === current ? previous : current);
     };
 
     const onScroll = () => {
@@ -221,8 +229,14 @@ function App() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('portfolio-scroll', onScroll);
+    window.addEventListener('resize', onScroll, { passive: true });
     updateActiveSection();
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('portfolio-scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   return (
@@ -240,12 +254,12 @@ function App() {
 
       {/* Header */}
       <header className="r-header">
-        <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0}>
+        <AnimatedContent className="r-header-logo-slot" eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0}>
           <div className="r-logo">
             <span className="r-logo-icon">水</span> Gurvinder Singh
           </div>
         </AnimatedContent>
-        <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
+        <AnimatedContent className="r-header-nav-slot" eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
           <nav className="r-nav" aria-label="Main navigation">
             {NAV_ITEMS.map(({ href, id, label }) => (
               <a
@@ -263,22 +277,24 @@ function App() {
             ))}
           </nav>
         </AnimatedContent>
-        <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-version" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <span className="r-pulse" style={{ margin: 0 }}></span> OPEN FOR WORK
-          </a>
-        </AnimatedContent>
-        <ThemeToggle />
-        {/* Mobile hamburger */}
-        <button
-          className="r-mobile-toggle"
-          onClick={toggleMobileNav}
-          aria-expanded={mobileNavOpen}
-          aria-controls="mobile-nav"
-          aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
-        >
-          {mobileNavOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-        </button>
+        <div className="r-header-actions-slot">
+          <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-version" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <span className="r-pulse" style={{ margin: 0 }}></span> OPEN FOR WORK
+            </a>
+          </AnimatedContent>
+          <ThemeToggle />
+          {/* Mobile hamburger */}
+          <button
+            className="r-mobile-toggle"
+            onClick={toggleMobileNav}
+            aria-expanded={mobileNavOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
+          >
+            {mobileNavOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile nav overlay */}
@@ -561,19 +577,19 @@ function App() {
               </div>
               
               <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '550px' }}>
-                <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.8rem', fontWeight: 400, lineHeight: 1.1, color: 'var(--color-text)', letterSpacing: '-0.02em', margin: 0 }}>
+                <h2 className="r-skills-intro-heading type-title">
                   This is a public beta.<br />It shows its cracks.
                 </h2>
-                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--color-muted)', margin: 0 }}>
+                <p className="r-skills-intro-copy type-body-lg">
                   Unfinished on purpose, in the open. You are seeing<br/>
                   Ryoku while it is still being built, not a frozen release.
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem' }}>
-                  <div style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-accent-contrast)', padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div className="r-beta-badge type-label">
                     <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-accent-contrast)', borderRadius: '50%' }}></span>
                     BETA - v0.48.0-beta.18
                   </div>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontFamily: 'JetBrains Mono, monospace' }}>tracked live from GitHub</span>
+                  <span className="r-beta-note type-label">tracked live from GitHub</span>
                 </div>
               </div>
             </div>
@@ -599,7 +615,7 @@ function App() {
 
           <div className="r-skills-content" style={{ width: '100%', maxWidth: 'none', marginLeft: 0 }}>
             <h2 className="r-section-heading">SKILLS</h2>
-            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '3.5rem', fontWeight: 400, marginBottom: '3rem', letterSpacing: '-0.02em', color: 'var(--color-text)', marginTop: '1rem' }}>
+            <h3 className="r-arsenal-title type-heading">
               Technical Arsenal
             </h3>
             <div className="r-skills-grid">
@@ -784,10 +800,10 @@ function App() {
           </div>
           
           <div className="r-achievements-text-list" style={{ marginTop: '5rem', padding: '0 2rem' }}>
-            <h3 className="r-projects-title" style={{ fontSize: '2rem', marginBottom: '1.5rem', color: 'var(--color-text)', fontFamily: 'Playfair Display, serif', fontWeight: 400 }}>Other Achievements</h3>
-            <ul style={{ color: 'var(--color-text)', fontSize: '1.1rem', lineHeight: '1.8', fontFamily: 'Inter, sans-serif', paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <li><strong>Omarchy</strong> — open-source system-stats plugin contribution (Live) <span style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Aug 2026</span></li>
-              <li><strong>GitHub Achievements</strong> — YOLO, Quickdraw, Pair Extraordinaire, Pull Shark <span style={{ color: 'var(--color-muted)', fontSize: '0.9rem', marginLeft: '0.5rem', fontFamily: 'JetBrains Mono, monospace' }}>Jan 2026 – Aug 2026</span></li>
+            <h3 className="r-achievements-list-title type-heading">Other Achievements</h3>
+            <ul className="r-achievements-list type-body">
+              <li><strong>Omarchy</strong> — open-source system-stats plugin contribution (Live) <span className="r-achievements-date type-label">Aug 2026</span></li>
+              <li><strong>GitHub Achievements</strong> — YOLO, Quickdraw, Pair Extraordinaire, Pull Shark <span className="r-achievements-date type-label">Jan 2026 – Aug 2026</span></li>
             </ul>
           </div>
           </div>

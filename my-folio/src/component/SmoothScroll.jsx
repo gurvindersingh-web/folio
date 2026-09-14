@@ -147,7 +147,10 @@ const SmoothScroll = ({ children }) => {
       });
       lenisInstance = lenis;
 
-      lenis.on('scroll', ScrollTrigger.update);
+      lenis.on('scroll', (event) => {
+        ScrollTrigger.update(event);
+        window.dispatchEvent(new CustomEvent('portfolio-scroll'));
+      });
       onTick = (time) => lenis.raf(time * 1000);
       gsap.ticker.add(onTick);
       gsap.ticker.lagSmoothing(0);

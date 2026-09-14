@@ -80,29 +80,27 @@
 
 .ink-banner .ink-content .ink-title {
   font-family: 'Playfair Display', serif;
-  font-size: 11em;
+  font-size: var(--type-display-size);
   font-weight: 500;
-  line-height: 0.85;
-  letter-spacing: -0.04em;
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
   color: var(--color-intro-text);
   margin: 0;
 }
 
 .ink-banner .ink-content p {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1.1rem;
+  font-size: var(--type-label-wide-size);
+  line-height: var(--type-label-wide-leading);
   color: var(--color-intro-muted);
-  letter-spacing: 0.1em;
+  letter-spacing: var(--type-label-wide-tracking);
   text-transform: uppercase;
   margin-top: 1.5rem;
   font-weight: 600;
 }
 
 @media (max-width: 768px) {
-  .ink-banner .ink-content .ink-title {
-    font-size: 5em;
-  }
   .ink-banner .ink-content p {
-    font-size: 0.9rem;
+    font-size: var(--type-label-wide-size);
   }
 }

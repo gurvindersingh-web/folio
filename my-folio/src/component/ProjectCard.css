@@ -194,8 +194,9 @@
   align-items: center;
   gap: 0.55rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7812rem;
-  letter-spacing: 0.22em;
+  font-size: var(--type-label-wide-size);
+  line-height: var(--type-label-wide-leading);
+  letter-spacing: var(--type-label-wide-tracking);
   text-transform: uppercase;
   color: var(--color-muted);
 }
@@ -206,20 +207,20 @@
 
 .project-card__title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  font-size: var(--type-title-size);
   font-weight: 400;
   color: var(--color-text);
-  letter-spacing: -0.03em;
+  letter-spacing: var(--type-title-tracking);
   margin: 0;
-  line-height: 1.08;
+  line-height: var(--type-title-leading);
   overflow-wrap: break-word;
   word-break: break-word;
 }
 
 .project-card__description {
   font-family: 'Inter', sans-serif;
-  font-size: 1.3125rem;
-  line-height: 1.7;
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-leading);
   color: var(--color-muted-strong);
   margin: 0;
   max-width: 38rem;
@@ -242,8 +243,9 @@
 
 .project-card__stack-item {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875rem;
-  letter-spacing: 0.08em;
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-leading);
+  letter-spacing: var(--type-label-tracking);
   padding: 0.38rem 0.7rem;
   color: var(--color-text);
   border: 1px solid var(--border-subtle);
@@ -264,8 +266,9 @@
   color: var(--color-text);
   text-decoration: none;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
-  letter-spacing: 0.16em;
+  font-size: var(--type-label-wide-size);
+  line-height: var(--type-label-wide-leading);
+  letter-spacing: var(--type-label-wide-tracking);
   text-transform: uppercase;
   padding: 0.7rem 1rem;
   border: 1px solid var(--border-subtle);
@@ -329,13 +332,6 @@
     transform: none;
   }
 
-  .project-card__title {
-    font-size: 2.6875rem;
-  }
-
-  .project-card__description {
-    font-size: 1.225rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
