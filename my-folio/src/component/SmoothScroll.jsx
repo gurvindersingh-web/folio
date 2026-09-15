@@ -5,7 +5,7 @@ let revealTimer = 0;
 
 function headerOffset() {
   const header = document.querySelector('.r-header');
-  return -(header?.offsetHeight ?? 88) - 64; // Increased offset for perfect alignment
+  return -(header?.getBoundingClientRect().height ?? 88);
 }
 
 function prefersReducedMotion() {
