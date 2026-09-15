@@ -5,6 +5,7 @@ import { FiGithub, FiArrowUpRight } from 'react-icons/fi';
 const ProjectCard = ({
   title,
   description,
+  impact,
   stack = [],
   image,
   link,
@@ -154,7 +155,15 @@ const ProjectCard = ({
           <span className="project-card__corner project-card__corner--bl">+</span>
           <span className="project-card__corner project-card__corner--br">+</span>
           <div className="project-card__image-clip">
-            <img src={image} alt={title} width="1024" height="507" className="project-card__image" loading="lazy" decoding="async" />
+            <img
+              src={image}
+              alt={title}
+              width="1024"
+              height="507"
+              className={`project-card__image${image.endsWith('.png') ? ' project-card__image--square' : ''}`}
+              loading="lazy"
+              decoding="async"
+            />
             {video && shouldLoadVideo && (
               <video
                 ref={videoRef}
@@ -187,6 +196,10 @@ const ProjectCard = ({
           </div>
           <h3 className="project-card__title">{title}</h3>
           <p className="project-card__description">{description}</p>
+
+          {impact && (
+            <p className="project-card__impact">{impact}</p>
+          )}
 
           {specs.length > 0 && (
             <div className="project-card__specs">

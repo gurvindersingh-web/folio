@@ -105,6 +105,7 @@ function App() {
     {
       title: "Star Wars Text-Based RPG Battle Engine",
       description: "Built a console-based, turn-based RPG battle engine in Java set in the Star Wars universe, with Attack/Defend/Heal actions and a 15% critical-hit system. Implemented dynamic enemy scaling and a level-up system, culminating in a final boss battle. Rendered battles with ASCII art visuals.",
+      impact: "Demonstrates OOP design patterns, state machines, and game-loop architecture in a playable console experience.",
       stack: ["Java", "Maven", "JDK 21", "OOP"],
       image: "/imgs/starwars_rpg.webp",
       video: "/videos/screenrecording-2026-09-11_21-59-54.mp4",
@@ -117,6 +118,7 @@ function App() {
     {
       title: "Dynamic Memory Management Visualiser",
       description: "A futuristic web-based visualizer for OS memory management algorithms. Features real-time simulation of page replacement algorithms, segmentation, virtual memory, dynamic partitioning, and thrashing.",
+      impact: "Turns abstract OS concepts into interactive 3D simulations — used as a study aid by CS students.",
       stack: ["React", "Vite", "GSAP", "Framer Motion", "Three.js", "Tailwind CSS"],
       image: "/imgs/dynamic_memory.webp",
       video: "/videos/screenrecording-2026-09-04_22-01-08.mp4",
@@ -127,15 +129,16 @@ function App() {
       status: "Public"
     },
     {
-      title: "Wi-Fi Deauthentication Attack Detector",
-      description: "Built a Python/Scapy deauthentication-attack detector using a 7-signal heuristic engine with EMA-based adaptive baselines to flag anomalous Wi-Fi traffic. Added NVIDIA NIM-based AI classification exposed through FastAPI endpoints. Automated alerting with n8n cloud workflows.",
-      stack: ["Python", "Scapy", "FastAPI", "React", "Docker"],
+      title: "Omarchy System Stats Widget",
+      description: "A responsive Waybar-style system stats widget for Linux desktop environments built as an open-source plugin for the Omarchy rice. Displays real-time CPU, memory, disk, and network metrics with a minimal, glanceable interface.",
+      impact: "Contributed to the Omarchy open-source ecosystem — live plugin used by the community.",
+      stack: ["Bash", "Python", "CSS", "Linux", "Waybar"],
       image: "/imgs/omarchy.png",
       video: "/videos/omarchy.mp4",
       link: "https://github.com/gurvindersingh-web",
-      year: "Mar 2026",
-      role: "Full-Stack",
-      engine: "NVIDIA NIM",
+      year: "Aug 2026",
+      role: "Contributor",
+      engine: "Waybar / Hyprland",
       status: "Public"
     }
   ];
@@ -213,11 +216,14 @@ function App() {
 
     const updateActiveSection = () => {
       ticking = false;
-      const line = (document.querySelector('.r-header')?.offsetHeight ?? 88) + 64;
+      const headerEl = document.querySelector('.r-header');
+      const line = (headerEl?.getBoundingClientRect().bottom ?? 88) + 5;
       let current = '';
       for (const { id } of NAV_ITEMS) {
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= line) current = id;
+        if (el && el.getBoundingClientRect().top <= line) {
+          current = id;
+        }
       }
       setActiveSection((previous) => previous === current ? previous : current);
     };
@@ -333,6 +339,7 @@ function App() {
 
             <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.3}>
               <h1 className="r-title">Gurvinder Singh</h1>
+              <div className="r-role">FULL-STACK DEVELOPER · INDIA</div>
             </AnimatedContent>
 
             <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.4}>
@@ -424,6 +431,19 @@ function App() {
                 >
                   GITHUB
                 </button>
+              </div>
+              <div className="r-contact-row">
+                <a href="mailto:gurvindersingh.828384@gmail.com" className="r-contact-link">
+                  <span>EMAIL</span>
+                </a>
+                <span className="r-contact-sep">·</span>
+                <a href="https://www.linkedin.com/in/gurvinder-singh-422032311/" target="_blank" rel="noopener noreferrer" className="r-contact-link">
+                  <span>LINKEDIN</span>
+                </a>
+                <span className="r-contact-sep">·</span>
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-contact-link">
+                  <span>RESUME</span>
+                </a>
               </div>
             </AnimatedContent>
 
@@ -568,9 +588,9 @@ function App() {
         <section className="r-skills" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '6rem' }}>
           
           {/* Top Row: Description + Carousel */}
-          <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4rem' }}>
             
-            <div style={{ display: 'flex', gap: '4vw', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '4vw', alignItems: 'center', flexWrap: 'wrap' }}>
               <div className="r-about-eyebrow">
                 <span className="r-about-eyebrow-text">HONEST STATUS</span>
                 <span className="r-about-eyebrow-icon">水</span>
@@ -582,9 +602,9 @@ function App() {
                 </h2>
                 <p className="r-skills-intro-copy type-body-lg">
                   Unfinished on purpose, in the open. You are seeing<br/>
-                  Ryoku while it is still being built, not a frozen release.
+                  my portfolio while it is still being built, not a frozen release.
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
                   <div className="r-beta-badge type-label">
                     <span style={{ display: 'inline-block', width: '6px', height: '6px', backgroundColor: 'var(--color-accent-contrast)', borderRadius: '50%' }}></span>
                     BETA - v0.48.0-beta.18
@@ -594,10 +614,10 @@ function App() {
               </div>
             </div>
 
-            <div className="r-status-image-container" style={{ position: 'relative', width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="r-status-image-container" style={{ position: 'relative', width: '100%', maxWidth: '500px', height: 'auto', aspectRatio: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <BorderGlow borderRadius={210} className="carousel-border-glow" autoAnimate={true}>
                 <LazyErrorBoundary>
-                <Suspense fallback={<div style={{ width: 420, height: 420, borderRadius: '50%' }}></div>}>
+                <Suspense fallback={<div style={{ width: '100%', maxWidth: 420, height: 'auto', aspectRatio: 1, borderRadius: '50%' }}></div>}>
                   <Carousel
                     items={carouselItems}
                     baseWidth={420}
@@ -810,7 +830,7 @@ function App() {
         </section>
 
         {/* Education Section */}
-        <section id="education" className="r-projects-container" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
+        <section id="education" className="r-projects-container" style={{ paddingTop: '5rem', paddingBottom: '4rem' }}>
           <div className="r-projects-header">
             <div className="r-about-eyebrow">
               <span className="r-about-eyebrow-text">EDUCATION</span>
@@ -828,7 +848,13 @@ function App() {
                 <div className="r-timeline-meta">Aug 2024 — Present</div>
                 <div className="r-timeline-content">
                   <h4>Bachelor of Technology in Computer Science</h4>
-                  <p>Lovely Professional University · Phagwara, Punjab. CGPA: 6.8</p>
+                  <p>Lovely Professional University · Phagwara, Punjab · CGPA: 6.8</p>
+                  <div className="r-timeline-tags">
+                    <span>Data Structures</span>
+                    <span>Operating Systems</span>
+                    <span>Computer Networks</span>
+                    <span>DBMS</span>
+                  </div>
                 </div>
               </BorderGlow>
             </AnimatedContent>
@@ -837,7 +863,12 @@ function App() {
                 <div className="r-timeline-meta">Mar 2022 — May 2024</div>
                 <div className="r-timeline-content">
                   <h4>Senior Secondary (12th)</h4>
-                  <p>Dhawan International Public School · Hariana, Punjab. Percentage: 71%</p>
+                  <p>Dhawan International Public School · Hariana, Punjab · 71%</p>
+                  <div className="r-timeline-tags">
+                    <span>Physics</span>
+                    <span>Chemistry</span>
+                    <span>Mathematics</span>
+                  </div>
                 </div>
               </BorderGlow>
             </AnimatedContent>
@@ -846,7 +877,7 @@ function App() {
                 <div className="r-timeline-meta">Mar 2021 — May 2022</div>
                 <div className="r-timeline-content">
                   <h4>Matriculation (10th)</h4>
-                  <p>St.Solder Divine public school · Garhdiwala, Punjab. Percentage: 72%</p>
+                  <p>St.Solder Divine public school · Garhdiwala, Punjab · 72%</p>
                 </div>
               </BorderGlow>
             </AnimatedContent>
@@ -860,9 +891,25 @@ function App() {
           <img src="/imgs/bone/torii.webp" alt="" width="1600" height="893" loading="lazy" decoding="async" />
         </div>
         <div className="r-install-content">
-          <div className="r-install-kicker"><span>水</span><span>·</span><span>INSTALL</span></div>
+          <div className="r-install-kicker"><span>水</span><span>·</span><span>CONNECT</span></div>
           <h2 id="install-heading">Two ways in.</h2>
-          <p>Explore the work or start a conversation.</p>
+          <div className="r-install-paths">
+            <div className="r-install-path">
+              <span className="r-install-path-label">HIRING?</span>
+              <div className="r-install-path-actions">
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-btn-primary">RESUME</a>
+                <a href="mailto:gurvindersingh.828384@gmail.com" className="r-btn-secondary">EMAIL</a>
+              </div>
+            </div>
+            <div className="r-install-path-divider"></div>
+            <div className="r-install-path">
+              <span className="r-install-path-label">BUILDING SOMETHING?</span>
+              <div className="r-install-path-actions">
+                <a href="https://github.com/gurvindersingh-web" target="_blank" rel="noopener noreferrer" className="r-btn-primary">GITHUB</a>
+                <a href="https://www.linkedin.com/in/gurvinder-singh-422032311/" target="_blank" rel="noopener noreferrer" className="r-btn-secondary">LINKEDIN</a>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="r-install-rule"></div>
       </section>
@@ -919,6 +966,20 @@ function App() {
       <div className="r-side-text" aria-hidden="true">
         PORTFOLIO · BETA 18 · ARCH LINUX · SHOT ON BLACK
       </div>
+
+      {/* Certificate Lightbox */}
+      {lightboxCert && (
+        <div className="r-lightbox-overlay" onClick={() => setLightboxCert(null)} role="dialog" aria-modal="true" aria-label={`${lightboxCert.issuer} certificate: ${lightboxCert.title}`}>
+          <div className="r-lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="r-lightbox-close" onClick={() => setLightboxCert(null)} aria-label="Close lightbox">&times;</button>
+            <img src={lightboxCert.image} alt={`${lightboxCert.issuer} Certificate: ${lightboxCert.title}`} className="r-lightbox-img" />
+            <div className="r-lightbox-caption">
+              <span className="r-lightbox-tag">{lightboxCert.issuer}</span>
+              <span className="r-lightbox-title">{lightboxCert.title}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
     </ClickSpark>
