@@ -175,7 +175,9 @@ function App() {
     { issuer: "IIT KGP", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image.png", title: "Ethics in Engineering Practice", href: "/imgs/certificates/Pasted image.png" },
     { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Full Stack Development", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
     { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Node.js", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
-    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Java Spring Boot", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" }
+    { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Java Spring Boot", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
+    { issuer: "GFG", wallPosition: "anchor-left", image: "/imgs/certificates/gfg-linear-data.png", title: "Linear Data Structures", href: "/imgs/certificates/gfg-linear-data.png" },
+    { issuer: "GFG", wallPosition: "anchor-right", image: "/imgs/certificates/gfg-c-programming.png", title: "Introduction to C Programming", href: "/imgs/certificates/gfg-c-programming.png" }
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -339,7 +341,8 @@ function App() {
 
             <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.3}>
               <h1 className="r-title">Gurvinder Singh</h1>
-              <div className="r-role">FULL-STACK DEVELOPER · INDIA</div>
+              <br />
+              <div className="r-role">FULL-STACK DEVELOPER·</div>
             </AnimatedContent>
 
             <AnimatedContent eager distance={30} direction="horizontal" duration={0.8} delay={0.4}>
@@ -539,10 +542,10 @@ function App() {
                 animationMode="auto"
                 imageFit="contain"
                 grayscale={0}
-                radius={180}
+                radius={280}
                 cardWidth={70}
                 cardHeight={70}
-                verticalSpacing={45}
+                verticalSpacing={75}
                 perspective={1500}
                 cardsPerTurn={8}
                 rotation={-10}
@@ -614,13 +617,13 @@ function App() {
               </div>
             </div>
 
-            <div className="r-status-image-container" style={{ position: 'relative', width: '100%', maxWidth: '500px', height: 'auto', aspectRatio: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <BorderGlow borderRadius={210} className="carousel-border-glow" autoAnimate={true}>
+            <div className="r-status-image-container" style={{ position: 'relative', width: '100%', maxWidth: '800px', height: 'auto', aspectRatio: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BorderGlow borderRadius={350} className="carousel-border-glow" autoAnimate={true}>
                 <LazyErrorBoundary>
-                <Suspense fallback={<div style={{ width: '100%', maxWidth: 420, height: 'auto', aspectRatio: 1, borderRadius: '50%' }}></div>}>
+                <Suspense fallback={<div style={{ width: '100%', maxWidth: 700, height: 'auto', aspectRatio: 1, borderRadius: '50%' }}></div>}>
                   <Carousel
                     items={carouselItems}
-                    baseWidth={420}
+                    baseWidth={700}
                     round={true}
                     autoplay={true}
                     autoplayDelay={3000}
