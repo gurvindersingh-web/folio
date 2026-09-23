@@ -11,7 +11,7 @@ import { useTheme } from './theme.jsx';
 import {
   SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N
 } from 'react-icons/si';
-// comment3
+// comment4
 // Error boundary for lazy-loaded components
 class LazyErrorBoundary extends Component {
   constructor(props) {
