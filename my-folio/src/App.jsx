@@ -651,25 +651,41 @@ function App() {
                 <div className="r-skill-list r-skill-logos">
                   <span><SiJavascript size={20} style={{ marginRight: '8px' }} /> JavaScript</span>
                   <span><SiTypescript size={20} style={{ marginRight: '8px' }} /> TypeScript</span>
+                  <span><SiPython size={20} style={{ marginRight: '8px' }} /> Python</span>
                   <span><SiSpring size={20} style={{ marginRight: '8px' }} /> Java</span>
-                  <span><SiPostgresql size={20} style={{ marginRight: '8px' }} /> SQL</span>
+                  <span><SiHtml5 size={20} style={{ marginRight: '8px' }} /> HTML</span>
+                  <span><SiCss size={20} style={{ marginRight: '8px' }} /> CSS</span>
                 </div>
               </BorderGlow>
               <BorderGlow className="r-skill-category" borderRadius={12}>
                 <h3><span className="r-pulse-red"></span>FRAMEWORKS</h3>
                 <div className="r-skill-list r-skill-logos">
-                  <span><SiSpringboot size={20} style={{ marginRight: '8px' }} /> Spring Boot</span>
                   <span><SiReact size={20} style={{ marginRight: '8px' }} /> React.js</span>
+                  <span><SiNextdotjs size={20} style={{ marginRight: '8px' }} /> Next.js</span>
                   <span><SiNodedotjs size={20} style={{ marginRight: '8px' }} /> Node.js</span>
+                  <span><SiExpress size={20} style={{ marginRight: '8px' }} /> Express.js</span>
+                  <span><SiSpringboot size={20} style={{ marginRight: '8px' }} /> Spring Boot</span>
                 </div>
               </BorderGlow>
               <BorderGlow className="r-skill-category" borderRadius={12}>
-                <h3><span className="r-pulse-blue"></span>TOOLS & PLATFORMS</h3>
+                <h3><span className="r-pulse"></span>BACKEND & DATA</h3>
+                <div className="r-skill-list r-skill-logos">
+                  <span><SiPostgresql size={20} style={{ marginRight: '8px' }} /> PostgreSQL</span>
+                  <span><SiMongodb size={20} style={{ marginRight: '8px' }} /> MongoDB</span>
+                  <span><SiPrisma size={20} style={{ marginRight: '8px' }} /> Prisma ORM</span>
+                  <span><SiSupabase size={20} style={{ marginRight: '8px' }} /> Supabase</span>
+                  <span><SiStripe size={20} style={{ marginRight: '8px' }} /> Stripe</span>
+                </div>
+              </BorderGlow>
+              <BorderGlow className="r-skill-category" borderRadius={12}>
+                <h3><span className="r-pulse-blue"></span>TOOLS & CLOUD</h3>
                 <div className="r-skill-list r-skill-logos">
                   <span><SiGit size={20} style={{ marginRight: '8px' }} /> Git/GitHub</span>
                   <span><SiDocker size={20} style={{ marginRight: '8px' }} /> Docker</span>
                   <span><SiLinux size={20} style={{ marginRight: '8px' }} /> Linux</span>
-                  <span><SiN8N size={20} style={{ marginRight: '8px' }} /> CI/CD, n8n</span>
+                  <span><SiArchlinux size={20} style={{ marginRight: '8px' }} /> Arch Linux</span>
+                  <span><SiVercel size={20} style={{ marginRight: '8px' }} /> Vercel</span>
+                  <span><SiN8N size={20} style={{ marginRight: '8px' }} /> CI/CD & n8n</span>
                 </div>
               </BorderGlow>
             </div>
