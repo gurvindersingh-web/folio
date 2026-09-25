@@ -108,7 +108,7 @@ html, body {
 
 .r-nav {
   display: flex;
-  gap: 3.5rem;
+  gap: 1.5rem;
 }
 
 .r-nav a {
@@ -121,16 +121,17 @@ html, body {
   font-weight: 600;
   transition: color 0.2s;
   position: relative;
+  padding: 1rem;
 }
 
 .r-nav a::after {
   content: '';
   position: absolute;
-  width: 100%;
+  width: calc(100% - 2rem);
   transform: scaleX(0);
   height: 1px;
-  bottom: -4px;
-  left: 0;
+  bottom: calc(1rem - 4px);
+  left: 1rem;
   background-color: var(--color-accent);
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;

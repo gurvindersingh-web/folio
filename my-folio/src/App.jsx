@@ -547,10 +547,10 @@ function App() {
                 animationMode="auto"
                 imageFit="contain"
                 grayscale={0}
-                radius={280}
-                cardWidth={70}
-                cardHeight={70}
-                verticalSpacing={75}
+                radius={340}
+                cardWidth={90}
+                cardHeight={90}
+                verticalSpacing={100}
                 perspective={1500}
                 cardsPerTurn={8}
                 rotation={-10}
@@ -558,7 +558,7 @@ function App() {
                 cardRadius={12}
                 centerScale={1.35}
                 edgeFade={0.6}
-                edgeBlur={0}
+                edgeBlur={10}
                 maxFps={60}
                 pauseOnHover={false}
               />
