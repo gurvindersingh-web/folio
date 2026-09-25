@@ -176,8 +176,8 @@ function App() {
     { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Full Stack Development", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
     { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Node.js", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
     { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Java Spring Boot", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
-    { issuer: "GFG", wallPosition: "anchor-left", image: "/imgs/certificates/gfg-linear-data.png", title: "Linear Data Structures", href: "/imgs/certificates/gfg-linear-data.png" },
-    { issuer: "GFG", wallPosition: "anchor-right", image: "/imgs/certificates/gfg-c-programming.png", title: "Introduction to C Programming", href: "/imgs/certificates/gfg-c-programming.png" }
+    { issuer: "GFG", wallPosition: "anchor-left", image: "/imgs/certificates/Pasted image (2).png", title: "Linear Data Structures", href: "/imgs/certificates/Pasted image (2).png" },
+    { issuer: "GFG", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image (3).png", title: "Introduction to C Programming", href: "/imgs/certificates/Pasted image (3).png" }
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -207,10 +207,15 @@ function App() {
 
   useEffect(() => {
     if (mobileNavOpen) {
+      const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = previousOverflow;
+      };
     } else {
       document.body.style.overflow = '';
     }
+    return undefined;
   }, [mobileNavOpen]);
 
   useEffect(() => {

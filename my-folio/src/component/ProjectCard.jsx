@@ -121,7 +121,7 @@ const ProjectCard = ({
     }, { threshold: 0.01 });
     observer.observe(card);
     return () => observer.disconnect();
-  }, []);
+  }, [video]);
 
   useEffect(() => {
     if (shouldLoadVideo && mediaHoveredRef.current && videoReady) {
