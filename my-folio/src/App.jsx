@@ -524,23 +524,23 @@ function App() {
             <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
               <InfiniteSpiral
                 items={[
-                  { node: <SiReact size={70} color="var(--color-icon)" /> },
-                  { node: <SiTypescript size={70} color="var(--color-icon)" /> },
-                  { node: <SiArchlinux size={70} color="var(--color-icon)" /> },
-                  { node: <SiDocker size={70} color="var(--color-icon)" /> },
-                  { node: <SiGithub size={70} color="var(--color-icon)" /> },
-                  { node: <SiSpring size={70} color="var(--color-icon)" /> },
+                  { node: <SiReact size={100} color="var(--color-icon)" /> },
+                  { node: <SiTypescript size={100} color="var(--color-icon)" /> },
+                  { node: <SiArchlinux size={100} color="var(--color-icon)" /> },
+                  { node: <SiDocker size={100} color="var(--color-icon)" /> },
+                  { node: <SiGithub size={100} color="var(--color-icon)" /> },
+                  { node: <SiSpring size={100} color="var(--color-icon)" /> },
                   { node: <span className="r-watermark-icon">水</span> },
-                  { node: <SiNodedotjs size={70} color="var(--color-icon)" /> },
-                  { node: <SiExpress size={70} color="var(--color-icon)" /> },
-                  { node: <SiMongodb size={70} color="var(--color-icon)" /> },
-                  { node: <SiPostgresql size={70} color="var(--color-icon)" /> },
-                  { node: <SiGit size={70} color="var(--color-icon)" /> },
-                  { node: <SiLinux size={70} color="var(--color-icon)" /> },
-                  { node: <SiJavascript size={70} color="var(--color-icon)" /> },
-                  { node: <SiHtml5 size={70} color="var(--color-icon)" /> },
-                  { node: <SiCss size={70} color="var(--color-icon)" /> },
-                  { node: <SiPython size={70} color="var(--color-icon)" /> }
+                  { node: <SiNodedotjs size={100} color="var(--color-icon)" /> },
+                  { node: <SiExpress size={100} color="var(--color-icon)" /> },
+                  { node: <SiMongodb size={100} color="var(--color-icon)" /> },
+                  { node: <SiPostgresql size={100} color="var(--color-icon)" /> },
+                  { node: <SiGit size={100} color="var(--color-icon)" /> },
+                  { node: <SiLinux size={100} color="var(--color-icon)" /> },
+                  { node: <SiJavascript size={100} color="var(--color-icon)" /> },
+                  { node: <SiHtml5 size={100} color="var(--color-icon)" /> },
+                  { node: <SiCss size={100} color="var(--color-icon)" /> },
+                  { node: <SiPython size={100} color="var(--color-icon)" /> }
                 ]}
                 speed={0.3}
                 direction="up"
@@ -548,8 +548,8 @@ function App() {
                 imageFit="contain"
                 grayscale={0}
                 radius={340}
-                cardWidth={90}
-                cardHeight={90}
+                cardWidth={120}
+                cardHeight={120}
                 verticalSpacing={100}
                 perspective={1500}
                 cardsPerTurn={8}
@@ -600,17 +600,16 @@ function App() {
             
             <div style={{ display: 'flex', gap: '4vw', alignItems: 'center', flexWrap: 'wrap' }}>
               <div className="r-about-eyebrow">
-                <span className="r-about-eyebrow-text">HONEST STATUS</span>
+                <span className="r-about-eyebrow-text">TECHNICAL FOCUS</span>
                 <span className="r-about-eyebrow-icon">水</span>
               </div>
               
-              <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '550px' }}>
+              <div className="r-skills-intro" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '750px' }}>
                 <h2 className="r-skills-intro-heading type-title">
-                  This is a public beta.<br />It shows its cracks.
+                  From complex systems<br />to fluid interfaces.
                 </h2>
                 <p className="r-skills-intro-copy type-body-lg">
-                  Unfinished on purpose, in the open. You are seeing<br/>
-                  my portfolio while it is still being built, not a frozen release.
+                  As a Full-Stack Developer, I specialize in bridging the gap between scalable backend architectures and engaging, high-performance frontend experiences. My engineering journey spans low-level systems and high-level interfaces—from developing object-oriented Java engines and open-source Linux system utilities, to crafting interactive, data-driven 3D web visualizations using React, GSAP, and Three.js. Whether I'm designing game logic or modeling complex OS algorithms, I build software that is structurally sound and visually striking.
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
                   <div className="r-beta-badge type-label">
