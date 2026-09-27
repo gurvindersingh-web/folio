@@ -54,7 +54,7 @@ const NAV_ITEMS = [
   { href: '#education', id: 'education', label: 'EDUCATION' },
   { href: '#contact', id: 'contact', label: 'CONTACT' },
 ];
-
+// comment
 const Clock = () => {
   const [time, setTime] = useState("");
   
