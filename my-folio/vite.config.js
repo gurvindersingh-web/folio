@@ -33,7 +33,7 @@ export default defineConfig({
     target: 'esnext',
     sourcemap: false,
     cssCodeSplit: true,
-    modulePreload: false,
+    modulePreload: { polyfill: false },
     esbuild: {
       drop: ['console', 'debugger'],
     },

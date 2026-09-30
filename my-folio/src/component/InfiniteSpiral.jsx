@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import './InfiniteSpiral.css';
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -346,4 +346,4 @@ const InfiniteSpiral = ({
   );
 };
 
-export default InfiniteSpiral;
+export default memo(InfiniteSpiral);

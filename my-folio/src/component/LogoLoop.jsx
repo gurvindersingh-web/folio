@@ -351,4 +351,4 @@ export const LogoLoop = memo(
 
 LogoLoop.displayName = 'LogoLoop';
 
-export default LogoLoop;
+export default memo(LogoLoop);

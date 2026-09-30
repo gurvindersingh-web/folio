@@ -32,12 +32,14 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
+const CircularCarousel = lazy(() => import("./component/CircularCarousel.jsx"));
 
 if (typeof window !== 'undefined') {
   const prefetch = () => {
     void import("./component/LogoLoop.jsx");
     void import("./component/InfiniteSpiral.jsx");
     void import("./component/Carousel.jsx");
+    void import("./component/CircularCarousel.jsx");
   };
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(prefetch, { timeout: 1500 });
@@ -762,84 +764,25 @@ function App() {
             </div>
           </div>
 
-          <div className="r-achievements-layout">
-            <div className="r-gallery-wall">
-              {/* Anchor Left */}
-              <div className="r-gallery-region r-gallery-region--cipherLeft">
-                {certificateItems.filter(c => c.wallPosition === 'anchor-left').map((cert, index) => (
-                  <div key={index} className="r-cert-frame r-cert-frame--anchor-left" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
-                    <AnimatedContent distance={20} direction="vertical" duration={0.6} threshold={0.2}>
-                      <BorderGlow borderRadius={8} className="r-cert-card">
-                        <div className="r-cert-card__matting">
-                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
-                        </div>
-                        <div className="r-cert-card__meta">
-                          <span className="r-cert-card__tag">{cert.issuer}</span>
-                          <span className="r-cert-card__title">{cert.title}</span>
-                        </div>
-                      </BorderGlow>
-                    </AnimatedContent>
-                  </div>
-                ))}
-              </div>
-
-              {/* Middle */}
-              <div className="r-gallery-region r-gallery-region--middle">
-                {certificateItems.filter(c => c.wallPosition === 'middle').map((cert, index) => (
-                  <div key={index} className="r-cert-frame r-cert-frame--middle" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
-                    <AnimatedContent distance={30} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
-                      <BorderGlow borderRadius={8} className="r-cert-card">
-                        <div className="r-cert-card__matting">
-                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
-                        </div>
-                        <div className="r-cert-card__meta">
-                          <span className="r-cert-card__tag">{cert.issuer}</span>
-                          <span className="r-cert-card__title">{cert.title}</span>
-                        </div>
-                      </BorderGlow>
-                    </AnimatedContent>
-                  </div>
-                ))}
-              </div>
-
-              {/* Anchor Right */}
-              <div className="r-gallery-region r-gallery-region--cipherRight">
-                {certificateItems.filter(c => c.wallPosition === 'anchor-right').map((cert, index) => (
-                  <div key={index} className="r-cert-frame r-cert-frame--anchor-right" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
-                    <AnimatedContent distance={20} direction="vertical" duration={0.6} threshold={0.2}>
-                      <BorderGlow borderRadius={8} className="r-cert-card">
-                        <div className="r-cert-card__matting">
-                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="eager" className="r-cert-card__img" />
-                        </div>
-                        <div className="r-cert-card__meta">
-                          <span className="r-cert-card__tag">{cert.issuer}</span>
-                          <span className="r-cert-card__title">{cert.title}</span>
-                        </div>
-                      </BorderGlow>
-                    </AnimatedContent>
-                  </div>
-                ))}
-              </div>
-
-              {/* Bottom */}
-              <div className="r-gallery-region r-gallery-region--bottom">
-                {certificateItems.filter(c => c.wallPosition === 'bottom').map((cert, index) => (
-                  <div key={index} className="r-cert-frame r-cert-frame--bottom" onClick={() => setLightboxCert(cert)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLightboxCert(cert); } }} tabIndex="0" role="button" aria-label={`View ${cert.issuer} certificate`}>
-                    <AnimatedContent distance={40} direction="vertical" duration={0.6} threshold={0.2} delay={index * 0.1}>
-                      <BorderGlow borderRadius={8} className="r-cert-card">
-                        <div className="r-cert-card__matting">
-                          <img src={cert.image} alt={`${cert.issuer} Certificate: ${cert.title}`} loading="lazy" className="r-cert-card__img" />
-                        </div>
-                        <div className="r-cert-card__meta">
-                          <span className="r-cert-card__tag">{cert.issuer}</span>
-                          <span className="r-cert-card__title">{cert.title}</span>
-                        </div>
-                      </BorderGlow>
-                    </AnimatedContent>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="r-achievements-carousel" style={{ width: '100%', height: '1100px', position: 'relative', marginTop: '4rem' }}>
+            <LazyErrorBoundary>
+            <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
+              <CircularCarousel
+                items={certificateItems.map((cert) => ({
+                  src: cert.image,
+                  title: cert.title,
+                  subtitle: cert.issuer,
+                  alt: cert.title,
+                }))}
+                preset="cylinder"
+                cardWidth={1200}
+                aspectRatio={1.4}
+                gap={100}
+                captions={true}
+                onItemClick={(item) => setLightboxCert({ image: item.src, issuer: item.subtitle, title: item.title })}
+              />
+            </Suspense>
+            </LazyErrorBoundary>
           </div>
           
           <div className="r-achievements-text-list" style={{ marginTop: '5rem', padding: '0 2rem' }}>
