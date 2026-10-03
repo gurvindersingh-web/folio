@@ -303,11 +303,6 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   letter-spacing: var(--type-label-tracking);
 }
 
-.r-square {
-  font-size: 0.5rem;
-  color: var(--color-text);
-}
-
 /* ───────── Main Area ───────── */
 .r-hero {
   flex: 1;
@@ -337,13 +332,6 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 1rem;
-}
-
-.r-skills-carousel-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 2rem;
 }
 
 .carousel-border-glow {
@@ -1152,17 +1140,6 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
     padding-top: 0;
   }
 }
-
-/* ───────── Achievements & Certificates ───────── */
-.r-achievements-layout {
-  display: flex;
-  flex-direction: row;
-  gap: 4rem;
-  marginTop: 2rem;
-  flex-wrap: nowrap; /* We'll let media queries handle wrap */
-  align-items: stretch;
-}
-
 
 /* ───────── Footer ───────── */
 .r-site-footer {
