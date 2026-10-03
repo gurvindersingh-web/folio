@@ -99,7 +99,7 @@
   font-size: var(--type-subheading-size);
   line-height: var(--type-subheading-leading);
   color: var(--color-muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   letter-spacing: var(--type-subheading-tracking);
   text-transform: uppercase;
 }
@@ -108,7 +108,7 @@
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   color: var(--color-text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-weight: 300;
 }
 

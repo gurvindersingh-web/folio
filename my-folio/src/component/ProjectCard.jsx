@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import './ProjectCard.css';
 import { FiGithub, FiArrowUpRight } from 'react-icons/fi';
 
@@ -28,6 +28,13 @@ const ProjectCard = ({
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  const shouldReduceVideo = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = navigator.connection?.saveData === true;
+    return reducedMotion || saveData;
+  }, []);
 
   const settle = () => {
     const frame = frameRef.current;
@@ -82,8 +89,6 @@ const ProjectCard = ({
     startSettle();
   };
 
-
-
   const handlePointerEnter = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     mediaHoveredRef.current = true;
@@ -114,11 +119,10 @@ const ProjectCard = ({
     }
     const observer = new IntersectionObserver(([entry]) => {
       setIsVisible(entry.isIntersecting);
-      // Start loading video when card enters viewport (not on hover)
       if (entry.isIntersecting && video) {
         setShouldLoadVideo(true);
       }
-    }, { threshold: 0.01 });
+    }, { threshold: 0.01, rootMargin: '200px' });
     observer.observe(card);
     return () => observer.disconnect();
   }, [video]);
@@ -136,6 +140,8 @@ const ProjectCard = ({
     engine ? ['ENGINE', engine] : null,
     status ? ['STATUS', status] : null
   ].filter(Boolean);
+
+  const isSquare = image.endsWith('.png');
 
   return (
     <article className={`project-card ${reverse ? 'project-card--reverse' : ''} ${isVisible ? 'project-card--visible' : ''}`}>
@@ -155,25 +161,51 @@ const ProjectCard = ({
           <span className="project-card__corner project-card__corner--bl">+</span>
           <span className="project-card__corner project-card__corner--br">+</span>
           <div className="project-card__image-clip">
-            <img
-              src={image}
-              alt={title}
-              width="1024"
-              height="507"
-              className={`project-card__image${image.endsWith('.png') ? ' project-card__image--square' : ''}`}
-              loading="lazy"
-              decoding="async"
-            />
-            {video && shouldLoadVideo && (
+            <picture>
+              {!image.endsWith('.webp') && !image.endsWith('.avif') && (
+                <>
+                  <source srcSet={image.replace(/\.(png|jpg|jpeg)$/i, '.avif')} type="image/avif" />
+                  <source srcSet={image.replace(/\.(png|jpg|jpeg)$/i, '.webp')} type="image/webp" />
+                </>
+              )}
+              <img
+                src={image}
+                alt={title}
+                width="1280"
+                height="720"
+                className={`project-card__image${isSquare ? ' project-card__image--square' : ''}`}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            
+            {video && shouldLoadVideo && !shouldReduceVideo && (
               <video
                 ref={videoRef}
-                src={video}
                 className="project-card__video"
                 loop
                 muted
                 playsInline
-                preload="metadata"
+                preload="none"
+                poster={video.replace(/\.mp4$/, '-poster.jpg')}
                 onCanPlay={() => setVideoReady(true)}
+                width="1280"
+                height="720"
+              >
+                <source src={video.replace(/\.mp4$/, '.webm')} type="video/webm" />
+                <source src={video} type="video/mp4" />
+              </video>
+            )}
+            {video && shouldReduceVideo && (
+              <img
+                src={video.replace(/\.mp4$/, '-poster.jpg')}
+                alt="Video poster fallback"
+                className="project-card__video"
+                style={{ opacity: 1, pointerEvents: 'none' }}
+                width="1280"
+                height="720"
+                loading="lazy"
+                decoding="async"
               />
             )}
             <div ref={shineRef} className="project-card__shine" />

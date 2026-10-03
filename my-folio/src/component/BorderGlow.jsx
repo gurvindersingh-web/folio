@@ -47,15 +47,30 @@ function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
 function easeInCubic(x) { return x * x * x; }
 
 function animateValue({ start = 0, end = 100, duration = 1000, delay = 0, ease = easeOutCubic, onUpdate, onEnd }) {
+  let timerId = 0;
+  let rafId = 0;
+  let cancelled = false;
   const t0 = performance.now() + delay;
   function tick() {
+    if (cancelled) return;
     const elapsed = performance.now() - t0;
-    const t = Math.min(elapsed / duration, 1);
+    const t = Math.min(Math.max(elapsed / duration, 0), 1);
     onUpdate(start + (end - start) * ease(t));
-    if (t < 1) requestAnimationFrame(tick);
+    if (t < 1) rafId = requestAnimationFrame(tick);
     else if (onEnd) onEnd();
   }
-  setTimeout(() => requestAnimationFrame(tick), delay);
+  if (delay > 0) {
+    timerId = setTimeout(() => {
+      rafId = requestAnimationFrame(tick);
+    }, delay);
+  } else {
+    rafId = requestAnimationFrame(tick);
+  }
+  return () => {
+    cancelled = true;
+    if (timerId) clearTimeout(timerId);
+    if (rafId) cancelAnimationFrame(rafId);
+  };
 }
 
 const BorderGlow = ({
@@ -77,13 +92,12 @@ const BorderGlow = ({
   const pointerFrameRef = useRef(0);
   const pointerRef = useRef(null);
 
-  const getCenterOfElement = useCallback((el) => {
-    const { width, height } = el.getBoundingClientRect();
-    return [width / 2, height / 2];
+  const getCenterFromRect = useCallback((rect) => {
+    return [rect.width / 2, rect.height / 2];
   }, []);
 
-  const getEdgeProximity = useCallback((el, x, y) => {
-    const [cx, cy] = getCenterOfElement(el);
+  const getEdgeProximity = useCallback((rect, x, y) => {
+    const [cx, cy] = getCenterFromRect(rect);
     const dx = x - cx;
     const dy = y - cy;
     let kx = Infinity;
@@ -91,10 +105,10 @@ const BorderGlow = ({
     if (dx !== 0) kx = cx / Math.abs(dx);
     if (dy !== 0) ky = cy / Math.abs(dy);
     return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
-  }, [getCenterOfElement]);
+  }, [getCenterFromRect]);
 
-  const getCursorAngle = useCallback((el, x, y) => {
-    const [cx, cy] = getCenterOfElement(el);
+  const getCursorAngle = useCallback((rect, x, y) => {
+    const [cx, cy] = getCenterFromRect(rect);
     const dx = x - cx;
     const dy = y - cy;
     if (dx === 0 && dy === 0) return 0;
@@ -102,7 +116,7 @@ const BorderGlow = ({
     let degrees = radians * (180 / Math.PI) + 90;
     if (degrees < 0) degrees += 360;
     return degrees;
-  }, [getCenterOfElement]);
+  }, [getCenterFromRect]);
 
   const updatePointerGlow = useCallback(() => {
     pointerFrameRef.current = 0;
@@ -115,8 +129,8 @@ const BorderGlow = ({
     const x = pointer.x - rect.left;
     const y = pointer.y - rect.top;
 
-    const edge = getEdgeProximity(card, x, y);
-    const angle = getCursorAngle(card, x, y);
+    const edge = getEdgeProximity(rect, x, y);
+    const angle = getCursorAngle(rect, x, y);
 
     card.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(3)}`);
     card.style.setProperty('--cursor-angle', `${angle.toFixed(3)}deg`);
@@ -199,17 +213,22 @@ const BorderGlow = ({
       card.classList.add('sweep-active');
       card.style.setProperty('--cursor-angle', `${angleStart}deg`);
 
-      animateValue({ duration: 500, onUpdate: v => card.style.setProperty('--edge-proximity', v) });
-      animateValue({ ease: easeInCubic, duration: 1500, end: 50, onUpdate: v => {
+      const cancels = [];
+      cancels.push(animateValue({ duration: 500, onUpdate: v => card.style.setProperty('--edge-proximity', v) }));
+      cancels.push(animateValue({ ease: easeInCubic, duration: 1500, end: 50, onUpdate: v => {
         card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`);
-      }});
-      animateValue({ ease: easeOutCubic, delay: 1500, duration: 2250, start: 50, end: 100, onUpdate: v => {
+      }}));
+      cancels.push(animateValue({ ease: easeOutCubic, delay: 1500, duration: 2250, start: 50, end: 100, onUpdate: v => {
         card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`);
-      }});
-      animateValue({ ease: easeInCubic, delay: 2500, duration: 1500, start: 100, end: 0,
+      }}));
+      cancels.push(animateValue({ ease: easeInCubic, delay: 2500, duration: 1500, start: 100, end: 0,
         onUpdate: v => card.style.setProperty('--edge-proximity', v),
         onEnd: () => card.classList.remove('sweep-active'),
-      });
+      }));
+
+      return () => {
+        cancels.forEach(cancel => cancel());
+      };
     }
   }, [animated, autoAnimate]);
 

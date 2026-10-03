@@ -14,11 +14,22 @@ const ClickSpark = ({
   const canvasRef = useRef(null);
   const sparksRef = useRef([]);
   const animationIdRef = useRef(null);
-  const resolveSparkColor = useCallback(() => (
-    sparkColor?.startsWith('var(') && typeof document !== 'undefined'
-      ? getComputedStyle(document.documentElement).getPropertyValue(sparkColor.slice(4, -1).trim()).trim()
-      : sparkColor
-  ), [sparkColor]);
+  const resolvedColorRef = useRef(sparkColor);
+
+  useEffect(() => {
+    const updateColor = () => {
+      if (sparkColor?.startsWith('var(') && typeof document !== 'undefined') {
+        const val = getComputedStyle(document.documentElement).getPropertyValue(sparkColor.slice(4, -1).trim()).trim();
+        resolvedColorRef.current = val || sparkColor;
+      } else {
+        resolvedColorRef.current = sparkColor;
+      }
+    };
+    updateColor();
+    const observer = new MutationObserver(updateColor);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+    return () => observer.disconnect();
+  }, [sparkColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -69,6 +80,8 @@ const ClickSpark = ({
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     ctx.clearRect(0, 0, canvas.width / pixelRatio, canvas.height / pixelRatio);
 
+    const currentColor = resolvedColorRef.current;
+
     sparksRef.current = sparksRef.current.filter(spark => {
       const elapsed = timestamp - spark.startTime;
       if (elapsed >= duration) {
@@ -86,7 +99,7 @@ const ClickSpark = ({
       const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
       const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
 
-      ctx.strokeStyle = resolveSparkColor();
+      ctx.strokeStyle = currentColor;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -101,7 +114,7 @@ const ClickSpark = ({
     } else {
       animationIdRef.current = null;
     }
-  }, [sparkSize, sparkRadius, duration, easeFunc, extraScale, resolveSparkColor]);
+  }, [sparkSize, sparkRadius, duration, easeFunc, extraScale]);
 
   useEffect(() => {
     return () => {

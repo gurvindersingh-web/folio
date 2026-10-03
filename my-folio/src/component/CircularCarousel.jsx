@@ -259,8 +259,7 @@ const CircularCarousel = ({
   const [active, setActive] = useState(0);
   const [ready, setReady] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const readyRef = useRef(false);
-  readyRef.current = ready;
+  const readyRef = useRef(ready);
 
   const stateRef = useRef({
     angle: 0,
@@ -310,10 +309,13 @@ const CircularCarousel = ({
     reduced
   };
   const settingsRef = useRef(settings);
-  settingsRef.current = settings;
-
   const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
+
+  useLayoutEffect(() => {
+    readyRef.current = ready;
+    settingsRef.current = settings;
+    onChangeRef.current = onChange;
+  });
 
   const dragSign = layout.inward ? -1 : 1;
   const directionSign = (direction === 'right' ? 1 : -1) * dragSign;
@@ -325,9 +327,14 @@ const CircularCarousel = ({
 
   const sourcesKey = list.map(item => item.src).join('|');
 
+  const [prevSourcesKey, setPrevSourcesKey] = useState(sourcesKey);
+  if (sourcesKey !== prevSourcesKey) {
+    setPrevSourcesKey(sourcesKey);
+    setReady(false);
+  }
+
   useEffect(() => {
     let cancelled = false;
-    setReady(false);
     const sources = sourcesKey.split('|').slice(0, 12);
     const load = src =>
       new Promise(resolve => {
@@ -337,7 +344,10 @@ const CircularCarousel = ({
         image.onerror = resolve;
         image.src = src;
       });
-    const timeout = new Promise(resolve => setTimeout(resolve, 2400));
+    let timerId;
+    const timeout = new Promise(resolve => {
+      timerId = setTimeout(resolve, 2400);
+    });
     Promise.race([Promise.all(sources.map(load)), timeout]).then(() => {
       if (cancelled) return;
       const state = stateRef.current;
@@ -348,6 +358,7 @@ const CircularCarousel = ({
     });
     return () => {
       cancelled = true;
+      clearTimeout(timerId);
     };
   }, [sourcesKey]);
 
@@ -832,7 +843,12 @@ const CircularCarousel = ({
           className="circular-carousel__frame"
           style={{ height: axis === 'x' ? size : cardH, borderRadius: frameRadius }}
         >
-          <img
+          <picture>
+            {item.src && !item.src.endsWith(".webp") && !item.src.endsWith(".avif") && <>
+              <source srcSet={item.src.replace(/\.(png|jpg|jpeg)$/i, ".avif")} type="image/avif" />
+              <source srcSet={item.src.replace(/\.(png|jpg|jpeg)$/i, ".webp")} type="image/webp" />
+            </>}
+            <img
             className="circular-carousel__photo"
             src={item.src}
             alt=""
@@ -842,6 +858,7 @@ const CircularCarousel = ({
             fetchPriority="low"
             style={photoStyle}
           />
+          </picture>
           {back && <div className="circular-carousel__inner" />}
           <div className="circular-carousel__shade" />
         </div>

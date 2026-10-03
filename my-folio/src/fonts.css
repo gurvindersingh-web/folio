@@ -1,0 +1,66 @@
+/* ─── Variable fonts: latin only, woff2 only, self-hosted ─── */
+
+/* Inter Variable – weight 100–900 */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,
+    U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,
+    U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* JetBrains Mono Variable – weight 100–800 */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url('/fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,
+    U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,
+    U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* Playfair Display Variable – weight 400–900 */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url('/fonts/playfair-display-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,
+    U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,
+    U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* ─── Metric-matched fallbacks to eliminate CLS during font swap ─── */
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 138.27%;
+  ascent-override: 70.06%;
+  descent-override: 17.44%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Courier New');
+  size-adjust: 100.32%;
+  ascent-override: 101.68%;
+  descent-override: 29.91%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Georgia');
+  size-adjust: 120.14%;
+  ascent-override: 90.06%;
+  descent-override: 20.89%;
+  line-gap-override: 0%;
+}

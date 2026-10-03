@@ -79,7 +79,7 @@
 }
 
 .ink-banner .ink-content .ink-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-display-size);
   font-weight: 500;
   line-height: var(--type-display-leading);
@@ -89,7 +89,7 @@
 }
 
 .ink-banner .ink-content p {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   color: var(--color-intro-muted);

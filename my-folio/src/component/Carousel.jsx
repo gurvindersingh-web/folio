@@ -1,5 +1,5 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'motion/react';
+import { memo, useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { LazyMotion, domAnimation, m, useMotionValue, useTransform } from 'motion/react';
 // replace icons with your own if needed
 import { FiCircle, FiCode, FiFileText, FiLayers, FiLayout } from 'react-icons/fi';
 
@@ -42,6 +42,7 @@ const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
 const GAP = 16;
 const SPRING_OPTIONS = { type: 'spring', stiffness: 300, damping: 30 };
+const INDICATOR_TRANSITION = { type: 'spring', stiffness: 300, damping: 30 };
 
 function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, transition }) {
   const range = [-(index + 1) * trackItemOffset, -index * trackItemOffset, -(index - 1) * trackItemOffset];
@@ -49,7 +50,7 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
   const rotateY = useTransform(x, range, outputRange, { clamp: false });
 
   return (
-    <motion.div
+    <m.div
       key={`${item?.id ?? index}-${index}`}
       className={`carousel-item ${round ? 'round' : ''}`}
       style={{
@@ -67,7 +68,7 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
         <div className="carousel-item-title">{item.title}</div>
         <p className="carousel-item-description">{item.description}</p>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -150,26 +151,29 @@ function Carousel({
     return () => clearInterval(timer);
   }, [autoplay, autoplayDelay, documentVisible, isHovered, pauseOnHover, itemsForRender.length, isVisible, reducedMotion]);
 
-  useEffect(() => {
+  const [prevDeps, setPrevDeps] = useState({ loop, length: items.length });
+  if (loop !== prevDeps.loop || items.length !== prevDeps.length) {
+    setPrevDeps({ loop, length: items.length });
     const startingPosition = loop ? 1 : 0;
     setPosition(startingPosition);
     x.set(-startingPosition * trackItemOffset);
-  }, [items.length, loop, trackItemOffset, x]);
+  }
 
-  useEffect(() => {
-    if (!loop && position > itemsForRender.length - 1) {
-      setPosition(Math.max(0, itemsForRender.length - 1));
+  let currentPosition = position;
+  if (!loop && position > itemsForRender.length - 1) {
+    currentPosition = Math.max(0, itemsForRender.length - 1);
+    if (currentPosition !== position) {
+      setPosition(currentPosition);
     }
+  }
 
-  }, [itemsForRender.length, loop, position]);
+  const effectiveTransition = useMemo(() => isJumping ? { duration: 0 } : SPRING_OPTIONS, [isJumping]);
 
-  const effectiveTransition = isJumping ? { duration: 0 } : SPRING_OPTIONS;
-
-  const handleAnimationStart = () => {
+  const handleAnimationStart = useCallback(() => {
     setIsAnimating(true);
-  };
+  }, []);
 
-  const handleAnimationComplete = () => {
+  const handleAnimationComplete = useCallback(() => {
     if (!loop || itemsForRender.length <= 1) {
       setIsAnimating(false);
       return;
@@ -201,9 +205,9 @@ function Carousel({
     }
 
     setIsAnimating(false);
-  };
+  }, [loop, itemsForRender.length, position, items.length, trackItemOffset, x]);
 
-  const handleDragEnd = (_, info) => {
+  const handleDragEnd = useCallback((_, info) => {
     const { offset, velocity } = info;
     const direction =
       offset.x < -DRAG_BUFFER || velocity.x < -VELOCITY_THRESHOLD
@@ -219,78 +223,80 @@ function Carousel({
       const max = itemsForRender.length - 1;
       return Math.max(0, Math.min(next, max));
     });
-  };
+  }, [itemsForRender.length]);
 
-  const dragProps = loop
+  const dragProps = useMemo(() => loop
     ? {}
     : {
         dragConstraints: {
           left: -trackItemOffset * Math.max(itemsForRender.length - 1, 0),
           right: 0
         }
-      };
+      }, [loop, trackItemOffset, itemsForRender.length]);
 
   const activeIndex =
     items.length === 0 ? 0 : loop ? (position - 1 + items.length) % items.length : Math.min(position, items.length - 1);
 
   return (
-    <div
-      ref={containerRef}
-      className={`carousel-container ${round ? 'round' : ''}`}
-      style={{
-        width: `${baseWidth}px`,
-        ...(round && { height: `${baseWidth}px`, borderRadius: '50%' })
-      }}
-    >
-      <motion.div
-        className="carousel-track"
-        drag={isAnimating ? false : 'x'}
-        {...dragProps}
+    <LazyMotion features={domAnimation}>
+      <div
+        ref={containerRef}
+        className={`carousel-container ${round ? 'round' : ''}`}
         style={{
-          width: itemWidth,
-          gap: `${GAP}px`,
-          perspective: 1000,
-          perspectiveOrigin: `${position * trackItemOffset + itemWidth / 2}px 50%`,
-          x
+          width: `${baseWidth}px`,
+          ...(round && { height: `${baseWidth}px`, borderRadius: '50%' })
         }}
-        onDragEnd={handleDragEnd}
-        animate={{ x: -(position * trackItemOffset) }}
-        transition={effectiveTransition}
-        onAnimationStart={handleAnimationStart}
-        onAnimationComplete={handleAnimationComplete}
       >
-        {itemsForRender.map((item, index) => (
-          <CarouselItem
-            key={`${item?.id ?? index}-${index}`}
-            item={item}
-            index={index}
-            itemWidth={itemWidth}
-            round={round}
-            trackItemOffset={trackItemOffset}
-            x={x}
-            transition={effectiveTransition}
-          />
-        ))}
-      </motion.div>
-      <div className={`carousel-indicators-container ${round ? 'round' : ''}`}>
-        <div className="carousel-indicators">
-          {items.map((_, index) => (
-            <motion.button
-              type="button"
-              key={index}
-              className={`carousel-indicator ${activeIndex === index ? 'active' : 'inactive'}`}
-              aria-label={`Go to slide ${index + 1}`}
-              aria-current={activeIndex === index}
-              animate={{
-                scale: activeIndex === index ? 1.2 : 1
-              }}
-              onClick={() => setPosition(loop ? index + 1 : index)}
-              transition={{ duration: 0.15 }}
+        <m.div
+          className="carousel-track"
+          drag={isAnimating ? false : 'x'}
+          {...dragProps}
+          style={{
+            width: itemWidth,
+            gap: `${GAP}px`,
+            perspective: 1000,
+            perspectiveOrigin: `${position * trackItemOffset + itemWidth / 2}px 50%`,
+            x
+          }}
+          onDragEnd={handleDragEnd}
+          animate={{ x: -(position * trackItemOffset) }}
+          transition={effectiveTransition}
+          onAnimationStart={handleAnimationStart}
+          onAnimationComplete={handleAnimationComplete}
+        >
+          {itemsForRender.map((item, index) => (
+            <CarouselItem
+              key={`${item?.id ?? index}-${index}`}
+              item={item}
+              index={index}
+              itemWidth={itemWidth}
+              round={round}
+              trackItemOffset={trackItemOffset}
+              x={x}
+              transition={effectiveTransition}
             />
           ))}
+        </m.div>
+        <div className={`carousel-indicators-container ${round ? 'round' : ''}`}>
+          <div className="carousel-indicators">
+            {items.map((_, index) => (
+              <m.button
+                type="button"
+                key={index}
+                className={`carousel-indicator ${activeIndex === index ? 'active' : 'inactive'}`}
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={activeIndex === index}
+                animate={{
+                  scale: activeIndex === index ? 1.2 : 1
+                }}
+                onClick={() => setPosition(loop ? index + 1 : index)}
+                transition={INDICATOR_TRANSITION}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </LazyMotion>
   );
 }
 

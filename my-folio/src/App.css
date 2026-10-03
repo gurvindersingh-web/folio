@@ -7,7 +7,7 @@
 html, body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   overflow-x: hidden;
@@ -101,7 +101,7 @@ html, body {
 }
 
 .r-logo-icon {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: 1.75rem;
   font-weight: 300;
 }
@@ -114,7 +114,7 @@ html, body {
 .r-nav a {
   text-decoration: none;
   color: var(--color-muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   letter-spacing: var(--type-label-wide-tracking);
@@ -192,7 +192,7 @@ html, body {
 .r-mobile-nav a {
   text-decoration: none;
   color: var(--color-muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   letter-spacing: var(--type-label-wide-tracking);
@@ -291,7 +291,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-version {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   color: var(--color-muted);
@@ -328,7 +328,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   color: var(--color-muted);
@@ -355,16 +355,16 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-plus { font-size: 1.25rem; line-height: 0; }
-.r-char { font-family: 'Playfair Display', serif; font-size: 1.125rem; color: var(--color-text); }
+.r-char { font-family: 'Playfair Display', 'Playfair Display Fallback', serif; font-size: 1.125rem; color: var(--color-text); }
 .r-watermark-icon {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: 3rem;
   color: var(--color-icon);
 }
 .r-star { font-size: 0.875rem; }
 
 .r-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-display-size);
   font-weight: 400;
   line-height: var(--type-display-leading);
@@ -374,7 +374,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-role {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
   font-weight: 600;
   color: var(--color-muted-strong);
@@ -384,7 +384,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-subtitle {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   color: var(--color-muted);
@@ -393,7 +393,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-local-time {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   color: var(--color-subtle);
@@ -462,7 +462,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-spec-row {
   display: flex;
   align-items: baseline;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -498,7 +498,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-vital-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: 2.1875rem;
   font-weight: 400;
   color: var(--color-text);
@@ -506,7 +506,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-vital-lbl {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -518,7 +518,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   align-items: center;
   gap: 1.5rem;
   margin-top: 1rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   color: var(--color-muted);
@@ -547,7 +547,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-actions button {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   font-weight: 600;
@@ -589,7 +589,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-contact-link {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -610,7 +610,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-stars {
   margin-top: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   color: var(--color-muted);
@@ -682,7 +682,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-barcode-text {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   letter-spacing: var(--type-micro-tracking);
@@ -697,7 +697,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-ed-lbl {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   letter-spacing: var(--type-label-wide-tracking);
@@ -705,14 +705,14 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-ed-num {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: 1.375rem;
   font-weight: 300;
   color: var(--color-text);
 }
 
 .r-ed-ver {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: 0.75rem;
   color: var(--color-dots);
 }
@@ -779,7 +779,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-scroll-text {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   letter-spacing: var(--type-micro-tracking);
@@ -800,7 +800,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   top: 50%;
   transform: translateY(-50%) rotate(180deg);
   writing-mode: vertical-rl;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   letter-spacing: var(--type-micro-tracking);
@@ -831,7 +831,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-about-eyebrow-text {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -839,7 +839,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-about-eyebrow-icon {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: 1.5rem;
   color: var(--color-text);
 }
@@ -853,7 +853,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-section-heading {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   font-weight: 600;
@@ -864,7 +864,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-about-large {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-heading-size);
   font-weight: 300;
   line-height: var(--type-heading-leading);
@@ -873,7 +873,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-about-small {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   font-weight: 400;
@@ -922,14 +922,14 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-skills-intro-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-weight: 400;
   color: var(--color-text);
   margin: 0;
 }
 
 .r-skills-intro-copy {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   color: var(--color-muted);
   margin: 0;
 }
@@ -941,17 +941,17 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   background-color: var(--color-accent);
   color: var(--color-accent-contrast);
   padding: 0.4rem 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-weight: 700;
 }
 
 .r-beta-note {
   color: var(--color-muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
 }
 
 .r-arsenal-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-weight: 400;
   color: var(--color-text);
   margin-top: 1rem;
@@ -975,7 +975,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-achievements-date {
   color: var(--color-muted);
   margin-left: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
 }
 
 /* =========================================
@@ -1009,7 +1009,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-projects-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-title-size);
   font-weight: 400;
   line-height: var(--type-title-leading);
@@ -1019,7 +1019,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-projects-lede {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-lg-size);
   font-weight: 400;
   line-height: var(--type-body-lg-leading);
@@ -1093,7 +1093,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-timeline-meta {
   flex: 0 0 160px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   color: var(--color-muted);
@@ -1107,7 +1107,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-timeline-content h4 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-subheading-size);
   font-weight: 500;
   color: var(--color-text);
@@ -1116,7 +1116,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-timeline-content p {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   color: var(--color-muted-strong);
@@ -1131,7 +1131,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-timeline-tags span {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   letter-spacing: var(--type-micro-tracking);
@@ -1192,7 +1192,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-footer-mark {
   color: var(--color-text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: 3.125rem;
   line-height: 1;
   margin-bottom: 1.25rem;
@@ -1200,7 +1200,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-footer-tagline {
   color: var(--color-text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-title-size);
   line-height: var(--type-title-leading);
   letter-spacing: var(--type-title-tracking);
@@ -1213,7 +1213,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   gap: 0.6rem;
   margin-top: 2rem;
   color: var(--color-muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -1245,7 +1245,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-footer-heading {
   margin-bottom: 0.75rem;
   color: var(--color-text);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   letter-spacing: var(--type-label-wide-tracking);
@@ -1253,7 +1253,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-footer-column a {
   color: var(--color-muted-dim);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   text-decoration: none;
@@ -1277,7 +1277,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   padding: 0 5%;
   text-align: center;
   color: var(--border-subtle);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: clamp(3rem, 13vw, 22.5rem);
   font-weight: 400;
   line-height: 0.72;
@@ -1299,7 +1299,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   padding-top: 1.25rem;
   border-top: 1px solid var(--border-subtle);
   color: var(--color-faint);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-micro-size);
   line-height: var(--type-micro-leading);
   letter-spacing: var(--type-micro-tracking);
@@ -1362,7 +1362,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-install-art pre {
   margin: 0;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: clamp(0.5625rem, 1.0625vw, 1rem);
   line-height: 1.25;
   letter-spacing: 0.08em;
@@ -1392,7 +1392,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   gap: 0.8rem;
   margin-bottom: 1.25rem;
   color: var(--color-muted-dim);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   letter-spacing: var(--type-label-wide-tracking);
@@ -1400,14 +1400,14 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-install-kicker span:first-child {
   color: var(--color-text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: 1.25rem;
 }
 
 .r-install-content h2 {
   margin: 0;
   color: var(--color-text);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-title-size);
   font-weight: 400;
   line-height: var(--type-title-leading);
@@ -1417,7 +1417,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-install-content p {
   margin: 1.2rem 0 0;
   color: var(--color-muted-dim);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
 }
@@ -1436,7 +1436,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-install-path-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -1451,7 +1451,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-install-path-actions a {
   text-decoration: none;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   font-weight: 600;
@@ -1516,7 +1516,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-skill-category h3 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-wide-size);
   line-height: var(--type-label-wide-leading);
   font-weight: 600;
@@ -1534,7 +1534,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-skill-list span {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Inter Fallback', sans-serif;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   color: var(--color-text);
@@ -1718,7 +1718,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-cert-card__tag {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   letter-spacing: var(--type-label-tracking);
@@ -1727,7 +1727,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-cert-card__title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-subheading-size);
   line-height: var(--type-subheading-leading);
   color: var(--color-text-strong);
@@ -1903,7 +1903,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-lightbox-tag {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   color: var(--color-text);
@@ -1914,7 +1914,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 }
 
 .r-lightbox-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
   font-size: var(--type-subheading-size);
   line-height: var(--type-subheading-leading);
   color: var(--color-text-strong);

@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback, Suspense, lazy, Component } from 'react';
 import './App.css';
 import AnimatedContent from "./component/AnimatedContent.jsx"
-import BorderGlow from "./component/BorderGlow.jsx"
-import ProjectCard from "./component/ProjectCard.jsx"
+const BorderGlow = lazy(() => import("./component/BorderGlow.jsx"));
+const ProjectCard = lazy(() => import("./component/ProjectCard.jsx"));
 import ClickSpark from './component/ClickSpark.jsx';
-import SmoothScroll, { scrollToAnchor } from './component/SmoothScroll.jsx';
+import SmoothScroll from './component/SmoothScroll.jsx';
+import { scrollToAnchor } from './utils/scroll.js';
 import InkIntro from './component/InkIntro.jsx';
+import TechText from './component/TechText.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
-import { useTheme } from './theme.jsx';
+import { useTheme } from './themeContext.jsx';
 import {
   SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N
 } from 'react-icons/si';
@@ -724,7 +726,11 @@ function App() {
                 threshold={0.12}
                 delay={0.05}
               >
-                <ProjectCard {...project} index={index + 1} reverse={index % 2 === 1} />
+                <LazyErrorBoundary>
+                  <Suspense fallback={<div style={{ width: '100%', minHeight: '400px' }}></div>}>
+                    <ProjectCard {...project} index={index + 1} reverse={index % 2 === 1} />
+                  </Suspense>
+                </LazyErrorBoundary>
               </AnimatedContent>
             ))}
           </div>
@@ -919,7 +925,19 @@ function App() {
           </div>
         </div>
 
-        <div className="r-footer-wordmark" aria-hidden="true">GURVINDER</div>
+        <div className="r-footer-wordmark-container" aria-hidden="true" style={{ width: '100%', height: 'clamp(8rem, 22vw, 22rem)', position: 'relative', margin: '2rem auto clamp(4rem, 8vw, 8rem)', zIndex: 0, maxWidth: '1580px', overflow: 'hidden' }}>
+          <TechText 
+            text="GURVINDER SINGH"
+            fontFamily="'Playfair Display', serif"
+            fontSize={400}
+            color={theme === 'light' ? '#6a5b2e' : '#d4cebd'} 
+            accentColor={theme === 'light' ? '#332b16' : '#ffffff'} 
+            reach={300}
+            speed={1}
+            className="r-footer-wordmark-tech"
+            style={{ width: '100%', height: '100%', display: 'block' }}
+          />
+        </div>
 
         <div className="r-footer-bottom">
           <span>© 2026 Gurvinder Singh</span>
@@ -938,7 +956,7 @@ function App() {
         <div className="r-lightbox-overlay" onClick={() => setLightboxCert(null)} role="dialog" aria-modal="true" aria-label={`${lightboxCert.issuer} certificate: ${lightboxCert.title}`}>
           <div className="r-lightbox-content" onClick={(e) => e.stopPropagation()}>
             <button className="r-lightbox-close" onClick={() => setLightboxCert(null)} aria-label="Close lightbox">&times;</button>
-            <img src={lightboxCert.image} alt={`${lightboxCert.issuer} Certificate: ${lightboxCert.title}`} className="r-lightbox-img" />
+            <img src={lightboxCert.image} alt={`${lightboxCert.issuer} Certificate: ${lightboxCert.title}`} className="r-lightbox-img" loading="lazy" decoding="async" width="1280" height="720" />
             <div className="r-lightbox-caption">
               <span className="r-lightbox-tag">{lightboxCert.issuer}</span>
               <span className="r-lightbox-title">{lightboxCert.title}</span>

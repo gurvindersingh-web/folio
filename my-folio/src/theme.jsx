@@ -1,50 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-
-export const THEME_STORAGE_KEY = 'portfolio-theme';
-
-const ThemeContext = createContext(null);
-
-const getMediaTheme = () => (
-  typeof window !== 'undefined' &&
-  window.matchMedia?.('(prefers-color-scheme: light)').matches
-    ? 'light'
-    : 'dark'
-);
-
-export const getStoredTheme = () => {
-  if (typeof window === 'undefined') return null;
-  try {
-    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return stored === 'light' || stored === 'dark' ? stored : null;
-  } catch {
-    return null;
-  }
-};
-
-export const getInitialTheme = () => (
-  typeof document !== 'undefined'
-    ? (document.documentElement.dataset.theme || getStoredTheme() || getMediaTheme())
-    : 'dark'
-);
-
-export const applyTheme = (theme) => {
-  if (typeof document === 'undefined') return;
-  document.documentElement.dataset.theme = theme;
-
-  const themeColor = document.querySelector('meta[name="theme-color"]');
-  if (themeColor) {
-    themeColor.setAttribute('content', theme === 'light' ? '#f3efe7' : '#1e1e1e');
-  }
-
-  if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.add('theme-transition');
-    window.setTimeout(() => document.documentElement.classList.remove('theme-transition'), 300);
-  }
-
-  window.requestAnimationFrame?.(() => {
-    window.__portfolioScrollTrigger?.refresh?.();
-  });
-};
+import { useEffect, useMemo, useState } from 'react';
+import { 
+  THEME_STORAGE_KEY, 
+  ThemeContext, 
+  getInitialTheme, 
+  getStoredTheme, 
+  applyTheme 
+} from './themeContext.jsx';
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(getInitialTheme);
@@ -78,5 +39,3 @@ export const ThemeProvider = ({ children }) => {
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
-
-export const useTheme = () => useContext(ThemeContext);
