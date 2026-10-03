@@ -36,8 +36,8 @@
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  -webkit-mask-image: url(/imgs/intro/ink.webp), linear-gradient(#fff, #fff);
-  mask-image: url(/imgs/intro/ink.webp), linear-gradient(#fff, #fff);
+  -webkit-mask-image: url(/imgs/intro/ink_lv2_slow.webp), linear-gradient(#fff, #fff);
+  mask-image: url(/imgs/intro/ink_lv2_slow.webp), linear-gradient(#fff, #fff);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   -webkit-mask-size: 200vw 200vh, cover;

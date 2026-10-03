@@ -1,7 +1,7 @@
 .project-card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(340px, 1fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(380px, 1.2fr);
   gap: clamp(3rem, 5vw, 6rem);
   align-items: center;
   padding: 2rem 0 5rem;
@@ -9,7 +9,7 @@
 }
 
 .project-card--reverse {
-  grid-template-columns: minmax(340px, 1fr) minmax(0, 1.4fr);
+  grid-template-columns: minmax(380px, 1.2fr) minmax(0, 1.6fr);
 }
 
 .project-card--reverse .project-card__media {
@@ -232,7 +232,7 @@
   line-height: var(--type-body-lg-leading);
   color: var(--color-muted-strong);
   margin: 0;
-  max-width: 65ch;
+  max-width: 80ch;
   overflow-wrap: break-word;
 }
 
@@ -252,7 +252,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  max-width: 22rem;
+  max-width: 28rem;
   margin-top: 0.25rem;
 }
 

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, memo } from 'react';
 import './InkIntro.css';
 
 // Single source of truth for timing — tweak these to change pacing.
-const INK_GIF_SRC = '/imgs/intro/ink.webp';
-const GIF_LOOP_MS = 8320;          // Exact loop length of the ink GIF.
+const INK_GIF_SRC = '/imgs/intro/ink_lv2_slow.webp';
+const GIF_LOOP_MS = 8240;          // Exact loop length of the ink GIF.
 const LOOP_SAFETY_MARGIN_MS = 200; // Start fading just before it visibly loops.
 const PLAY_DURATION_MS = GIF_LOOP_MS - LOOP_SAFETY_MARGIN_MS;
 const FADE_OPACITY_MS = 5500;      // +2s slower fade
