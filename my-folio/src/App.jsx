@@ -8,6 +8,7 @@ import SmoothScroll from './component/SmoothScroll.jsx';
 import { scrollToAnchor } from './utils/scroll.js';
 import InkIntro from './component/InkIntro.jsx';
 import TechText from './component/TechText.jsx';
+import CurvedInput from './component/CurvedInput.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from './themeContext.jsx';
 import {
@@ -834,6 +835,24 @@ function App() {
           </div>
         </div>
         <div className="r-install-rule"></div>
+      </section>
+
+      <section style={{ display: 'flex', justifyContent: 'center', padding: '6rem 2rem', background: 'var(--color-bg)' }}>
+        <CurvedInput
+          theme={isDark ? 'dark' : 'light'}
+          buttonColor="var(--color-accent)"
+          borderColor="var(--color-border-strong)"
+          backgroundColor="var(--color-bg)"
+          textColor="var(--color-text)"
+          placeholderColor="var(--color-muted)"
+          shadowColor="var(--color-accent)"
+          width="100%"
+          style={{ maxWidth: '650px' }}
+          height={80}
+          fontSize={20}
+          buttonText="Subscribe"
+          placeholder="Enter your email address"
+        />
       </section>
 
       {/* Footer */}

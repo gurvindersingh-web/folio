@@ -797,6 +797,7 @@ const FlexCarousel = ({
         !reducedMotion &&
         introState.done &&
         !pointer.down &&
+        !hasFocus &&
         mode === 'spring' &&
         Math.abs(goal - pos) < 1 &&
         now - interactedAt > 3000 &&
