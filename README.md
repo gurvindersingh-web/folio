@@ -6,6 +6,7 @@
   <p>
     <a href="https://gurvindersingh-web.github.io">Live Demo</a> •
     <a href="#features">Features</a> •
+    <a href="#ui-components">UI Components</a> •
     <a href="#tech-stack">Tech Stack</a> •
     <a href="#getting-started">Getting Started</a>
   </p>
@@ -21,6 +22,8 @@
 
 **Folio (Ryoku Theme)** is a showcase of my personal projects, technical skills, and professional experience. Designed with a "brutalist dark" aesthetic ("Ryoku"), this portfolio emphasizes performance, immersive animations, and clean, responsive layouts.
 
+The design philosophy revolves around high-contrast accents, custom noise textures, sleek typography, and fluid user interactions. Every component was built meticulously to create an engaging experience while maintaining accessibility and blazing fast load times.
+
 *"Unfinished on purpose, in the open."* - The project is constantly evolving as a living showcase of my web development journey.
 
 ---
@@ -32,6 +35,25 @@
 - 🎢 **Smooth Scrolling**: Implemented using [Lenis](https://lenis.darkroom.engineering/) for a fluid, premium browsing experience.
 - 🎞️ **Advanced Animations**: Complex scroll-driven animations and interactions powered by GSAP and Motion.
 - 🧱 **Responsive Design**: Fully optimized for desktop, tablet, and mobile devices with a flexible CSS grid architecture.
+
+---
+
+## ✜ UI COMPONENTS
+
+This project utilizes a highly modular and reusable component architecture. Each component is custom-built with React, styled with modular CSS, and animated flawlessly.
+
+- **`AnimatedContent`**: Wraps content with staggered entrance and scroll-trigger animations.
+- **`BorderGlow`**: An interactive wrapper that highlights borders based on mouse proximity, enhancing hover states.
+- **`Carousel` & `FlexCarousel`**: High-performance, touch-friendly swipeable carousels built for showcasing projects or images interactively.
+- **`CircularText`**: A rotating text ring used as an engaging graphical element.
+- **`ClickSpark`**: A micro-interaction component that produces an animated spark or particle effect on mouse click.
+- **`CurvedInput`**: A sleek, stylized input field tailored to the brutalist aesthetic.
+- **`InfiniteSpiral`**: A captivating, continuous background visual effect.
+- **`InkIntro`**: A dramatic splash screen and page transition component that simulates spreading ink using masking and SVG animations.
+- **`LogoLoop`**: An infinitely scrolling marquee for showcasing client or technology logos.
+- **`ProjectCard`**: A detailed, interactive card designed to present portfolio projects with rich hover states and metadata.
+- **`SmoothScroll`**: A layout wrapper that integrates Lenis to ensure smooth, hardware-accelerated scrolling across the entire application.
+- **`TechText`**: A dynamic text component used to highlight technical skills or keywords with interactive hover effects.
 
 ---
 
