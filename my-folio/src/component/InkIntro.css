@@ -18,6 +18,11 @@
   pointer-events: none;
 }
 
+.ink-intro-overlay.fade-out .ink-layer {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
 /* ─── Banner & typography ─── */
 .ink-banner {
   display: flex;
@@ -70,7 +75,7 @@
   align-items: center;
   
   /* Fast text fade out early in the animation */
-  animation: textFadeOut 4.2s ease forwards;
+  animation: textFadeOut 1.5s ease forwards;
   animation-delay: 2.2s;
 }
 

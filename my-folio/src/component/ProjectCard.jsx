@@ -92,7 +92,7 @@ const ProjectCard = ({
   const handlePointerEnter = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     mediaHoveredRef.current = true;
-    if (videoRef.current && videoReady) {
+    if (videoRef.current) {
       videoRef.current.play().catch(() => {});
     }
   };
@@ -186,7 +186,7 @@ const ProjectCard = ({
                 loop
                 muted
                 playsInline
-                preload="none"
+                preload="auto"
                 poster={video.replace(/\.mp4$/, '-poster.jpg')}
                 onCanPlay={() => setVideoReady(true)}
                 width="1280"

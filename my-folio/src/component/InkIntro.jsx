@@ -28,7 +28,10 @@ const InkIntro = ({ onComplete }) => {
     const startPlayTimer = () => {
       if (cancelled) return;
       playTimerRef.current = setTimeout(
-        () => setPhase('fading'),
+        () => {
+          setPhase('fading');
+          document.body.style.overflow = '';
+        },
         prefersReducedMotion ? REDUCED_MOTION_PLAY_MS : PLAY_DURATION_MS
       );
     };
