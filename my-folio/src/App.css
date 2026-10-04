@@ -764,29 +764,23 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 
 .r-scroll-hint {
   position: absolute;
-  bottom: 4rem;
-  left: 10%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+  bottom: 2rem;
+  right: 2rem;
+  left: auto;
   z-index: 3;
 }
 
-.r-scroll-text {
+.r-circular-scroll.circular-text {
+  width: 220px;
+  height: 220px;
+  color: var(--color-text);
   font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
-  font-size: var(--type-micro-size);
-  line-height: var(--type-micro-leading);
-  letter-spacing: var(--type-micro-tracking);
-  color: var(--color-dots);
-  transform: rotate(90deg);
-  margin-bottom: 1.5rem;
 }
 
-.r-scroll-line {
-  width: 1px;
-  height: 50px;
-  background: linear-gradient(to bottom, var(--color-dots), transparent);
+.r-circular-scroll.circular-text span {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
 }
 
 .r-side-text {

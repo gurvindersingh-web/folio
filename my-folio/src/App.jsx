@@ -9,6 +9,7 @@ import { scrollToAnchor } from './utils/scroll.js';
 import InkIntro from './component/InkIntro.jsx';
 import TechText from './component/TechText.jsx';
 import CurvedInput from './component/CurvedInput.jsx';
+import CircularText from './component/CircularText.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from './themeContext.jsx';
 import {
@@ -498,8 +499,11 @@ function App() {
               </picture>
             </div>
             <div className="r-scroll-hint">
-              <div className="r-scroll-text">SCROLL</div>
-              <div className="r-scroll-line"></div>
+              <CircularText 
+                text="FULL-STACK DEVELOPER •" 
+                spinDuration={20} 
+                className="r-circular-scroll"
+              />
             </div>
           </AnimatedContent>
         </section>
