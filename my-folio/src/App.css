@@ -1227,8 +1227,9 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-footer-subscribe {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
   max-width: 412px;
+  margin-top: 1rem;
 }
 
 .r-footer-subscribe__label {
@@ -1241,14 +1242,24 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
 .r-footer-subscribe .email-pill {
   transform: none;
   box-shadow: none;
-  border: 1px solid rgba(214, 205, 182, 0.25);
-  transition: border-color .2s ease, box-shadow .2s ease;
-  border-radius: 25px;
+  border: none;
 }
 
-.r-footer-subscribe .email-pill:focus-within {
-  border-color: rgba(214, 205, 182, 0.7);
-  box-shadow: 0 0 24px rgba(214, 205, 182, 0.15);
+.r-footer-subscribe .email-pill .curved-input__svg {
+  transition: filter .3s ease;
+}
+
+.r-footer-subscribe .email-pill .curved-input__svg path:nth-of-type(2) {
+  stroke: rgba(214, 205, 182, 0.25) !important;
+  transition: stroke .3s ease;
+}
+
+.r-footer-subscribe .email-pill.curved-input--focused .curved-input__svg path:nth-of-type(2) {
+  stroke: rgba(214, 205, 182, 0.7) !important;
+}
+
+.r-footer-subscribe .email-pill.curved-input--focused .curved-input__svg {
+  filter: drop-shadow(0 0 24px rgba(214, 205, 182, 0.15));
 }
 
 .r-footer-column {

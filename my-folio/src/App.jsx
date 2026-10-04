@@ -12,7 +12,7 @@ import CurvedInput from './component/CurvedInput.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from './themeContext.jsx';
 import {
-  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N, SiHyprland
+  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N, SiHyprland
 } from 'react-icons/si';
 // comment4
 // Error boundary for lazy-loaded components
@@ -575,7 +575,6 @@ function App() {
           <Suspense fallback={<div style={{ height: '48px', width: '100%' }}></div>}>
             <LogoLoop
               logos={[
-                { node: <SiVercel size={48} color="var(--color-icon)" />, alt: 'Vercel', title: 'Vercel' },
                 { node: <SiGithub size={48} color="var(--color-icon)" />, alt: 'GitHub', title: 'GitHub' },
                 { node: <SiDocker size={48} color="var(--color-icon)" />, alt: 'Docker', title: 'Docker' },
                 { node: <SiPrisma size={48} color="var(--color-icon)" />, alt: 'Prisma', title: 'Prisma' },
@@ -687,7 +686,6 @@ function App() {
                   <span><SiLinux size={20} style={{ marginRight: '8px' }} /> Linux</span>
                   <span><SiArchlinux size={20} style={{ marginRight: '8px' }} /> Arch Linux</span>
                   <span><SiHyprland size={20} style={{ marginRight: '8px' }} /> Hyprland</span>
-                  <span><SiVercel size={20} style={{ marginRight: '8px' }} /> Vercel</span>
                   <span><SiN8N size={20} style={{ marginRight: '8px' }} /> CI/CD & n8n</span>
                 </div>
               </BorderGlow>
@@ -874,11 +872,12 @@ function App() {
             </div>
 
             <div className="r-footer-subscribe">
-              <span className="r-footer-subscribe__label">NEWSLETTER</span>
+              <span className="r-footer-subscribe__label">CONNECT</span>
               <CurvedInput
                 className="email-pill"
                 theme={theme === 'dark' ? 'dark' : 'light'}
-                buttonColor="var(--color-accent)"
+                buttonColor="#d4cebd"
+                buttonTextColor="#302e2b"
                 borderColor="transparent"
                 backgroundColor="transparent"
                 textColor="var(--color-text)"
@@ -886,11 +885,20 @@ function App() {
                 shadowColor="transparent"
                 width="100%"
                 style={{ maxWidth: '412px' }}
-                height={50}
-                bend={0}
-                fontSize={14}
-                buttonText="Subscribe"
+                height={65}
+                bend={0.20}
+                fontSize={16}
+                buttonText="Connect"
                 placeholder="Enter your email address"
+                onSubmit={(email) => {
+                  if (email && email.includes('@')) {
+                    const subject = encodeURIComponent('New Connection Request from Portfolio');
+                    const body = encodeURIComponent(`Hi Gurvinder,\n\nI'd like to connect. My email is: ${email}\n\nBest,\n`);
+                    window.location.href = `mailto:gurvindersingh.828384@gmail.com?subject=${subject}&body=${body}`;
+                  } else {
+                    alert('Please enter a valid email address.');
+                  }
+                }}
               />
             </div>
           </div>
