@@ -1211,11 +1211,44 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   box-shadow: 0 0 10px rgb(var(--status-green-rgb) / 0.45);
 }
 
+.r-footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
 .r-footer-links {
   display: grid;
   grid-template-columns: repeat(3, minmax(110px, 1fr));
   gap: clamp(2rem, 5vw, 6rem);
   padding-top: 0.6rem;
+}
+
+.r-footer-subscribe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 412px;
+}
+
+.r-footer-subscribe__label {
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
+  font-size: var(--type-label-wide-size);
+  letter-spacing: var(--type-label-wide-tracking);
+  color: var(--color-muted);
+}
+
+.r-footer-subscribe .email-pill {
+  transform: none;
+  box-shadow: none;
+  border: 1px solid rgba(214, 205, 182, 0.25);
+  transition: border-color .2s ease, box-shadow .2s ease;
+  border-radius: 25px;
+}
+
+.r-footer-subscribe .email-pill:focus-within {
+  border-color: rgba(214, 205, 182, 0.7);
+  box-shadow: 0 0 24px rgba(214, 205, 182, 0.15);
 }
 
 .r-footer-column {
@@ -1559,6 +1592,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   .r-site-footer { padding: 4rem 1.5rem 1.5rem; }
   .r-footer-main { flex-direction: column; gap: 3.5rem; }
   .r-footer-links { width: 100%; gap: 1.5rem; }
+  .r-footer-subscribe { max-width: 100%; }
   .r-footer-bottom { flex-direction: column; gap: 0.8rem; }
   .r-install-panel { min-height: 400px; }
   .r-install-art { transform: scale(1.8); opacity: 0.55; }

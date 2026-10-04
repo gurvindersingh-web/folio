@@ -246,12 +246,10 @@ function App() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('portfolio-scroll', onScroll);
     window.addEventListener('resize', onScroll, { passive: true });
     updateActiveSection();
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('portfolio-scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
   }, []);
@@ -837,25 +835,6 @@ function App() {
         <div className="r-install-rule"></div>
       </section>
 
-      <section style={{ display: 'flex', justifyContent: 'center', padding: '6rem 2rem', background: 'var(--color-bg)' }}>
-        <CurvedInput
-          theme={isDark ? 'dark' : 'light'}
-          buttonColor="var(--color-accent)"
-          borderColor="var(--color-border-strong)"
-          backgroundColor="var(--color-bg)"
-          textColor="var(--color-text)"
-          placeholderColor="var(--color-muted)"
-          shadowColor="var(--color-accent)"
-          width="100%"
-          style={{ maxWidth: '650px' }}
-          height={80}
-          fontSize={20}
-          buttonText="Subscribe"
-          placeholder="Enter your email address"
-        />
-      </section>
-
-      {/* Footer */}
       <footer className="r-site-footer" id="contact">
         <div className="r-footer-main">
           <div className="r-footer-brand">
@@ -870,26 +849,49 @@ function App() {
             </div>
           </div>
 
-          <div className="r-footer-links">
-            <div className="r-footer-column">
-              <span className="r-footer-heading">EXPLORE</span>
-              <a href="#about">About</a>
-              <a href="#skills">Skills</a>
-              <a href="#projects">Projects</a>
-              <a href="#contact">Contact</a>
+          <div className="r-footer-right">
+            <div className="r-footer-links">
+              <div className="r-footer-column">
+                <span className="r-footer-heading">EXPLORE</span>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+              </div>
+              <div className="r-footer-column">
+                <span className="r-footer-heading">CONNECT</span>
+                <a href="mailto:gurvindersingh.828384@gmail.com">Email</a>
+                <a href="https://github.com/gurvindersingh-web" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.linkedin.com/in/gurvinder-singh-422032311/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://x.com/Gurvinder_web" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+              </div>
+              <div className="r-footer-column">
+                <span className="r-footer-heading">ELSEWHERE</span>
+                <a href="#projects">Case studies</a>
+                <a href="https://github.com/gurvindersingh-web?tab=repositories" target="_blank" rel="noopener noreferrer">Open source</a>
+                <a href="#about">Now</a>
+              </div>
             </div>
-            <div className="r-footer-column">
-              <span className="r-footer-heading">CONNECT</span>
-              <a href="mailto:gurvindersingh.828384@gmail.com">Email</a>
-              <a href="https://github.com/gurvindersingh-web" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="https://www.linkedin.com/in/gurvinder-singh-422032311/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href="https://x.com/Gurvinder_web" target="_blank" rel="noopener noreferrer">X / Twitter</a>
-            </div>
-            <div className="r-footer-column">
-              <span className="r-footer-heading">ELSEWHERE</span>
-              <a href="#projects">Case studies</a>
-              <a href="https://github.com/gurvindersingh-web?tab=repositories" target="_blank" rel="noopener noreferrer">Open source</a>
-              <a href="#about">Now</a>
+
+            <div className="r-footer-subscribe">
+              <span className="r-footer-subscribe__label">NEWSLETTER</span>
+              <CurvedInput
+                className="email-pill"
+                theme={theme === 'dark' ? 'dark' : 'light'}
+                buttonColor="var(--color-accent)"
+                borderColor="transparent"
+                backgroundColor="transparent"
+                textColor="var(--color-text)"
+                placeholderColor="var(--color-muted)"
+                shadowColor="transparent"
+                width="100%"
+                style={{ maxWidth: '412px' }}
+                height={50}
+                bend={0}
+                fontSize={14}
+                buttonText="Subscribe"
+                placeholder="Enter your email address"
+              />
             </div>
           </div>
         </div>

@@ -180,7 +180,7 @@ const CurvedInput = ({
   const [caretU, setCaretU] = useState(0);
   const [scrollLen, setScrollLen] = useState(0);
   const [btnTextW, setBtnTextW] = useState(0);
-  const [, setFontTick] = useState(0);
+  const [fontTick, setFontTick] = useState(0);
 
   const val = value !== undefined ? value : innerValue;
   const display = type === 'password' ? '•'.repeat(val.length) : val;
@@ -268,7 +268,7 @@ const CurvedInput = ({
       setScrollLen(next);
     }
     setCaretU(layout.textStartU + (caretLen - next) * geom.uPerLen);
-  });
+  }, [buttonText, caretIndex, display, fontSize, fontTick, geom, layout]);
 
   const commitValue = v => {
     if (value === undefined) setInnerValue(v);

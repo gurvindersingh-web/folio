@@ -41,66 +41,97 @@ const SmoothScroll = ({ children }) => {
 
   useEffect(() => {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse)');
-    if (motionQuery.matches) return undefined;
 
     let disposed = false;
+    let importing = false;
+    let generation = 0;
     let lenis;
     let gsap;
     let scrollTrigger;
     let onTick;
-    let handleVisibilityChange;
-    let handleChange;
+    let ticking = false;
 
-    Promise.all([
-      import('lenis'),
-      import('gsap'),
-      import('gsap/ScrollTrigger')
-    ]).then(([{ default: Lenis }, { gsap: loadedGsap }, { ScrollTrigger }]) => {
-      if (disposed) return;
-      gsap = loadedGsap;
-      scrollTrigger = ScrollTrigger;
-      gsap.registerPlugin(ScrollTrigger);
-      window.__portfolioScrollTrigger = ScrollTrigger;
-      lenis = new Lenis({
-        duration: 1.05,
-        lerp: 0.1,
-        smoothWheel: true,
-        autoRaf: false,
-        anchors: false,
-        prevent: (node) => node?.closest?.('[data-lenis-prevent]')
-      });
-      setLenisInstance(lenis);
-
-      lenis.on('scroll', (event) => {
-        ScrollTrigger.update(event);
-        window.dispatchEvent(new CustomEvent('portfolio-scroll'));
-      });
-      onTick = (time) => lenis.raf(time * 1000);
-      gsap.ticker.add(onTick);
-      gsap.ticker.lagSmoothing(0);
-
-      handleVisibilityChange = () => {
-        if (document.hidden) lenis.stop();
-        else lenis.start();
-      };
-      handleChange = (event) => {
-        if (event.matches) {
-          lenis.destroy();
-          if (lenisInstance === lenis) setLenisInstance(null);
-        }
-      };
-      motionQuery.addEventListener('change', handleChange);
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-    });
-
-    return () => {
-      disposed = true;
-      if (handleChange) motionQuery.removeEventListener('change', handleChange);
-      if (handleVisibilityChange) document.removeEventListener('visibilitychange', handleVisibilityChange);
+    const stop = () => {
+      generation += 1;
+      importing = false;
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (gsap && onTick) gsap.ticker.remove(onTick);
+      ticking = false;
       if (window.__portfolioScrollTrigger === scrollTrigger) window.__portfolioScrollTrigger = null;
       if (lenisInstance === lenis) setLenisInstance(null);
       lenis?.destroy();
+      lenis = undefined;
+      gsap = undefined;
+      scrollTrigger = undefined;
+      onTick = undefined;
+    };
+
+    const handleVisibilityChange = () => {
+      if (!lenis || !gsap || !onTick) return;
+      if (document.hidden) {
+        lenis.stop();
+        if (ticking) gsap.ticker.remove(onTick);
+        ticking = false;
+      } else {
+        lenis.start();
+        if (!ticking) gsap.ticker.add(onTick);
+        ticking = true;
+      }
+    };
+
+    const start = () => {
+      if (disposed || motionQuery.matches || lenis || importing) return;
+      importing = true;
+      const currentGeneration = ++generation;
+
+      Promise.all([
+        import('lenis'),
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ]).then(([{ default: Lenis }, { gsap: loadedGsap }, { ScrollTrigger }]) => {
+        if (disposed || motionQuery.matches || currentGeneration !== generation) return;
+        importing = false;
+        gsap = loadedGsap;
+        scrollTrigger = ScrollTrigger;
+        gsap.registerPlugin(ScrollTrigger);
+        window.__portfolioScrollTrigger = ScrollTrigger;
+        lenis = new Lenis({
+          duration: 1.05,
+          lerp: 0.12,
+          smoothWheel: true,
+          autoRaf: false,
+          anchors: false,
+          prevent: (node) => node?.closest?.('[data-lenis-prevent]')
+        });
+        setLenisInstance(lenis);
+
+        lenis.on('scroll', ScrollTrigger.update);
+        onTick = (time) => lenis.raf(time * 1000);
+        if (!document.hidden) {
+          gsap.ticker.add(onTick);
+          ticking = true;
+        } else {
+          lenis.stop();
+        }
+        gsap.ticker.lagSmoothing(0);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+      }).catch(() => {
+        if (currentGeneration === generation) importing = false;
+      });
+    };
+
+    const handleMotionChange = () => {
+      if (motionQuery.matches) stop();
+      else start();
+    };
+
+    motionQuery.addEventListener('change', handleMotionChange);
+    start();
+
+    return () => {
+      disposed = true;
+      motionQuery.removeEventListener('change', handleMotionChange);
+      stop();
     };
   }, []);
 
