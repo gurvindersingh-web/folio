@@ -1359,14 +1359,6 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   letter-spacing: var(--type-title-tracking);
 }
 
-.r-install-content p {
-  margin: 1.2rem 0 0;
-  color: var(--color-muted-dim);
-  font-family: 'Inter', 'Inter Fallback', sans-serif;
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-leading);
-}
-
 .r-install-paths {
   display: flex;
   align-items: flex-start;
@@ -1560,7 +1552,6 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   .r-site-footer { padding: 4rem 1.5rem 1.5rem; }
   .r-footer-main { flex-direction: column; gap: 3.5rem; }
   .r-footer-links { width: 100%; gap: 1.5rem; }
-  .r-footer-wordmark { margin-top: 4rem; }
   .r-footer-bottom { flex-direction: column; gap: 0.8rem; }
   .r-install-panel { min-height: 400px; }
   .r-install-art { transform: scale(1.8); opacity: 0.55; }
