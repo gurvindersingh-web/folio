@@ -34,14 +34,14 @@ class LazyErrorBoundary extends Component {
 const LogoLoop = lazy(() => import("./component/LogoLoop.jsx"));
 const InfiniteSpiral = lazy(() => import("./component/InfiniteSpiral.jsx"));
 const Carousel = lazy(() => import("./component/Carousel.jsx"));
-const CircularCarousel = lazy(() => import("./component/CircularCarousel.jsx"));
+const FlexCarousel = lazy(() => import("./component/FlexCarousel.jsx"));
 
 if (typeof window !== 'undefined') {
   const prefetch = () => {
     void import("./component/LogoLoop.jsx");
     void import("./component/InfiniteSpiral.jsx");
     void import("./component/Carousel.jsx");
-    void import("./component/CircularCarousel.jsx");
+    void import("./component/FlexCarousel.jsx");
   };
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(prefetch, { timeout: 1500 });
@@ -770,22 +770,31 @@ function App() {
             </div>
           </div>
 
-          <div className="r-achievements-carousel" style={{ width: '100%', height: '1100px', position: 'relative', marginTop: '4rem' }}>
+          <div className="r-achievements-carousel" style={{ width: 'calc(100% - 10px)', height: '1200px', position: 'relative', marginTop: '4rem', marginLeft: '5px', marginRight: '5px' }}>
             <LazyErrorBoundary>
             <Suspense fallback={<div style={{ width: '100%', height: '100%' }}></div>}>
-              <CircularCarousel
+              <FlexCarousel
                 items={certificateItems.map((cert) => ({
                   src: cert.image,
                   title: cert.title,
                   subtitle: cert.issuer,
                   alt: cert.title,
                 }))}
-                preset="cylinder"
-                cardWidth={1200}
-                aspectRatio={1.4}
-                gap={100}
+                preset="arch"
+                intro="rise"
+                fit="natural"
+                cardHeight={0.7}
+                gap={64}
+                radius={8}
+                bend={0.08}
+                reach={0.15}
+                dispersion={0.1}
+                focusOnClick={true}
+                autoplay={true}
+                interval={4}
                 captions={true}
-                onItemClick={(item) => setLightboxCert({ image: item.src, issuer: item.subtitle, title: item.title })}
+                captureWheel={true}
+                onSelect={(_, item) => setLightboxCert({ image: item.src, issuer: item.subtitle, title: item.title })}
               />
             </Suspense>
             </LazyErrorBoundary>
