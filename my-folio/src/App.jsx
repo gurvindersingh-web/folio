@@ -11,7 +11,7 @@ import TechText from './component/TechText.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from './themeContext.jsx';
 import {
-  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N
+  SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiVercel, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N, SiHyprland
 } from 'react-icons/si';
 // comment4
 // Error boundary for lazy-loaded components
@@ -55,7 +55,6 @@ const NAV_ITEMS = [
   { href: '#skills', id: 'skills', label: 'SKILLS' },
   { href: '#projects', id: 'projects', label: 'PROJECTS' },
   { href: '#achievements', id: 'achievements', label: 'ACHIEVEMENTS' },
-  { href: '#education', id: 'education', label: 'EDUCATION' },
   { href: '#contact', id: 'contact', label: 'CONTACT' },
 ];
 // comment2
@@ -176,7 +175,7 @@ function App() {
 
   const certificateItems = [
     { issuer: "CIPHER", wallPosition: "anchor-left", image: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png", title: "Java Programming", href: "/imgs/certificates/screenshot-2026-09-12_17-57-32.png" },
-    { issuer: "IIT KGP", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image.png", title: "Ethics in Engineering Practice", href: "/imgs/certificates/Pasted image.png" },
+    { issuer: "CIPHER", wallPosition: "anchor-right", image: "/imgs/certificates/Pasted image.png", title: "Low-Level System Design", href: "/imgs/certificates/Pasted image.png" },
     { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png", title: "Full Stack Development", href: "/imgs/certificates/screenshot-2026-09-12_18-02-51.png" },
     { issuer: "UDEMY", wallPosition: "middle", image: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png", title: "Node.js", href: "/imgs/certificates/screenshot-2026-09-12_18-03-01.png" },
     { issuer: "GFG", wallPosition: "bottom", image: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png", title: "Java Spring Boot", href: "/imgs/certificates/screenshot-2026-09-12_17-58-02.png" },
@@ -688,6 +687,7 @@ function App() {
                   <span><SiDocker size={20} style={{ marginRight: '8px' }} /> Docker</span>
                   <span><SiLinux size={20} style={{ marginRight: '8px' }} /> Linux</span>
                   <span><SiArchlinux size={20} style={{ marginRight: '8px' }} /> Arch Linux</span>
+                  <span><SiHyprland size={20} style={{ marginRight: '8px' }} /> Hyprland</span>
                   <span><SiVercel size={20} style={{ marginRight: '8px' }} /> Vercel</span>
                   <span><SiN8N size={20} style={{ marginRight: '8px' }} /> CI/CD & n8n</span>
                 </div>
@@ -791,7 +791,7 @@ function App() {
                 dispersion={0.1}
                 focusOnClick={true}
                 autoplay={true}
-                interval={4}
+                interval={2}
                 captions={true}
                 captureWheel={true}
                 onSelect={(_, item) => setLightboxCert({ image: item.src, issuer: item.subtitle, title: item.title })}
@@ -800,70 +800,11 @@ function App() {
             </LazyErrorBoundary>
           </div>
           
-          <div className="r-achievements-text-list" style={{ marginTop: '5rem', padding: '0 2rem' }}>
-            <h3 className="r-achievements-list-title type-heading">Other Achievements</h3>
-            <ul className="r-achievements-list type-body">
-              <li><strong>Omarchy</strong> — open-source system-stats plugin contribution (Live) <span className="r-achievements-date type-label">Aug 2026</span></li>
-              <li><strong>GitHub Achievements</strong> — YOLO, Quickdraw, Pair Extraordinaire, Pull Shark <span className="r-achievements-date type-label">Jan 2026 – Aug 2026</span></li>
-            </ul>
-          </div>
+
           </div>
         </section>
 
-        {/* Education Section */}
-        <section id="education" className="r-projects-container" style={{ paddingTop: '5rem', paddingBottom: '4rem' }}>
-          <div className="r-projects-header">
-            <div className="r-about-eyebrow">
-              <span className="r-about-eyebrow-text">EDUCATION</span>
-              <span className="r-about-eyebrow-icon">水</span>
-            </div>
-            <div className="r-projects-intro">
-              <h2 className="r-section-heading">ACADEMICS</h2>
-              <h3 className="r-projects-title">Background</h3>
-            </div>
-          </div>
 
-          <div className="r-timeline">
-            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2}>
-              <BorderGlow className="r-timeline-item" borderRadius={12}>
-                <div className="r-timeline-meta">Aug 2024 — Present</div>
-                <div className="r-timeline-content">
-                  <h4>Bachelor of Technology in Computer Science</h4>
-                  <p>Lovely Professional University · Phagwara, Punjab · CGPA: 6.8</p>
-                  <div className="r-timeline-tags">
-                    <span>Data Structures</span>
-                    <span>Operating Systems</span>
-                    <span>Computer Networks</span>
-                    <span>DBMS</span>
-                  </div>
-                </div>
-              </BorderGlow>
-            </AnimatedContent>
-            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.1}>
-              <BorderGlow className="r-timeline-item" borderRadius={12}>
-                <div className="r-timeline-meta">Mar 2022 — May 2024</div>
-                <div className="r-timeline-content">
-                  <h4>Senior Secondary (12th)</h4>
-                  <p>Dhawan International Public School · Hariana, Punjab · 71%</p>
-                  <div className="r-timeline-tags">
-                    <span>Physics</span>
-                    <span>Chemistry</span>
-                    <span>Mathematics</span>
-                  </div>
-                </div>
-              </BorderGlow>
-            </AnimatedContent>
-            <AnimatedContent distance={40} direction="vertical" duration={0.8} threshold={0.2} delay={0.2}>
-              <BorderGlow className="r-timeline-item" borderRadius={12}>
-                <div className="r-timeline-meta">Mar 2021 — May 2022</div>
-                <div className="r-timeline-content">
-                  <h4>Matriculation (10th)</h4>
-                  <p>St.Solder Divine public school · Garhdiwala, Punjab · 72%</p>
-                </div>
-              </BorderGlow>
-            </AnimatedContent>
-          </div>
-        </section>
 
       </main>
 

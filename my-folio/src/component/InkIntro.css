@@ -53,7 +53,7 @@
 
 .ink-layer--tl {
   /* Natural direction (top left) */
-  background-color: transparent; /* Parent provides structural clip */
+  background-color: var(--color-intro-ink);
   -webkit-mask-position: -100vw -100vh, center;
   mask-position: -100vw -100vh, center;
 }
@@ -107,5 +107,16 @@
 @media (max-width: 768px) {
   .ink-banner .ink-content p {
     font-size: var(--type-label-wide-size);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-intro-overlay {
+    transition-duration: 1ms;
+  }
+
+  .ink-banner .ink-content {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
   }
 }

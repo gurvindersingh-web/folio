@@ -83,7 +83,7 @@ const BEND_PRESETS = {
     lensWidth: 0.8,
     lensHeight: 0.8,
     tilt: 0,
-    roundness: 1,
+    roundness: 5,
     bend: 0.3,
     reach: 0.36,
     curl: 'rise',
@@ -276,7 +276,7 @@ const FlexCarousel = ({
   followCursor,
   squeeze = 0.2,
   focusOnClick = true,
-  autoplay = false,
+  autoplay = true,
   interval = 4,
   captions = true,
   captureWheel = true,
@@ -796,11 +796,7 @@ const FlexCarousel = ({
         s.autoplay &&
         !reducedMotion &&
         introState.done &&
-        focus.target === 0 &&
-        focus.t < 0.01 &&
-        !pointer.over &&
         !pointer.down &&
-        !hasFocus &&
         mode === 'spring' &&
         Math.abs(goal - pos) < 1 &&
         now - interactedAt > 3000 &&

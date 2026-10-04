@@ -9,6 +9,7 @@ const PLAY_DURATION_MS = GIF_LOOP_MS - LOOP_SAFETY_MARGIN_MS;
 const FADE_OPACITY_MS = 5500;      // +2s slower fade
 const FADE_TRANSFORM_MS = 6500;    // +2s slower zoom-out settle
 const REDUCED_MOTION_PLAY_MS = 400;
+const REDUCED_MOTION_FADE_MS = 1;
 
 const InkIntro = ({ onComplete }) => {
   const [phase, setPhase] = useState('playing');
@@ -16,6 +17,7 @@ const InkIntro = ({ onComplete }) => {
   const fadeTimerRef = useRef(null);
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     const prefersReducedMotion = window.matchMedia(
@@ -30,7 +32,7 @@ const InkIntro = ({ onComplete }) => {
       playTimerRef.current = setTimeout(
         () => {
           setPhase('fading');
-          document.body.style.overflow = '';
+          document.body.style.overflow = previousOverflow;
         },
         prefersReducedMotion ? REDUCED_MOTION_PLAY_MS : PLAY_DURATION_MS
       );
@@ -53,7 +55,7 @@ const InkIntro = ({ onComplete }) => {
       img.removeEventListener('load', startPlayTimer);
       img.removeEventListener('error', startPlayTimer);
       clearTimeout(playTimerRef.current);
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousOverflow;
     };
   }, []);
 
@@ -62,8 +64,9 @@ const InkIntro = ({ onComplete }) => {
     fadeTimerRef.current = setTimeout(() => {
       setPhase('done');
       onComplete?.();
-      document.body.style.overflow = '';
-    }, FADE_TRANSFORM_MS); // matches the longer CSS transition
+    }, window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? REDUCED_MOTION_FADE_MS
+      : FADE_TRANSFORM_MS); // matches the longer CSS transition
     return () => clearTimeout(fadeTimerRef.current);
   }, [phase, onComplete]);
 
@@ -77,9 +80,8 @@ const InkIntro = ({ onComplete }) => {
         '--fade-transform-duration': `${FADE_TRANSFORM_MS}ms`,
       }}
     >
-      <div className="ink-layer ink-layer--tl">
-        <div className="ink-layer ink-layer--br"></div>
-      </div>
+      <div className="ink-layer ink-layer--tl" aria-hidden="true" />
+      <div className="ink-layer ink-layer--br" aria-hidden="true" />
 
       <div className="ink-banner">
         <div className="ink-content">
