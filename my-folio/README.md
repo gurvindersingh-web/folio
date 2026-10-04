@@ -31,8 +31,6 @@
   •   <a href="#architecture">Architecture</a>
   •   <a href="#getting-started">Getting Started</a>
 
-</div>
-
 ---
 
 ## ABOUT
@@ -546,8 +544,6 @@ Open a pull request after pushing your changes.
 This project is maintained as a personal portfolio and experimental development project.
 
 ---
-
-<div align="center">
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2a2a2a,100:121212&height=120&section=footer" width="100%"/>
 
