@@ -1025,33 +1025,7 @@ html[data-theme="light"] .r-theme-toggle svg:last-of-type {
   scroll-margin-top: 80px;
 }
 
-/* Defer painting expensive below-the-fold sections until they approach view. */
-@supports (content-visibility: auto) {
-  .r-about,
-  .r-logo-loop-section,
-  .r-skills,
-  .r-projects-container,
-  .r-install-panel,
-  .r-site-footer {
-    content-visibility: auto;
-  }
 
-  html.is-anchor-scrolling .r-about,
-  html.is-anchor-scrolling .r-logo-loop-section,
-  html.is-anchor-scrolling .r-skills,
-  html.is-anchor-scrolling .r-projects-container,
-  html.is-anchor-scrolling .r-install-panel,
-  html.is-anchor-scrolling .r-site-footer {
-    content-visibility: visible;
-  }
-
-  .r-about { contain-intrinsic-size: auto 720px; }
-  .r-logo-loop-section { contain-intrinsic-size: auto 110px; }
-  .r-skills { contain-intrinsic-size: auto 1180px; }
-  .r-projects-container { contain-intrinsic-size: auto 980px; }
-  .r-install-panel { contain-intrinsic-size: auto 540px; }
-  .r-site-footer { contain-intrinsic-size: auto 600px; }
-}
 
 .r-projects-list {
   display: flex;
