@@ -137,10 +137,10 @@ const LOGO_LIST = [
 const LOGO_ITEMS = LOGO_LIST.map(([Icon, name]) => ({ node: <Icon size={48} color={ICON_COLOR} />, alt: name, title: name }));
 
 const SKILL_GROUPS = [
-  { title: 'LANGUAGES', pulse: 'r-pulse', items: [[SiJavascript, 'JavaScript'], [SiTypescript, 'TypeScript'], [SiPython, 'Python'], [SiSpring, 'Java'], [SiHtml5, 'HTML'], [SiCss, 'CSS']] },
-  { title: 'FRAMEWORKS', pulse: 'r-pulse-red', items: [[SiReact, 'React.js'], [SiNextdotjs, 'Next.js'], [SiNodedotjs, 'Node.js'], [SiExpress, 'Express.js'], [SiSpringboot, 'Spring Boot']] },
-  { title: 'BACKEND & DATA', pulse: 'r-pulse', items: [[SiPostgresql, 'PostgreSQL'], [SiMongodb, 'MongoDB'], [SiPrisma, 'Prisma ORM'], [SiSupabase, 'Supabase'], [SiStripe, 'Stripe']] },
-  { title: 'TOOLS & CLOUD', pulse: 'r-pulse-blue', items: [[SiGit, 'Git/GitHub'], [SiDocker, 'Docker'], [SiLinux, 'Linux'], [SiArchlinux, 'Arch Linux'], [SiHyprland, 'Hyprland'], [SiN8N, 'CI/CD & n8n']] },
+  { title: 'LANGUAGES', pulse: 'r-pulse', items: [[SiJavascript, 'JavaScript', '#F7DF1E'], [SiTypescript, 'TypeScript', '#3178C6'], [SiPython, 'Python', '#3776AB'], [SiSpring, 'Java', '#ED8B00'], [SiHtml5, 'HTML', '#E34F26'], [SiCss, 'CSS', '#1572B6']] },
+  { title: 'FRAMEWORKS', pulse: 'r-pulse-red', items: [[SiReact, 'React.js', '#61DAFB'], [SiNextdotjs, 'Next.js', '#FFFFFF'], [SiNodedotjs, 'Node.js', '#339933'], [SiExpress, 'Express.js', '#FFFFFF'], [SiSpringboot, 'Spring Boot', '#6DB33F']] },
+  { title: 'BACKEND & DATA', pulse: 'r-pulse', items: [[SiPostgresql, 'PostgreSQL', '#4169E1'], [SiMongodb, 'MongoDB', '#47A248'], [SiPrisma, 'Prisma ORM', '#FFFFFF'], [SiSupabase, 'Supabase', '#3ECF8E'], [SiStripe, 'Stripe', '#635BFF']] },
+  { title: 'TOOLS & CLOUD', pulse: 'r-pulse-blue', items: [[SiGit, 'Git/GitHub', '#F05032'], [SiDocker, 'Docker', '#2496ED'], [SiLinux, 'Linux', '#FCC624'], [SiArchlinux, 'Arch Linux', '#1793D1'], [SiHyprland, 'Hyprland', '#00A8F3'], [SiN8N, 'CI/CD & n8n', '#FF6666']] },
 ];
 
 const ICON_GAP = { marginRight: '8px' };
@@ -414,8 +414,8 @@ const Skills = memo(function Skills() {
                 <BorderGlow key={title} className="r-skill-category" borderRadius={12}>
                   <h3><span className={pulse}></span>{title}</h3>
                   <div className="r-skill-list r-skill-logos">
-                    {items.map(([Icon, name]) => (
-                      <span key={name}><Icon size={20} style={ICON_GAP} /> {name}</span>
+                    {items.map(([Icon, name, color]) => (
+                      <span key={name}><Icon size={20} color={color} style={ICON_GAP} /> {name}</span>
                     ))}
                   </div>
                 </BorderGlow>
