@@ -237,6 +237,13 @@ function App() {
           current = id;
         }
       }
+      
+      // If we've scrolled to the bottom of the page, activate the last section
+      const isAtBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 20;
+      if (isAtBottom && NAV_ITEMS.length > 0) {
+        current = NAV_ITEMS[NAV_ITEMS.length - 1].id;
+      }
+
       setActiveSection((previous) => previous === current ? previous : current);
     };
 
@@ -323,7 +330,11 @@ function App() {
           <a
             key={id}
             href={href}
-            onClick={closeMobileNav}
+            onClick={(e) => {
+              e.preventDefault();
+              closeMobileNav();
+              scrollToAnchor(id);
+            }}
             className={activeSection === id ? 'is-active' : undefined}
             aria-current={activeSection === id ? 'location' : undefined}
           >
