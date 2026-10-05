@@ -3,6 +3,7 @@ import './App.css';
 import AnimatedContent from './component/AnimatedContent.jsx';
 import ClickSpark from './component/ClickSpark.jsx';
 import SmoothScroll from './component/SmoothScroll.jsx';
+import Navbar from './component/Navbar.jsx';
 import { scrollToAnchor } from './utils/scroll.js';
 import InkIntro from './component/InkIntro.jsx';
 import TechText from './component/TechText.jsx';
@@ -55,15 +56,6 @@ const EMAIL = 'gurvindersingh.828384@gmail.com';
 const GITHUB_URL = 'https://github.com/gurvindersingh-web';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/gurvinder-singh-422032311/';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const NAV_ITEMS = [
-  { href: '#home', id: 'home', label: 'HOME' },
-  { href: '#about', id: 'about', label: 'ABOUT' },
-  { href: '#skills', id: 'skills', label: 'SKILLS' },
-  { href: '#projects', id: 'projects', label: 'PROJECTS' },
-  { href: '#achievements', id: 'achievements', label: 'ACHIEVEMENTS' },
-  { href: '#contact', id: 'contact', label: 'CONTACT' },
-];
 
 const PROJECTS = [
   {
@@ -176,56 +168,6 @@ const handleConnectSubmit = (raw) => {
 const openGithub = () => window.open(GITHUB_URL, '_blank', 'noopener,noreferrer');
 const goToProjects = () => scrollToAnchor('projects');
 
-function useBodyScrollLock(locked) {
-  useEffect(() => {
-    if (!locked) return undefined;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [locked]);
-}
-
-function useActiveSection() {
-  const [active, setActive] = useState('');
-
-  useEffect(() => {
-    const header = document.querySelector('.r-header');
-    const sections = NAV_ITEMS.map(({ id }) => ({ id, el: document.getElementById(id) })).filter((s) => s.el);
-    const lastId = NAV_ITEMS[NAV_ITEMS.length - 1].id;
-    let raf = 0;
-
-    const update = () => {
-      raf = 0;
-      const line = (header?.getBoundingClientRect().bottom ?? 88) + 5;
-      let current = '';
-      for (const { id, el } of sections) {
-        if (el.getBoundingClientRect().top <= line) current = id;
-      }
-      // At the very bottom of the page, activate the last section
-      if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 20) {
-        current = lastId;
-      }
-      setActive((prev) => (prev === current ? prev : current));
-    };
-
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    update();
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  return active;
-}
 
 /* ───────────── Small components ───────────── */
 const formatTime = () => new Date().toLocaleTimeString('en-US', { hourCycle: 'h23' });
@@ -241,114 +183,6 @@ const Clock = () => {
   return <>{time}</>;
 };
 
-const ThemeToggle = ({ mobile = false }) => {
-  const { theme, toggleTheme } = useTheme();
-  const nextTheme = theme === 'dark' ? 'light' : 'dark';
-
-  return (
-    <button
-      type="button"
-      className={`r-theme-toggle${mobile ? ' r-theme-toggle--mobile' : ''}`}
-      onClick={toggleTheme}
-      aria-label={`Switch to ${nextTheme} theme`}
-      aria-pressed={theme === 'light'}
-      title={`Switch to ${nextTheme} theme`}
-    >
-      <FiSun aria-hidden="true" />
-      <FiMoon aria-hidden="true" />
-      <span className="sr-only">{`Switch to ${nextTheme} theme`}</span>
-    </button>
-  );
-};
-
-/* Owns scroll-spy + mobile menu state so scrolling never re-renders the rest of the page. */
-const Navigation = memo(function Navigation() {
-  const activeSection = useActiveSection();
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-  const toggleMobileNav = useCallback(() => setMobileNavOpen((prev) => !prev), []);
-  const closeMobileNav = useCallback(() => setMobileNavOpen(false), []);
-
-  useBodyScrollLock(mobileNavOpen);
-
-  useEffect(() => {
-    if (!mobileNavOpen) return undefined;
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') setMobileNavOpen(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [mobileNavOpen]);
-
-  return (
-    <>
-      <header className="r-header">
-        <AnimatedContent className="r-header-logo-slot" eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0}>
-          <div className="r-logo">
-            <span className="r-logo-icon">水</span> Gurvinder Singh
-          </div>
-        </AnimatedContent>
-        <AnimatedContent className="r-header-nav-slot" eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.1}>
-          <nav className="r-nav" aria-label="Main navigation">
-            {NAV_ITEMS.map(({ href, id, label }) => (
-              <a
-                key={id}
-                href={href}
-                className={activeSection === id ? 'is-active' : undefined}
-                aria-current={activeSection === id ? 'location' : undefined}
-                onClick={handleAnchorClick}
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-        </AnimatedContent>
-        <div className="r-header-actions-slot">
-          <AnimatedContent eager distance={20} direction="vertical" reverse={true} duration={0.8} delay={0.2}>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="r-version" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span className="r-pulse" style={{ margin: 0 }}></span> OPEN FOR WORK
-            </a>
-          </AnimatedContent>
-          <ThemeToggle />
-          <button
-            type="button"
-            className="r-mobile-toggle"
-            onClick={toggleMobileNav}
-            aria-expanded={mobileNavOpen}
-            aria-controls="mobile-nav"
-            aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
-          >
-            {mobileNavOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile nav overlay — inert while closed so hidden links can't be tabbed to */}
-      <nav
-        id="mobile-nav"
-        className={`r-mobile-nav ${mobileNavOpen ? 'r-mobile-nav--open' : ''}`}
-        aria-label="Mobile navigation"
-        inert={!mobileNavOpen}
-      >
-        {NAV_ITEMS.map(({ href, id, label }) => (
-          <a
-            key={id}
-            href={href}
-            onClick={(e) => {
-              closeMobileNav();
-              handleAnchorClick(e);
-            }}
-            className={activeSection === id ? 'is-active' : undefined}
-            aria-current={activeSection === id ? 'location' : undefined}
-          >
-            {label}
-          </a>
-        ))}
-        <ThemeToggle mobile />
-      </nav>
-    </>
-  );
-});
 
 const Hero = memo(function Hero() {
   return (
@@ -883,9 +717,7 @@ function App() {
           <div className="ryoku-layout" data-theme={theme}>
             {/* Texture overlay */}
             <div className="r-noise" aria-hidden="true"></div>
-
-            <Navigation />
-
+            <Navbar />
             <main>
               <Hero />
               <About />
