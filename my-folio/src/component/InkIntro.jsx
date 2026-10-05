@@ -1,91 +1,114 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import './InkIntro.css';
 
-// Single source of truth for timing — tweak these to change pacing.
-const INK_GIF_SRC = '/imgs/intro/ink_lv2_slow.webp';
-const GIF_LOOP_MS = 8240;          // Exact loop length of the ink GIF.
+// Single source of truth for timing and assets.
+const INK_SRC = '/imgs/intro/ink_lv2_slow.webp';
+const INK_MASK = `url(${INK_SRC})`;
+const GIF_LOOP_MS = 8240;          // Exact loop length of the ink animation.
 const LOOP_SAFETY_MARGIN_MS = 200; // Start fading just before it visibly loops.
 const PLAY_DURATION_MS = GIF_LOOP_MS - LOOP_SAFETY_MARGIN_MS;
-const FADE_OPACITY_MS = 5500;      // +2s slower fade
-const FADE_TRANSFORM_MS = 6500;    // +2s slower zoom-out settle
+const FADE_OPACITY_MS = 5500;
+const FADE_TRANSFORM_MS = 6500;
 const REDUCED_MOTION_PLAY_MS = 400;
 const REDUCED_MOTION_FADE_MS = 1;
 
-const InkIntro = ({ onComplete }) => {
-  const [phase, setPhase] = useState('playing');
-  const playTimerRef = useRef(null);
-  const fadeTimerRef = useRef(null);
+const OVERLAY_STYLE = {
+  '--fade-opacity-duration': `${FADE_OPACITY_MS}ms`,
+  '--fade-transform-duration': `${FADE_TRANSFORM_MS}ms`,
+  '--ink-mask': INK_MASK,
+};
 
+const getReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const InkIntro = ({ onComplete }) => {
+  // loading -> playing -> fading -> done
+  const [phase, setPhase] = useState('loading');
+  const [reduced] = useState(getReducedMotion); // read once, consistent across effects
+
+  // Keep latest callback without re-running the fade timer when parent re-renders.
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  // Preload ink mask, lock scroll, schedule fade start.
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
     let cancelled = false;
-    const img = new Image();
+    let playTimer;
 
-    const startPlayTimer = () => {
+    const unlock = () => {
+      document.body.style.overflow = previousOverflow;
+    };
+
+    const start = () => {
       if (cancelled) return;
-      playTimerRef.current = setTimeout(
+      setPhase('playing'); // text timeline + ink timer start together, after asset is ready
+      playTimer = setTimeout(
         () => {
+          unlock();
           setPhase('fading');
-          document.body.style.overflow = previousOverflow;
         },
-        prefersReducedMotion ? REDUCED_MOTION_PLAY_MS : PLAY_DURATION_MS
+        reduced ? REDUCED_MOTION_PLAY_MS : PLAY_DURATION_MS
       );
     };
 
-    if (prefersReducedMotion) {
-      startPlayTimer();
+    if (reduced) {
+      start();
     } else {
-      img.src = INK_GIF_SRC;
-      if (img.complete) {
-        startPlayTimer();
-      } else {
-        img.addEventListener('load', startPlayTimer, { once: true });
-        img.addEventListener('error', startPlayTimer, { once: true }); // never hang forever
-      }
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = INK_SRC;
+      // Resolves on load+decode; also resolve on error so it never hangs.
+      img.decode().then(start, start);
     }
 
     return () => {
       cancelled = true;
-      img.removeEventListener('load', startPlayTimer);
-      img.removeEventListener('error', startPlayTimer);
-      clearTimeout(playTimerRef.current);
-      document.body.style.overflow = previousOverflow;
+      clearTimeout(playTimer);
+      unlock();
     };
-  }, []);
+  }, [reduced]);
 
+  // Fade -> done.
   useEffect(() => {
     if (phase !== 'fading') return;
-    fadeTimerRef.current = setTimeout(() => {
-      setPhase('done');
-      onComplete?.();
-    }, window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      ? REDUCED_MOTION_FADE_MS
-      : FADE_TRANSFORM_MS); // matches the longer CSS transition
-    return () => clearTimeout(fadeTimerRef.current);
-  }, [phase, onComplete]);
+    const t = setTimeout(
+      () => {
+        setPhase('done');
+        onCompleteRef.current?.();
+      },
+      reduced ? REDUCED_MOTION_FADE_MS : FADE_TRANSFORM_MS
+    );
+    return () => clearTimeout(t);
+  }, [phase, reduced]);
 
   if (phase === 'done') return null;
 
+  const className = [
+    'ink-intro-overlay',
+    phase !== 'loading' && 'is-playing',
+    phase === 'fading' && 'fade-out',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div
-      className={`ink-intro-overlay ${phase === 'fading' ? 'fade-out' : ''}`}
-      style={{
-        '--fade-opacity-duration': `${FADE_OPACITY_MS}ms`,
-        '--fade-transform-duration': `${FADE_TRANSFORM_MS}ms`,
-      }}
-    >
+    <div className={className} style={OVERLAY_STYLE}>
       <div className="ink-layer ink-layer--tl" aria-hidden="true" />
       <div className="ink-layer ink-layer--br" aria-hidden="true" />
 
       <div className="ink-banner">
         <div className="ink-content">
-          <h1 className="ink-title">Gurvinder<br />Singh</h1>
+          <h1 className="ink-title">
+            Gurvinder
+            <br />
+            Singh
+          </h1>
           <p>@ gurvindersingh-web</p>
         </div>
       </div>
