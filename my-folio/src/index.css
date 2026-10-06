@@ -74,7 +74,7 @@ html[data-theme="dark"] {
   --border-accent: rgba(212, 206, 189, 0.4);
   --surface-tint: rgba(212, 206, 189, 0.03);
   --surface-tint-strong: rgba(212, 206, 189, 0.04);
-  --overlay-header: rgba(30, 30, 30, 0.85);
+  --overlay-header: rgba(30, 30, 30, 0.98);
   --overlay-modal: rgba(18, 18, 18, 0.95);
 }
 
@@ -126,7 +126,7 @@ html[data-theme="light"] {
   --border-accent: rgba(106, 91, 46, 0.45);
   --surface-tint: rgba(106, 91, 46, 0.05);
   --surface-tint-strong: rgba(106, 91, 46, 0.09);
-  --overlay-header: rgba(243, 239, 231, 0.88);
+  --overlay-header: rgba(243, 239, 231, 0.98);
   --overlay-modal: rgba(233, 227, 216, 0.96);
 }
 
