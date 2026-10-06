@@ -84,7 +84,7 @@ function getOverlay() {
     willChange: 'transform',
     backgroundColor: '#d4cebd',
     backgroundImage:
-      'repeating-linear-gradient(90deg, #212121 0 100px, transparent 100px 240px)',
+      'repeating-linear-gradient(90deg, #212121 0 0px, transparent 70px 100px)',
     transform: `translateX(-115%) skewX(${DASH_SKEW}deg)`,
   });
   document.body.appendChild(el);

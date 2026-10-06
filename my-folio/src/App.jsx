@@ -148,6 +148,18 @@ const ICON_GAP = { marginRight: '8px' };
 const BLANK_FILL = <div style={{ width: '100%', height: '100%' }} />;
 
 /* ───────────── Helpers / hooks ───────────── */
+const useBodyScrollLock = (isLocked) => {
+  useEffect(() => {
+    if (isLocked) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isLocked]);
+};
+
 const handleAnchorClick = (e) => {
   const id = e.currentTarget.getAttribute('href')?.slice(1);
   if (!id) return;
