@@ -576,7 +576,7 @@ const InstallPanel = memo(function InstallPanel() {
 
 const WORDMARK_STYLE = { width: '100%', height: '100%', display: 'block' };
 const WORDMARK_BOX_STYLE = { width: '100%', height: 'clamp(8rem, 22vw, 22rem)', position: 'relative', margin: '2rem auto clamp(4rem, 8vw, 8rem)', zIndex: 0, maxWidth: '1580px', overflow: 'hidden' };
-const EMAIL_PILL_STYLE = { maxWidth: '412px' };
+const EMAIL_PILL_STYLE = { maxWidth: '500px' };
 
 const Footer = memo(function Footer({ theme }) {
   const isLight = theme === 'light';
@@ -631,11 +631,12 @@ const Footer = memo(function Footer({ theme }) {
               textColor="var(--color-text)"
               placeholderColor="var(--color-muted)"
               shadowColor="transparent"
+              iconColor="#000000"
               width="100%"
               style={EMAIL_PILL_STYLE}
-              height={65}
-              bend={0.2}
-              fontSize={16}
+              height={85}
+              bend={30}
+              fontSize={18}
               buttonText="Connect"
               placeholder="Enter your email address"
               onSubmit={handleConnectSubmit}

@@ -6,17 +6,17 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 
 const DEFAULT_CONFIG = {
   position: 'bottom',
-  strength: 2,
+  strength: 1,
   height: '6rem',
   divCount: 5,
-  exponential: false,
+  exponential: true,
   zIndex: 1000,
-  animated: false,
+  animated: true,
   duration: '0.3s',
   easing: 'ease-out',
   opacity: 1,
   curve: 'linear',
-  responsive: false,
+  responsive: true,
   target: 'parent',
   className: '',
   style: {}
