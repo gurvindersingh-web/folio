@@ -4,18 +4,23 @@ export function setLenisInstance(instance) { lenisInstance = instance; }
 /** Fired on window: detail = { phase: 'start' | 'end', id } */
 export const ANCHOR_SCROLL_EVENT = 'anchor-scroll';
 
-const LENIS_DURATION = 1.2;
 const SETTLE_TOLERANCE = 1.5;   // px the section top may be off the header line
 const SETTLE_DELAY = 120;       // ms between correction passes (lets lazy layout settle)
 const MAX_SETTLE_PASSES = 4;
-const NATIVE_IDLE_MS = 120;
-const NATIVE_MAX_MS = 2000;
+
+// Dash timing
+const DASH_IN_MS = 520;         // wipe covers the screen
+const DASH_OUT_MS = 2080;        // wipe exits, revealing the target section
+const DASH_SKEW = -12;          // deg
+const DASH_Z = '9998';          // keep below modals; adjust if the header should sit above it
+
 const INTERRUPT_EVENTS = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
 const INTERRUPT_KEYS = new Set(['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']);
 
 let revealTimer = 0;
-let session = null; // { id, token, timers, raf, removeListeners }
+let session = null; // { id, token, timers, anims, removeListeners }
 let counter = 0;
+let overlayEl = null;
 
 function headerHeight() {
   const header = document.querySelector('.r-header');
@@ -61,12 +66,40 @@ function jumpTo(y) {
   window.scrollTo({ top: y, behavior: 'instant' });
 }
 
+/** Lazily created full-screen wipe element. Override colors via --dash-bg / --dash-accent. */
+function getOverlay() {
+  if (overlayEl && overlayEl.isConnected) return overlayEl;
+  const el = document.createElement('div');
+  el.setAttribute('aria-hidden', 'true');
+  Object.assign(el.style, {
+  position: 'fixed',
+  top: '0',
+  left: '-15%',
+  width: '130%',
+  height: '100%',
+  zIndex: DASH_Z,
+  pointerEvents: 'none',
+  visibility: 'hidden',
+  willChange: 'transform',
+  backgroundColor: '#d4cebd',
+  transform: `translateX(-115%) skewX(${DASH_SKEW}deg)`,
+});
+  document.body.appendChild(el);
+  overlayEl = el;
+  return el;
+}
+
+function hideOverlay() {
+  if (overlayEl) overlayEl.style.visibility = 'hidden';
+}
+
 function closeSession() {
   if (!session) return;
   session.timers.forEach((t) => window.clearTimeout(t));
-  window.cancelAnimationFrame(session.raf);
+  session.anims.forEach((a) => { try { a.cancel(); } catch { /* noop */ } });
   session.removeListeners();
   session = null;
+  hideOverlay();
 }
 
 function finishSession() {
@@ -102,7 +135,6 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
 
   const token = ++counter;
   const live = () => session?.token === token;
-  const lenis = lenisInstance;
   const reduced = prefersReducedMotion();
 
   const onInterrupt = (e) => {
@@ -118,7 +150,7 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
     id,
     token,
     timers: [],
-    raf: 0,
+    anims: [],
     removeListeners: () => INTERRUPT_EVENTS.forEach((type) => window.removeEventListener(type, onInterrupt, listenerOpts)),
   };
 
@@ -128,8 +160,8 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
   void el.getBoundingClientRect();
   emit('start', id);
 
-  // After the animation: verify we really are at the section (lazy content / images can shift
-  // layout mid-scroll) and correct, then release.
+  // After the jump: verify we really are at the section (lazy content / images can shift
+  // layout) and correct, then release.
   const settle = (pass) => {
     if (!live()) return;
     const goal = goalFor(el);
@@ -157,29 +189,42 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
     later(() => settle(0), SETTLE_DELAY);
   } else if (distance < 1) {
     complete();
-  } else if (lenis) {
-    try {
-      lenis.scrollTo(goal, { duration: LENIS_DURATION, force: true, lock: false, onComplete: complete });
-    } catch {
-      jumpTo(goal);
-    }
-    later(complete, LENIS_DURATION * 1000 + 1000); // safety net if onComplete never fires
   } else {
-    window.scrollTo({ top: goal, behavior: 'smooth' });
-    let last = window.scrollY;
-    const started = performance.now();
-    let lastChange = started;
-    const tick = (now) => {
+    // DASH: wipe in → instant jump while fully covered → wipe out.
+    const overlay = getOverlay();
+    const skew = `skewX(${DASH_SKEW}deg)`;
+    overlay.style.visibility = 'visible';
+
+    const wipeIn = overlay.animate(
+      [
+        { transform: `translateX(-115%) ${skew}` },
+        { transform: `translateX(0%) ${skew}` },
+      ],
+      { duration: DASH_IN_MS, easing: 'cubic-bezier(0.7, 0, 0.84, 0)', fill: 'forwards' },
+    );
+    session.anims.push(wipeIn);
+
+    wipeIn.onfinish = () => {
       if (!live()) return;
-      const y = window.scrollY;
-      if (Math.abs(y - last) > 0.5) { last = y; lastChange = now; }
-      if (now - lastChange >= NATIVE_IDLE_MS || now - started >= NATIVE_MAX_MS) {
+      jumpTo(goal);
+
+      const wipeOut = overlay.animate(
+        [
+          { transform: `translateX(0%) ${skew}` },
+          { transform: `translateX(115%) ${skew}` },
+        ],
+        { duration: DASH_OUT_MS, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' },
+      );
+      session.anims.push(wipeOut);
+
+      wipeOut.onfinish = () => {
+        if (!live()) return;
+        hideOverlay();
         complete();
-        return;
-      }
-      session.raf = window.requestAnimationFrame(tick);
+      };
     };
-    session.raf = window.requestAnimationFrame(tick);
+
+    later(complete, DASH_IN_MS + DASH_OUT_MS + 600); // safety net if onfinish never fires
   }
 
   if (updateHash && id) {

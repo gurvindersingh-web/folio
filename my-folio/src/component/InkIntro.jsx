@@ -4,11 +4,11 @@ import './InkIntro.css';
 // Single source of truth for timing and assets.
 const INK_SRC = '/imgs/intro/ink_lv2_slow.webp';
 const INK_MASK = `url(${INK_SRC})`;
-const GIF_LOOP_MS = 8240;          // Exact loop length of the ink animation.
+const GIF_LOOP_MS = 4400;          // Exact loop length of the ink animation.
 const LOOP_SAFETY_MARGIN_MS = 200; // Start fading just before it visibly loops.
 const PLAY_DURATION_MS = GIF_LOOP_MS - LOOP_SAFETY_MARGIN_MS;
-const FADE_OPACITY_MS = 5500;
-const FADE_TRANSFORM_MS = 6500;
+const FADE_OPACITY_MS = 1500;
+const FADE_TRANSFORM_MS = 2000;
 const REDUCED_MOTION_PLAY_MS = 400;
 const REDUCED_MOTION_FADE_MS = 1;
 
@@ -18,6 +18,8 @@ const OVERLAY_STYLE = {
   '--ink-mask': INK_MASK,
 };
 
+const OVERLAY_STYLE_FADING = { ...OVERLAY_STYLE, pointerEvents: 'none' };
+
 const getReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -25,9 +27,8 @@ const getReducedMotion = () =>
 const InkIntro = ({ onComplete }) => {
   // loading -> playing -> fading -> done
   const [phase, setPhase] = useState('loading');
-  const [reduced] = useState(getReducedMotion); // read once, consistent across effects
+  const [reduced] = useState(getReducedMotion);
 
-  // Keep latest callback without re-running the fade timer when parent re-renders.
   const onCompleteRef = useRef(onComplete);
   useEffect(() => {
     onCompleteRef.current = onComplete;
@@ -47,7 +48,7 @@ const InkIntro = ({ onComplete }) => {
 
     const start = () => {
       if (cancelled) return;
-      setPhase('playing'); // text timeline + ink timer start together, after asset is ready
+      setPhase('playing');
       playTimer = setTimeout(
         () => {
           unlock();
@@ -63,7 +64,6 @@ const InkIntro = ({ onComplete }) => {
       const img = new Image();
       img.decoding = 'async';
       img.src = INK_SRC;
-      // Resolves on load+decode; also resolve on error so it never hangs.
       img.decode().then(start, start);
     }
 
@@ -74,14 +74,12 @@ const InkIntro = ({ onComplete }) => {
     };
   }, [reduced]);
 
-  // Fade -> done.
+  // Fade starts -> release the app immediately; unmount after the fade.
   useEffect(() => {
     if (phase !== 'fading') return;
+    onCompleteRef.current?.();
     const t = setTimeout(
-      () => {
-        setPhase('done');
-        onCompleteRef.current?.();
-      },
+      () => setPhase('done'),
       reduced ? REDUCED_MOTION_FADE_MS : FADE_TRANSFORM_MS
     );
     return () => clearTimeout(t);
@@ -89,16 +87,23 @@ const InkIntro = ({ onComplete }) => {
 
   if (phase === 'done') return null;
 
+  const fading = phase === 'fading';
+
   const className = [
     'ink-intro-overlay',
     phase !== 'loading' && 'is-playing',
-    phase === 'fading' && 'fade-out',
+    fading && 'fade-out',
   ]
     .filter(Boolean)
     .join(' ');
 
   return (
-    <div className={className} style={OVERLAY_STYLE}>
+    <div
+      className={className}
+      style={fading ? OVERLAY_STYLE_FADING : OVERLAY_STYLE}
+      inert={fading}
+      aria-hidden={fading || undefined}
+    >
       <div className="ink-layer ink-layer--tl" aria-hidden="true" />
       <div className="ink-layer ink-layer--br" aria-hidden="true" />
 
