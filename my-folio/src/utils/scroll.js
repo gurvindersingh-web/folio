@@ -67,23 +67,26 @@ function jumpTo(y) {
 }
 
 /** Lazily created full-screen wipe element. Override colors via --dash-bg / --dash-accent. */
+/** Lazily created full-screen wipe element: #d4cebd with black stripes. */
 function getOverlay() {
   if (overlayEl && overlayEl.isConnected) return overlayEl;
   const el = document.createElement('div');
   el.setAttribute('aria-hidden', 'true');
   Object.assign(el.style, {
-  position: 'fixed',
-  top: '0',
-  left: '-15%',
-  width: '130%',
-  height: '100%',
-  zIndex: DASH_Z,
-  pointerEvents: 'none',
-  visibility: 'hidden',
-  willChange: 'transform',
-  backgroundColor: '#d4cebd',
-  transform: `translateX(-115%) skewX(${DASH_SKEW}deg)`,
-});
+    position: 'fixed',
+    top: '0',
+    left: '-15%',
+    width: '130%',
+    height: '100%',
+    zIndex: DASH_Z,
+    pointerEvents: 'none',
+    visibility: 'hidden',
+    willChange: 'transform',
+    backgroundColor: '#d4cebd',
+    backgroundImage:
+      'repeating-linear-gradient(90deg, #212121 0 100px, transparent 100px 240px)',
+    transform: `translateX(-115%) skewX(${DASH_SKEW}deg)`,
+  });
   document.body.appendChild(el);
   overlayEl = el;
   return el;
