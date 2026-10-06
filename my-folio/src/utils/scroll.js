@@ -5,14 +5,16 @@ export function setLenisInstance(instance) { lenisInstance = instance; }
 export const ANCHOR_SCROLL_EVENT = 'anchor-scroll';
 
 const SETTLE_TOLERANCE = 1.5;   // px the section top may be off the header line
-const SETTLE_DELAY = 120;       // ms between correction passes (lets lazy layout settle)
+const SETTLE_DELAY = 50;        // ms between correction passes (lets lazy layout settle)
 const MAX_SETTLE_PASSES = 4;
 
 // Dash timing
-const DASH_IN_MS = 520;         // wipe covers the screen
-const DASH_OUT_MS = 2080;        // wipe exits, revealing the target section
-const DASH_SKEW = -12;          // deg
-const DASH_Z = '9998';          // keep below modals; adjust if the header should sit above it
+const DASH_IN_MS = 700;
+const DASH_HOLD_MS = 80;
+const DASH_OUT_MS = 1000;
+const DASH_SKEW = -12;
+const DASH_Z = '9998';
+const DASH_EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
 
 const INTERRUPT_EVENTS = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
 const INTERRUPT_KEYS = new Set(['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']);
@@ -66,10 +68,15 @@ function jumpTo(y) {
   window.scrollTo({ top: y, behavior: 'instant' });
 }
 
-/** Lazily created full-screen wipe element. Override colors via --dash-bg / --dash-accent. */
-/** Lazily created full-screen wipe element: #d4cebd with black stripes. */
+const skew = `skewX(${DASH_SKEW}deg)`;
+const posIn = `translate3d(-115%, 0, 0) ${skew}`;
+const posCover = `translate3d(0, 0, 0) ${skew}`;
+const posOut = `translate3d(115%, 0, 0) ${skew}`;
+
+/** Lazily created full-screen wipe element: #d4cebd with the name centered. */
 function getOverlay() {
   if (overlayEl && overlayEl.isConnected) return overlayEl;
+
   const el = document.createElement('div');
   el.setAttribute('aria-hidden', 'true');
   Object.assign(el.style, {
@@ -82,11 +89,50 @@ function getOverlay() {
     pointerEvents: 'none',
     visibility: 'hidden',
     willChange: 'transform',
+    backfaceVisibility: 'hidden',
+    contain: 'layout paint style',
     backgroundColor: '#d4cebd',
-    backgroundImage:
-      'repeating-linear-gradient(90deg, #212121 0 0px, transparent 70px 100px)',
-    transform: `translateX(-115%) skewX(${DASH_SKEW}deg)`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: posIn,
   });
+
+  // Counter-skew so the text stays upright while the panel is skewed.
+  const content = document.createElement('div');
+  Object.assign(content.style, {
+    transform: `skewX(${-DASH_SKEW}deg)`,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '1.5rem',
+    textAlign: 'center',
+  });
+
+  const title = document.createElement('div');
+  title.innerHTML = 'Gurvinder<br>Singh';
+  Object.assign(title.style, {
+    fontFamily: "'Playfair Display', 'Playfair Display Fallback', serif",
+    fontSize: 'clamp(3.5rem, 12vw, 9rem)',
+    fontWeight: '500',
+    lineHeight: '0.95',
+    letterSpacing: '-0.02em',
+    color: '#141414',
+  });
+
+  const sub = document.createElement('div');
+  sub.textContent = '@ gurvindersingh-web';
+  Object.assign(sub.style, {
+    fontFamily: "'JetBrains Mono', 'JetBrains Mono Fallback', monospace",
+    fontSize: 'clamp(0.7rem, 1.2vw, 0.95rem)',
+    fontWeight: '600',
+    letterSpacing: '0.25em',
+    textTransform: 'uppercase',
+    color: '#3a3a36',
+  });
+
+  content.append(title, sub);
+  el.appendChild(content);
   document.body.appendChild(el);
   overlayEl = el;
   return el;
@@ -193,30 +239,22 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
   } else if (distance < 1) {
     complete();
   } else {
-    // DASH: wipe in → instant jump while fully covered → wipe out.
+    // DASH: wipe in → jump while fully covered → wipe out.
     const overlay = getOverlay();
-    const skew = `skewX(${DASH_SKEW}deg)`;
+    overlay.style.transform = posIn;
     overlay.style.visibility = 'visible';
 
     const wipeIn = overlay.animate(
-      [
-        { transform: `translateX(-115%) ${skew}` },
-        { transform: `translateX(0%) ${skew}` },
-      ],
-      { duration: DASH_IN_MS, easing: 'cubic-bezier(0.7, 0, 0.84, 0)', fill: 'forwards' },
+      [{ transform: posIn }, { transform: posCover }],
+      { duration: DASH_IN_MS, easing: DASH_EASE, fill: 'forwards' },
     );
     session.anims.push(wipeIn);
 
-    wipeIn.onfinish = () => {
+    const startWipeOut = () => {
       if (!live()) return;
-      jumpTo(goal);
-
       const wipeOut = overlay.animate(
-        [
-          { transform: `translateX(0%) ${skew}` },
-          { transform: `translateX(115%) ${skew}` },
-        ],
-        { duration: DASH_OUT_MS, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' },
+        [{ transform: posCover }, { transform: posOut }],
+        { duration: DASH_OUT_MS, easing: DASH_EASE, fill: 'forwards' },
       );
       session.anims.push(wipeOut);
 
@@ -227,7 +265,16 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
       };
     };
 
-    later(complete, DASH_IN_MS + DASH_OUT_MS + 600); // safety net if onfinish never fires
+    wipeIn.onfinish = () => {
+      if (!live()) return;
+      jumpTo(goal);
+      // Let the new scroll position paint under the cover before revealing it.
+      later(() => {
+        requestAnimationFrame(() => requestAnimationFrame(startWipeOut));
+      }, DASH_HOLD_MS);
+    };
+
+    later(complete, DASH_IN_MS + DASH_HOLD_MS + DASH_OUT_MS + 600); // safety net
   }
 
   if (updateHash && id) {
