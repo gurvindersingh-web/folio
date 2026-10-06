@@ -792,13 +792,13 @@ html, body {
   width: 220px;
   height: 220px;
   color: var(--color-text);
-  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
+  font-family: 'Playfair Display', 'Playfair Display Fallback', serif;
 }
 
 .r-circular-scroll.circular-text span {
   font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
 }
 
 .r-side-text {

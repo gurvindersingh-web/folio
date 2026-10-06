@@ -9,6 +9,7 @@ import InkIntro from './component/InkIntro.jsx';
 import TechText from './component/TechText.jsx';
 import CurvedInput from './component/CurvedInput.jsx';
 import CircularText from './component/CircularText.jsx';
+import GradualBlur from './component/GradualBlur.jsx';
 import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from './themeContext.jsx';
 import {
@@ -691,6 +692,20 @@ function App() {
   const { theme } = useTheme();
   const [showInkIntro, setShowInkIntro] = useState(true);
   const [lightboxCert, setLightboxCert] = useState(null);
+  const [showTopBlur, setShowTopBlur] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        const rect = aboutSection.getBoundingClientRect();
+        setShowTopBlur(rect.top < 0);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -717,6 +732,11 @@ function App() {
           <div className="ryoku-layout" data-theme={theme}>
             {/* Texture overlay */}
             <div className="r-noise" aria-hidden="true"></div>
+            {showTopBlur && (
+              <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 999 }}>
+                <GradualBlur preset="footer" target="parent" animated={true} />
+              </div>
+            )}
             <Navbar />
             <main>
               <Hero />
