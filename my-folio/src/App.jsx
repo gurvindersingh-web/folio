@@ -327,7 +327,7 @@ const About = memo(function About() {
       <div className="r-about-content">
         <h2 className="r-section-heading">ABOUT</h2>
         <p className="r-about-large">
-          A passionate Full Stack Developer building robust web applications and seamless digital experiences. Specializing in modern JavaScript frameworks and scalable backend architectures.
+          A passionate Full Stack Developer building robust web applications and seamless digital experiences. Specializing in modern Java/JavaScript frameworks and scalable backend architectures.
         </p>
         <p className="r-about-small">
           I craft elegant solutions to complex problems, focusing on performance, clean code, and user-centric design. Always learning, always building.

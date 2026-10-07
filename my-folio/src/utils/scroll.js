@@ -73,7 +73,7 @@ const posIn = `translate3d(-115%, 0, 0) ${skew}`;
 const posCover = `translate3d(0, 0, 0) ${skew}`;
 const posOut = `translate3d(115%, 0, 0) ${skew}`;
 
-/** Lazily created full-screen wipe element: #d4cebd with the name centered. */
+/** Wipe panel (#d4cebd, name centered). Built once; display:none while idle so it costs nothing. */
 function getOverlay() {
   if (overlayEl && overlayEl.isConnected) return overlayEl;
 
@@ -87,12 +87,11 @@ function getOverlay() {
     height: '100%',
     zIndex: DASH_Z,
     pointerEvents: 'none',
+    display: 'none',
     visibility: 'hidden',
-    willChange: 'transform',
     backfaceVisibility: 'hidden',
     contain: 'layout paint style',
     backgroundColor: '#d4cebd',
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     transform: posIn,
@@ -138,8 +137,19 @@ function getOverlay() {
   return el;
 }
 
+function showOverlay(el) {
+  el.style.transform = posIn;
+  el.style.display = 'flex';
+  el.style.visibility = 'visible';
+  el.style.willChange = 'transform'; // GPU layer only while the wipe runs
+  void el.offsetWidth;               // commit styles so the first frame is ready
+}
+
 function hideOverlay() {
-  if (overlayEl) overlayEl.style.visibility = 'hidden';
+  if (!overlayEl) return;
+  overlayEl.style.visibility = 'hidden';
+  overlayEl.style.display = 'none';
+  overlayEl.style.willChange = 'auto';
 }
 
 function closeSession() {
@@ -205,12 +215,9 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
 
   const later = (fn, ms) => { session.timers.push(window.setTimeout(fn, ms)); };
 
-  revealLayout();
-  void el.getBoundingClientRect();
   emit('start', id);
 
-  // After the jump: verify we really are at the section (lazy content / images can shift
-  // layout) and correct, then release.
+  // Final check after the animation (rarely needs to correct anything now).
   const settle = (pass) => {
     if (!live()) return;
     const goal = goalFor(el);
@@ -229,20 +236,33 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
     later(() => settle(0), 0);
   };
 
+  // Runs while the screen is fully covered: jump, let layout settle frame by frame, then continue.
+  const settleCovered = (pass, done) => {
+    if (!live()) return;
+    jumpTo(goalFor(el));
+    requestAnimationFrame(() => {
+      if (!live()) return;
+      const off = Math.abs(goalFor(el) - window.scrollY) > SETTLE_TOLERANCE;
+      if (off && pass < MAX_SETTLE_PASSES) settleCovered(pass + 1, done);
+      else done();
+    });
+  };
+
   const goal = goalFor(el);
   const distance = Math.abs(goal - window.scrollY);
 
   if (reduced) {
+    revealLayout();
     jumpTo(goal);
     completed = true;
     later(() => settle(0), SETTLE_DELAY);
   } else if (distance < 1) {
+    revealLayout();
     complete();
   } else {
-    // DASH: wipe in → jump while fully covered → wipe out.
+    // DASH: wipe in → (covered) reveal layout + jump + settle → wipe out.
     const overlay = getOverlay();
-    overlay.style.transform = posIn;
-    overlay.style.visibility = 'visible';
+    showOverlay(overlay);
 
     const wipeIn = overlay.animate(
       [{ transform: posIn }, { transform: posCover }],
@@ -267,14 +287,12 @@ export function scrollToAnchor(hashOrEl, { updateHash = true } = {}) {
 
     wipeIn.onfinish = () => {
       if (!live()) return;
-      jumpTo(goal);
-      // Let the new scroll position paint under the cover before revealing it.
-      later(() => {
-        requestAnimationFrame(() => requestAnimationFrame(startWipeOut));
-      }, DASH_HOLD_MS);
+      revealLayout();                      // heavy layout work happens while hidden
+      void document.body.offsetHeight;
+      settleCovered(0, () => later(startWipeOut, DASH_HOLD_MS));
     };
 
-    later(complete, DASH_IN_MS + DASH_HOLD_MS + DASH_OUT_MS + 600); // safety net
+    later(complete, DASH_IN_MS + DASH_HOLD_MS + DASH_OUT_MS + 800); // safety net
   }
 
   if (updateHash && id) {
@@ -300,4 +318,11 @@ export function isInPageHashLink(anchor) {
   } catch {
     return false;
   }
+}
+
+// Pre-build the wipe panel (fonts, text) during idle time so the first click doesn't hitch.
+if (typeof window !== 'undefined') {
+  const warm = () => { try { getOverlay(); } catch { /* noop */ } };
+  if ('requestIdleCallback' in window) window.requestIdleCallback(warm, { timeout: 3000 });
+  else window.setTimeout(warm, 1500);
 }
