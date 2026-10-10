@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
+import gsap from 'gsap';
 import './InfiniteSpiral.css';
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -58,11 +59,7 @@ const InfiniteSpiral = ({
     const root = rootRef.current;
     if (!root || normalizedItems.length === 0) return;
 
-    let frameId = 0;
-    let throttleTimer = 0;
-    let lastRenderTime = 0;
     let documentVisible = !document.hidden;
-    let previousTime = performance.now();
     let bounds = root.getBoundingClientRect();
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const scrollEnabled = animationMode === 'scroll' || animationMode === 'all';
@@ -97,67 +94,38 @@ const InfiniteSpiral = ({
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    const shouldAnimate = () => {
+    let isAnimating = false;
+
+    const render = (time, deltaTime) => {
+      const dtSec = Math.min(deltaTime / 1000, 0.05);
+
       const autoEnabled = animationMode === 'auto' || animationMode === 'all';
       const isSettling = Math.abs(targetProgressRef.current - progressRef.current) > 0.001;
-      return documentVisible && visibleRef.current && (
+      const shouldAnimate = documentVisible && visibleRef.current && (
         (autoEnabled && !reducedMotion.matches && !(pauseOnHover && hoveredRef.current)) ||
         draggingRef.current ||
         isSettling
       );
-    };
 
-    const schedule = () => {
-      if (frameId || throttleTimer || !shouldAnimate()) return;
-      const targetFps = clamp(maxFps, 20, 60);
-      // At 60 FPS, use the browser's native frame scheduler to avoid timer
-      // jitter. Lower caps still use a timer to save work on constrained pages.
-      if (targetFps >= 59) {
-        frameId = requestAnimationFrame(render);
+      if (!shouldAnimate) {
+        if (isAnimating) {
+          gsap.ticker.remove(render);
+          isAnimating = false;
+        }
         return;
       }
-      const frameInterval = 1000 / targetFps;
-      const remaining = frameInterval - (performance.now() - lastRenderTime);
-      if (remaining > 0) {
-        throttleTimer = window.setTimeout(() => {
-          throttleTimer = 0;
-          schedule();
-        }, remaining);
-      } else {
-        frameId = requestAnimationFrame(render);
-      }
-    };
 
-    const handleVisibilityChange = () => {
-      documentVisible = !document.hidden;
-      if (documentVisible) {
-        previousTime = performance.now();
-        schedule();
-      }
-    };
-    const handleMotionChange = () => schedule();
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    reducedMotion.addEventListener('change', handleMotionChange);
-    wakeRef.current = schedule;
-
-    const render = time => {
-      frameId = 0;
-      lastRenderTime = time;
-      const delta = Math.min((time - previousTime) / 1000, 0.05);
-      previousTime = time;
-
-      const autoEnabled = animationMode === 'auto' || animationMode === 'all';
       const motionPaused = draggingRef.current || (pauseOnHover && hoveredRef.current);
       const directionMultiplier = direction === 'down' ? -1 : 1;
       const desiredAutoSpeed =
         autoEnabled && visibleRef.current && !reducedMotion.matches && !motionPaused
           ? speed * directionMultiplier
           : 0;
-      const speedBlend = 1 - Math.exp(-delta * 7);
+      const speedBlend = 1 - Math.exp(-dtSec * 7);
       autoSpeedRef.current += (desiredAutoSpeed - autoSpeedRef.current) * speedBlend;
-      targetProgressRef.current += autoSpeedRef.current * delta;
+      targetProgressRef.current += autoSpeedRef.current * dtSec;
 
-      const followBlend = 1 - Math.exp(-delta * (draggingRef.current ? 22 : 11));
+      const followBlend = 1 - Math.exp(-dtSec * (draggingRef.current ? 22 : 11));
       progressRef.current += (targetProgressRef.current - progressRef.current) * followBlend;
 
       const count = normalizedItems.length;
@@ -190,8 +158,9 @@ const InfiniteSpiral = ({
           opacity: opacity.toFixed(3),
           zIndex: String(Math.round(depth * 100000) + index),
           pointerEvents: opacity > 0.25 ? 'auto' : 'none',
-          transition: 'all 6s cubic-bezier(0.25, 1, 0.5, 1)',
-          willChange: 'transform, opacity'
+          // Only compositable props — avoids layout thrash from transition:all
+          transition: 'transform 6s cubic-bezier(0.25, 1, 0.5, 1), opacity 6s cubic-bezier(0.25, 1, 0.5, 1)',
+          willChange: shouldAnimate ? 'transform, opacity' : 'auto'
         };
         const previousStyles = cardStyleCacheRef.current[index] || {};
         Object.entries(nextStyles).forEach(([property, value]) => {
@@ -199,15 +168,30 @@ const InfiniteSpiral = ({
         });
         cardStyleCacheRef.current[index] = nextStyles;
       });
-
-      schedule();
     };
+
+    const schedule = () => {
+      if (!isAnimating) {
+        gsap.ticker.add(render);
+        isAnimating = true;
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      documentVisible = !document.hidden;
+      if (documentVisible) {
+        schedule();
+      }
+    };
+    const handleMotionChange = () => schedule();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    reducedMotion.addEventListener('change', handleMotionChange);
+    wakeRef.current = schedule;
 
     schedule();
 
     return () => {
-      cancelAnimationFrame(frameId);
-      clearTimeout(throttleTimer);
+      if (isAnimating) gsap.ticker.remove(render);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       window.removeEventListener('scroll', handleScroll);

@@ -22,6 +22,7 @@ const ProjectCard = ({
   const shineRef = useRef(null);
   const videoRef = useRef(null);
   const rafRef = useRef(0);
+  const pointerFrameRef = useRef(0);
   const targetRef = useRef({ x: 0, y: 0 });
   const currentRef = useRef({ x: 0, y: 0 });
   const mediaHoveredRef = useRef(false);
@@ -70,23 +71,33 @@ const ProjectCard = ({
 
   const handlePointerMove = (event) => {
     if (event.pointerType === 'touch' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const frame = frameRef.current;
-    if (!frame) return;
+    
+    const clientX = event.clientX;
+    const clientY = event.clientY;
 
-    const rect = frame.getBoundingClientRect();
-    const px = (event.clientX - rect.left) / rect.width;
-    const py = (event.clientY - rect.top) / rect.height;
-    targetRef.current = {
-      x: Math.max(-1, Math.min(1, (px - 0.5) * 2)),
-      y: Math.max(-1, Math.min(1, (py - 0.5) * 2))
-    };
+    if (!pointerFrameRef.current) {
+      pointerFrameRef.current = requestAnimationFrame(() => {
+        pointerFrameRef.current = 0;
+        
+        const frame = frameRef.current;
+        if (!frame) return;
 
-    if (shineRef.current) {
-      shineRef.current.style.setProperty('--sx', `${px * 100}%`);
-      shineRef.current.style.setProperty('--sy', `${py * 100}%`);
+        const rect = frame.getBoundingClientRect();
+        const px = (clientX - rect.left) / rect.width;
+        const py = (clientY - rect.top) / rect.height;
+        targetRef.current = {
+          x: Math.max(-1, Math.min(1, (px - 0.5) * 2)),
+          y: Math.max(-1, Math.min(1, (py - 0.5) * 2))
+        };
+
+        if (shineRef.current) {
+          shineRef.current.style.setProperty('--sx', `${px * 100}%`);
+          shineRef.current.style.setProperty('--sy', `${py * 100}%`);
+        }
+
+        startSettle();
+      });
     }
-
-    startSettle();
   };
 
   const handlePointerEnter = () => {
@@ -109,6 +120,7 @@ const ProjectCard = ({
 
   useEffect(() => () => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (pointerFrameRef.current) cancelAnimationFrame(pointerFrameRef.current);
   }, []);
 
   useEffect(() => {
@@ -186,7 +198,7 @@ const ProjectCard = ({
                 loop
                 muted
                 playsInline
-                preload="auto"
+                preload="metadata"
                 poster={video.replace(/\.mp4$/, '-poster.jpg')}
                 onCanPlay={() => setVideoReady(true)}
                 width="1280"

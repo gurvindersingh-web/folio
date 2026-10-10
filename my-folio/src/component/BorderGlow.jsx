@@ -1,4 +1,5 @@
 import { useRef, useCallback, useEffect } from 'react';
+import gsap from 'gsap';
 import './BorderGlow.css';
 
 function parseHSL(hslStr) {
@@ -158,51 +159,49 @@ const BorderGlow = ({
       card.style.setProperty('--edge-proximity', '100');
 
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let rafId = 0;
       let currentAngle = 0;
-      let lastTime = performance.now();
       const rotateSpeed = 360 / 4000;
       let isVisible = true;
       let documentVisible = !document.hidden;
+      let isAnimating = false;
 
       const canAnimate = () => isVisible && documentVisible && !reducedMotion.matches;
+      
+      const tick = (time, deltaTime) => {
+        if (!canAnimate()) return;
+        currentAngle = (currentAngle + deltaTime * rotateSpeed) % 360;
+        card.style.setProperty('--cursor-angle', `${currentAngle}deg`);
+      };
+
       const schedule = () => {
-        if (!rafId && canAnimate()) rafId = requestAnimationFrame(tick);
+        const shouldAnimate = canAnimate();
+        if (shouldAnimate && !isAnimating) {
+          gsap.ticker.add(tick);
+          isAnimating = true;
+        } else if (!shouldAnimate && isAnimating) {
+          gsap.ticker.remove(tick);
+          isAnimating = false;
+        }
       };
 
       const observer = new IntersectionObserver(([entry]) => {
         isVisible = entry.isIntersecting;
-        if (entry.isIntersecting) {
-          lastTime = performance.now();
-          schedule();
-        }
+        schedule();
       });
       observer.observe(card);
 
       const handleVisibilityChange = () => {
         documentVisible = !document.hidden;
-        if (documentVisible) lastTime = performance.now();
         schedule();
       };
       const handleMotionChange = () => schedule();
       document.addEventListener('visibilitychange', handleVisibilityChange);
       reducedMotion.addEventListener('change', handleMotionChange);
 
-      const tick = (time) => {
-        rafId = 0;
-        const delta = time - lastTime;
-        lastTime = time;
-        if (canAnimate()) {
-          currentAngle = (currentAngle + delta * rotateSpeed) % 360;
-          card.style.setProperty('--cursor-angle', `${currentAngle}deg`);
-        }
-        schedule();
-      };
-
       schedule();
 
       return () => {
-        cancelAnimationFrame(rafId);
+        if (isAnimating) gsap.ticker.remove(tick);
         observer.disconnect();
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         reducedMotion.removeEventListener('change', handleMotionChange);

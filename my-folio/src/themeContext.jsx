@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { scheduleScrollTriggerRefresh } from './utils/perf.js';
 
 export const THEME_STORAGE_KEY = 'portfolio-theme';
 
@@ -38,12 +39,11 @@ export const applyTheme = (theme) => {
 
   if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('theme-transition');
-    window.setTimeout(() => document.documentElement.classList.remove('theme-transition'), 300);
+    // Match CSS duration (250ms) so the universal transition cannot linger into scroll.
+    window.setTimeout(() => document.documentElement.classList.remove('theme-transition'), 250);
   }
 
-  window.requestAnimationFrame?.(() => {
-    window.__portfolioScrollTrigger?.refresh?.();
-  });
+  scheduleScrollTriggerRefresh(150);
 };
 
 export const useTheme = () => useContext(ThemeContext);

@@ -5,12 +5,13 @@ import ClickSpark from './component/ClickSpark.jsx';
 import SmoothScroll from './component/SmoothScroll.jsx';
 import Navbar from './component/Navbar.jsx';
 import { scrollToAnchor } from './utils/scroll.js';
+import { scheduleScrollTriggerRefresh, runWhenIdle } from './utils/perf.js';
 import InkIntro from './component/InkIntro.jsx';
 import TechText from './component/TechText.jsx';
 import CurvedInput from './component/CurvedInput.jsx';
 import CircularText from './component/CircularText.jsx';
-import GradualBlur from './component/GradualBlur.jsx';
-import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
+
+import { FiMonitor, FiServer, FiDatabase, FiTerminal, FiArrowUpRight } from 'react-icons/fi';
 import { useTheme } from './themeContext.jsx';
 import {
   SiReact, SiTypescript, SiArchlinux, SiDocker, SiGithub, SiSpring, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql, SiGit, SiLinux, SiJavascript, SiHtml5, SiCss, SiPython, SiPrisma, SiSupabase, SiStripe, SiNextdotjs, SiSpringboot, SiN8N, SiHyprland
@@ -33,9 +34,9 @@ const Carousel = lazy(loaders.Carousel);
 const FlexCarousel = lazy(loaders.FlexCarousel);
 
 if (typeof window !== 'undefined') {
-  const prefetch = () => Object.values(loaders).forEach((load) => load().catch(() => {}));
-  if ('requestIdleCallback' in window) window.requestIdleCallback(prefetch, { timeout: 1500 });
-  else window.setTimeout(prefetch, 1000);
+  runWhenIdle(() => {
+    Object.values(loaders).forEach((load) => load().catch(() => {}));
+  }, 1500);
 }
 
 // Error boundary for lazy-loaded components
@@ -708,23 +709,18 @@ function App() {
   const [showTopBlur, setShowTopBlur] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const aboutSection = document.getElementById('about');
-      if (aboutSection) {
-        const rect = aboutSection.getBoundingClientRect();
-        setShowTopBlur(rect.top < 0);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const homeSection = document.getElementById('home');
+    if (!homeSection) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowTopBlur(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(homeSection);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      window.__portfolioScrollTrigger?.refresh?.();
-    });
-    return () => window.cancelAnimationFrame(frame);
+    scheduleScrollTriggerRefresh(150);
   }, []);
 
   const handleIntroComplete = useCallback(() => setShowInkIntro(false), []);
@@ -747,7 +743,7 @@ function App() {
             <div className="r-noise" aria-hidden="true"></div>
             {showTopBlur && (
               <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 999 }}>
-                <GradualBlur preset="footer" target="parent" animated={true} />
+
               </div>
             )}
             <Navbar />

@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
+import { renderDprCap } from '../utils/perf.js';
 
 const ClickSpark = ({
   sparkColor = 'var(--color-text-strong)',
@@ -15,6 +16,10 @@ const ClickSpark = ({
   const sparksRef = useRef([]);
   const animationIdRef = useRef(null);
   const resolvedColorRef = useRef(sparkColor);
+  const rectRef = useRef({ left: 0, top: 0, width: 0, height: 0 });
+  const dprRef = useRef(1);
+  const cssSizeRef = useRef({ width: 0, height: 0 });
+  const documentVisibleRef = useRef(typeof document === 'undefined' ? true : !document.hidden);
 
   useEffect(() => {
     const updateColor = () => {
@@ -35,24 +40,48 @@ const ClickSpark = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const resizeCanvas = () => {
-      // The canvas is fixed to the viewport. Keeping it page-sized can allocate
-      // a very large bitmap on long pages, even though sparks are only visible
-      // in the viewport.
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const applySize = () => {
+      const dpr = renderDprCap();
       const width = window.innerWidth;
       const height = window.innerHeight;
-      canvas.width = Math.ceil(width * pixelRatio);
-      canvas.height = Math.ceil(height * pixelRatio);
+      dprRef.current = dpr;
+      cssSizeRef.current = { width, height };
+      canvas.width = Math.ceil(width * dpr);
+      canvas.height = Math.ceil(height * dpr);
       const context = canvas.getContext('2d');
-      context?.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context?.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const rect = canvas.getBoundingClientRect();
+      rectRef.current = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
     };
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas, { passive: true });
+    applySize();
+
+    const ro = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(applySize)
+      : null;
+    if (ro) {
+      ro.observe(document.documentElement);
+    } else {
+      window.addEventListener('resize', applySize, { passive: true });
+    }
+
+    const onVisibility = () => {
+      documentVisibleRef.current = !document.hidden;
+      if (document.hidden && animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+        animationIdRef.current = null;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      ro?.disconnect();
+      window.removeEventListener('resize', applySize);
+      document.removeEventListener('visibilitychange', onVisibility);
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+        animationIdRef.current = null;
+      }
     };
   }, []);
 
@@ -76,34 +105,34 @@ const ClickSpark = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    ctx.clearRect(0, 0, canvas.width / pixelRatio, canvas.height / pixelRatio);
+    if (!documentVisibleRef.current) {
+      animationIdRef.current = null;
+      return;
+    }
+
+    const { width, height } = cssSizeRef.current;
+    ctx.clearRect(0, 0, width, height);
 
     const currentColor = resolvedColorRef.current;
 
     sparksRef.current = sparksRef.current.filter(spark => {
       const elapsed = timestamp - spark.startTime;
-      if (elapsed >= duration) {
-        return false;
-      }
+      if (elapsed >= duration) return false;
 
       const progress = elapsed / duration;
       const eased = easeFunc(progress);
-
       const distance = eased * sparkRadius * extraScale;
       const lineLength = sparkSize * (1 - eased);
-
-      const x1 = spark.x + distance * Math.cos(spark.angle);
-      const y1 = spark.y + distance * Math.sin(spark.angle);
-      const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
-      const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
+      const cos = Math.cos(spark.angle);
+      const sin = Math.sin(spark.angle);
 
       ctx.strokeStyle = currentColor;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
+      ctx.moveTo(spark.x + distance * cos, spark.y + distance * sin);
+      ctx.lineTo(spark.x + (distance + lineLength) * cos, spark.y + (distance + lineLength) * sin);
       ctx.stroke();
 
       return true;
@@ -116,18 +145,11 @@ const ClickSpark = ({
     }
   }, [sparkSize, sparkRadius, duration, easeFunc, extraScale]);
 
-  useEffect(() => {
-    return () => {
-      if (animationIdRef.current) {
-        cancelAnimationFrame(animationIdRef.current);
-      }
-    };
-  }, []);
-
   const handleClick = e => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
+    // Fixed canvas tracks the viewport — use cached rect (refreshed on resize).
+    const rect = rectRef.current;
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -143,8 +165,8 @@ const ClickSpark = ({
     if (sparksRef.current.length > maxParticles) {
       sparksRef.current.splice(0, sparksRef.current.length - maxParticles);
     }
-    
-    if (!animationIdRef.current) {
+
+    if (!animationIdRef.current && documentVisibleRef.current) {
       animationIdRef.current = requestAnimationFrame(draw);
     }
   };

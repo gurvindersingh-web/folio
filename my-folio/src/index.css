@@ -187,12 +187,30 @@ html[data-theme="light"] {
   letter-spacing: var(--type-micro-tracking);
 }
 
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition-property: color, background-color, border-color, box-shadow, fill, stroke !important;
-  transition-duration: 250ms !important;
-  transition-timing-function: ease !important;
+/* Scoped to surfaces that actually consume theme tokens — never a global `*` during scroll. */
+html.theme-transition,
+html.theme-transition body,
+html.theme-transition .ryoku-layout,
+html.theme-transition .r-header,
+html.theme-transition .r-mobile-nav,
+html.theme-transition .r-noise,
+html.theme-transition .r-hero,
+html.theme-transition .r-about,
+html.theme-transition .r-skills,
+html.theme-transition .r-projects-container,
+html.theme-transition .r-install-panel,
+html.theme-transition .r-site-footer,
+html.theme-transition .r-btn-primary,
+html.theme-transition .r-btn-secondary,
+html.theme-transition .r-theme-toggle,
+html.theme-transition .r-nav a,
+html.theme-transition .border-glow-card,
+html.theme-transition .project-card,
+html.theme-transition .r-skill-category,
+html.theme-transition .r-lightbox-overlay {
+  transition-property: color, background-color, border-color, box-shadow, fill, stroke;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
 }
 
 .sr-only {

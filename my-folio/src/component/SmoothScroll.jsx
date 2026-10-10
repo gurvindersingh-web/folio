@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { 
-  lenisInstance, 
-  setLenisInstance, 
-  scrollToAnchor, 
-  isInPageHashLink 
+import {
+  lenisInstance,
+  setLenisInstance,
+  scrollToAnchor,
+  isInPageHashLink
 } from '../utils/scroll.js';
+import { bindLayoutRefresh, scheduleScrollTriggerRefresh } from '../utils/perf.js';
 
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
@@ -33,13 +34,17 @@ const SmoothScroll = ({ children }) => {
       }
     }
 
+    const unbindLayout = bindLayoutRefresh();
+
     return () => {
       document.removeEventListener('click', onClick);
       if (rafId) cancelAnimationFrame(rafId);
+      unbindLayout();
     };
   }, []);
 
   useEffect(() => {
+    // Lenis only on fine-pointer + motion-ok devices (avoids fighting native mobile scroll).
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse)');
 
     let disposed = false;
@@ -50,11 +55,16 @@ const SmoothScroll = ({ children }) => {
     let scrollTrigger;
     let onTick;
     let ticking = false;
+    let imageLoadHandler;
 
     const stop = () => {
       generation += 1;
       importing = false;
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (imageLoadHandler) {
+        document.removeEventListener('load', imageLoadHandler, true);
+        imageLoadHandler = undefined;
+      }
       if (gsap && onTick) gsap.ticker.remove(onTick);
       ticking = false;
       if (window.__portfolioScrollTrigger === scrollTrigger) window.__portfolioScrollTrigger = null;
@@ -94,6 +104,8 @@ const SmoothScroll = ({ children }) => {
         gsap = loadedGsap;
         scrollTrigger = ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
+        // iOS toolbar show/hide must not thrash pin/refresh calculations.
+        ScrollTrigger.config({ ignoreMobileResize: true });
         window.__portfolioScrollTrigger = ScrollTrigger;
         lenis = new Lenis({
           duration: 1.05,
@@ -105,16 +117,24 @@ const SmoothScroll = ({ children }) => {
         });
         setLenisInstance(lenis);
 
+        // Single animation loop: GSAP ticker drives Lenis; ST updates on Lenis scroll.
         lenis.on('scroll', ScrollTrigger.update);
         onTick = (time) => lenis.raf(time * 1000);
+        gsap.ticker.lagSmoothing(0);
         if (!document.hidden) {
           gsap.ticker.add(onTick);
           ticking = true;
         } else {
           lenis.stop();
         }
-        gsap.ticker.lagSmoothing(0);
         document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        // Debounced refresh when lazy images change layout (capture phase, images only).
+        imageLoadHandler = (event) => {
+          if (event.target instanceof HTMLImageElement) scheduleScrollTriggerRefresh(180);
+        };
+        document.addEventListener('load', imageLoadHandler, true);
+        scheduleScrollTriggerRefresh(0);
       }).catch(() => {
         if (currentGeneration === generation) importing = false;
       });

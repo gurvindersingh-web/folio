@@ -52,6 +52,10 @@ export default defineConfig({
           if (id.includes('node_modules/lenis/')) {
             return 'lenis';
           }
+          // Keep OGL with FlexCarousel only (never in the main/critical path).
+          if (id.includes('node_modules/ogl/')) {
+            return 'ogl';
+          }
         }
       }
     }

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
+import gsap from 'gsap';
 import './LogoLoop.css';
 
 const ANIMATION_CONFIG = { SMOOTH_TAU: 0.25, MIN_COPIES: 2, COPY_HEADROOM: 2 };
@@ -57,8 +58,6 @@ const useImageLoader = (seqRef, onLoad, dependencies) => {
 };
 
 const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, containerRef) => {
-  const rafRef = useRef(null);
-  const lastTimestampRef = useRef(null);
   const offsetRef = useRef(0);
   const velocityRef = useRef(0);
   const visibleRef = useRef(true);
@@ -74,9 +73,6 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
     if (container) {
       observer = new IntersectionObserver(([entry]) => {
         visibleRef.current = entry.isIntersecting;
-        if (entry.isIntersecting && lastTimestampRef.current !== null) {
-          lastTimestampRef.current = performance.now();
-        }
         schedule();
       }, { threshold: 0 });
       observer.observe(container);
@@ -92,35 +88,20 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
       track.style.transform = transformValue;
     }
 
+    let isAnimating = false;
     const canAnimate = () => visibleRef.current && documentVisible && !reducedMotion.matches;
-    const schedule = () => {
-      if (rafRef.current === null && canAnimate()) rafRef.current = requestAnimationFrame(animate);
-    };
-    const handleVisibilityChange = () => {
-      documentVisible = !document.hidden;
-      if (documentVisible) lastTimestampRef.current = performance.now();
-      schedule();
-    };
-    const handleMotionChange = () => schedule();
-
-    const animate = timestamp => {
-      rafRef.current = null;
-      if (lastTimestampRef.current === null) {
-        lastTimestampRef.current = timestamp;
-      }
-
-      const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
-      lastTimestampRef.current = timestamp;
-
+    
+    const animate = (time, deltaTime) => {
       if (!canAnimate()) return;
 
+      const dtSec = Math.max(0, deltaTime) / 1000;
       const target = isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
 
-      const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
+      const easingFactor = 1 - Math.exp(-dtSec / ANIMATION_CONFIG.SMOOTH_TAU);
       velocityRef.current += (target - velocityRef.current) * easingFactor;
 
       if (seqSize > 0) {
-        let nextOffset = offsetRef.current + velocityRef.current * deltaTime;
+        let nextOffset = offsetRef.current + velocityRef.current * dtSec;
         nextOffset = ((nextOffset % seqSize) + seqSize) % seqSize;
         offsetRef.current = nextOffset;
 
@@ -129,20 +110,33 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
           : `translate3d(${-offsetRef.current}px, 0, 0)`;
         track.style.transform = transformValue;
       }
+    };
 
+    const schedule = () => {
+      const shouldAnimate = canAnimate();
+      if (shouldAnimate && !isAnimating) {
+        gsap.ticker.add(animate);
+        isAnimating = true;
+      } else if (!shouldAnimate && isAnimating) {
+        gsap.ticker.remove(animate);
+        isAnimating = false;
+      }
+    };
+    
+    const handleVisibilityChange = () => {
+      documentVisible = !document.hidden;
       schedule();
     };
+    const handleMotionChange = () => schedule();
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     reducedMotion.addEventListener('change', handleMotionChange);
     schedule();
 
     return () => {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
+      if (isAnimating) {
+        gsap.ticker.remove(animate);
       }
-      lastTimestampRef.current = null;
       if (observer) observer.disconnect();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       reducedMotion.removeEventListener('change', handleMotionChange);

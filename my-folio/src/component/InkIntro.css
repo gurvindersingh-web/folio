@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  contain: paint layout style;
   will-change: opacity, transform;
   transition:
     opacity var(--fade-opacity-duration) cubic-bezier(0.4, 0, 0.2, 1),
@@ -46,12 +47,12 @@
   mask-image: var(--ink-mask), linear-gradient(#fff, #fff);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
-  -webkit-mask-size: 200vw 200vh, cover;
-  mask-size: 200vw 200vh, cover;
+  -webkit-mask-size: 200vmax 200vmax, cover;
+  mask-size: 200vmax 200vmax, cover;
   -webkit-mask-repeat: no-repeat, no-repeat;
   mask-repeat: no-repeat, no-repeat;
-  -webkit-mask-position: -100vw -100vh, center;
-  mask-position: -100vw -100vh, center;
+  -webkit-mask-position: center, center;
+  mask-position: center, center;
 }
 
 /* Bottom-right copy: same mask, rotated 180deg */

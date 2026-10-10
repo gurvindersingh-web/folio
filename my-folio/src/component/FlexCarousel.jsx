@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Renderer, Program, Mesh, Triangle, Plane, Texture, RenderTarget } from 'ogl';
+import { renderDprCap, isLowPowerDevice } from '../utils/perf.js';
 
 import './FlexCarousel.css';
 
@@ -337,7 +338,7 @@ const FlexCarousel = ({
     if (!container) return undefined;
 
     const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr: renderDprCap(),
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
@@ -694,7 +695,7 @@ const FlexCarousel = ({
     const resize = () => {
       width = Math.max(1, container.clientWidth);
       height = Math.max(1, container.clientHeight);
-      renderer.dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(PIXEL_BUDGET / (width * height)));
+      renderer.dpr = Math.min(renderDprCap(), Math.sqrt(PIXEL_BUDGET / (width * height)));
       renderer.setSize(width, height);
       target.setSize(Math.max(2, Math.round(width * renderer.dpr)), Math.max(2, Math.round(height * renderer.dpr)));
       lensUniforms.tScene.value = target.texture;
@@ -792,9 +793,11 @@ const FlexCarousel = ({
         else focus.pending = -1;
       }
 
+      const lowPower = isLowPowerDevice();
       if (
         s.autoplay &&
         !reducedMotion &&
+        !lowPower &&
         introState.done &&
         !pointer.down &&
         !hasFocus &&
@@ -806,7 +809,7 @@ const FlexCarousel = ({
         autoplayAt = now;
         step(m, 1);
       }
-      if (s.autoplay && !reducedMotion) animating = true;
+      if (s.autoplay && !reducedMotion && !lowPower) animating = true;
 
       const travel = Math.abs(pos - lastPos) / dt;
       lastPos = pos;
@@ -1175,7 +1178,12 @@ const FlexCarousel = ({
       hasFocus = false;
     };
     const onVisibility = () => {
-      if (!document.hidden) start();
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      } else {
+        start();
+      }
     };
 
     container.addEventListener('pointerdown', onPointerDown);
