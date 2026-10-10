@@ -1,24 +1,19 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import './InkIntro.css';
 
-// Single source of truth for timing and assets.
 const INK_SRC = '/imgs/intro/ink_lv2_slow.webp';
-const INK_MASK = `url(${INK_SRC})`;
-const GIF_LOOP_MS = 4400;          // Exact loop length of the ink animation.
-const LOOP_SAFETY_MARGIN_MS = 200; // Start fading just before it visibly loops.
+const GIF_LOOP_MS = 4400;          // exact loop length of the ink animation
+const LOOP_SAFETY_MARGIN_MS = 200; // cut layers just before it visibly loops
 const PLAY_DURATION_MS = GIF_LOOP_MS - LOOP_SAFETY_MARGIN_MS;
-const FADE_OPACITY_MS = 1500;
-const FADE_TRANSFORM_MS = 2000;
+const FADE_MS = LOOP_SAFETY_MARGIN_MS;
+const UNMOUNT_MS = FADE_MS + 50;
 const REDUCED_MOTION_PLAY_MS = 400;
 const REDUCED_MOTION_FADE_MS = 1;
 
 const OVERLAY_STYLE = {
-  '--fade-opacity-duration': `${FADE_OPACITY_MS}ms`,
-  '--fade-transform-duration': `${FADE_TRANSFORM_MS}ms`,
-  '--ink-mask': INK_MASK,
+  '--fade-ms': `${FADE_MS}ms`,
+  '--ink-mask': `url(${INK_SRC})`,
 };
-
-const OVERLAY_STYLE_FADING = { ...OVERLAY_STYLE, pointerEvents: 'none' };
 
 const getReducedMotion = () =>
   typeof window !== 'undefined' &&
@@ -34,7 +29,7 @@ const InkIntro = ({ onComplete }) => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // Preload ink mask, lock scroll, schedule fade start.
+  // Preload ink, lock scroll, schedule fade start.
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -63,6 +58,7 @@ const InkIntro = ({ onComplete }) => {
     } else {
       const img = new Image();
       img.decoding = 'async';
+      img.fetchPriority = 'high';
       img.src = INK_SRC;
       img.decode().then(start, start);
     }
@@ -74,13 +70,13 @@ const InkIntro = ({ onComplete }) => {
     };
   }, [reduced]);
 
-  // Fade starts -> release the app immediately; unmount after the fade.
+  // Fade starts -> release the app immediately; unmount right after.
   useEffect(() => {
     if (phase !== 'fading') return;
     onCompleteRef.current?.();
     const t = setTimeout(
       () => setPhase('done'),
-      reduced ? REDUCED_MOTION_FADE_MS : FADE_TRANSFORM_MS
+      reduced ? REDUCED_MOTION_FADE_MS : UNMOUNT_MS
     );
     return () => clearTimeout(t);
   }, [phase, reduced]);
@@ -100,12 +96,11 @@ const InkIntro = ({ onComplete }) => {
   return (
     <div
       className={className}
-      style={fading ? OVERLAY_STYLE_FADING : OVERLAY_STYLE}
+      style={OVERLAY_STYLE}
       inert={fading}
       aria-hidden={fading || undefined}
     >
-      <div className="ink-layer ink-layer--tl" aria-hidden="true" />
-      <div className="ink-layer ink-layer--br" aria-hidden="true" />
+      <div className="ink-layer" aria-hidden="true" />
 
       <div className="ink-banner">
         <div className="ink-content">

@@ -1,29 +1,63 @@
 /* ─── Overlay base ─── */
 .ink-intro-overlay {
+  --ink-size: 240vmax; /* mask size; bigger = ink reaches further from each corner */
+  --ink-offset: calc(var(--ink-size) / -2); /* centres the ink origin on the corner */
+
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   contain: paint layout style;
-  will-change: opacity, transform;
-  transition:
-    opacity var(--fade-opacity-duration) cubic-bezier(0.4, 0, 0.2, 1),
-    transform var(--fade-transform-duration) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ink-intro-overlay.fade-out {
-  opacity: 0;
-  transform: scale(2.5);
   pointer-events: none;
 }
 
+/* ─── Ink cover: ONE layer, two ink blooms (top-left + bottom-right) ─── */
+.ink-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--color-intro-ink); /* solid cover while loading */
+  will-change: transform; /* own layer: ink repaints don't re-raster the title */
+}
+
+/* Mask only exists while playing, so the webp starts in sync with the timer.
+   Reduced motion skips it entirely. */
+@media (prefers-reduced-motion: no-preference) {
+  .ink-intro-overlay.is-playing .ink-layer {
+    /* stack: [white, ink@TL, ink@BR] => white minus (inkTL ∪ inkBR) */
+    -webkit-mask-image: linear-gradient(#fff, #fff), var(--ink-mask), var(--ink-mask);
+    mask-image: linear-gradient(#fff, #fff), var(--ink-mask), var(--ink-mask);
+    -webkit-mask-composite: source-out, source-over, source-over;
+    mask-composite: subtract, add, add;
+    -webkit-mask-size: cover, var(--ink-size) var(--ink-size), var(--ink-size) var(--ink-size);
+    mask-size: cover, var(--ink-size) var(--ink-size), var(--ink-size) var(--ink-size);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position:
+      center,
+      left var(--ink-offset) top var(--ink-offset),
+      right var(--ink-offset) bottom var(--ink-offset);
+    mask-position:
+      center,
+      left var(--ink-offset) top var(--ink-offset),
+      right var(--ink-offset) bottom var(--ink-offset);
+  }
+}
+
+/* Fade: quick opacity cut, then visibility:hidden so the webp stops
+   repainting (and can't flash its loop restart). */
 .ink-intro-overlay.fade-out .ink-layer {
   opacity: 0;
-  transition: opacity 0.2s ease;
+  visibility: hidden;
+  transition:
+    opacity var(--fade-ms) ease,
+    visibility 0s linear var(--fade-ms);
 }
 
 /* ─── Banner & typography ─── */
@@ -37,35 +71,13 @@
   z-index: 2;
 }
 
-/* Dual ink mask layers (shared) */
-.ink-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background-color: var(--color-intro-ink);
-  -webkit-mask-image: var(--ink-mask), linear-gradient(#fff, #fff);
-  mask-image: var(--ink-mask), linear-gradient(#fff, #fff);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  -webkit-mask-size: 200vmax 200vmax, cover;
-  mask-size: 200vmax 200vmax, cover;
-  -webkit-mask-repeat: no-repeat, no-repeat;
-  mask-repeat: no-repeat, no-repeat;
-  -webkit-mask-position: center, center;
-  mask-position: center, center;
-}
-
-/* Bottom-right copy: same mask, rotated 180deg */
-.ink-layer--br {
-  transform: rotate(180deg);
-}
-
 .ink-banner .ink-content {
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+  will-change: opacity, transform; /* rastered once, not per ink frame */
 }
 
 /* Text fade starts only once the ink animation actually starts */
@@ -99,8 +111,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ink-intro-overlay {
-    transition-duration: 1ms;
+  .ink-intro-overlay.fade-out .ink-layer {
+    transition: none;
   }
 
   .ink-intro-overlay.is-playing .ink-content {

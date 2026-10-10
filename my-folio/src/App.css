@@ -57,8 +57,9 @@ html, body {
 
 .ryoku-layout {
   --header-h: 5.5rem;
-  --space-gutter: clamp(1.25rem, 6vw, 6vw);
+  --space-gutter: clamp(1.5rem, 6vw, 5.5rem);
   --space-section: clamp(4rem, 8vw, 8rem);
+  --space-inner: clamp(1.5rem, 4vw, 4rem);
   --content-max: 1580px;
   --noise-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.045'/%3E%3C/svg%3E");
   position: relative;
@@ -209,7 +210,7 @@ html, body {
 .r-mobile-nav {
   position: fixed;
   inset: 0;
-  z-index: 1005;
+  z-index: 995;
   height: 100vh;
   height: 100dvh;
   background-color: var(--overlay-modal);
@@ -218,7 +219,7 @@ html, body {
   justify-content: center;
   align-items: center;
   gap: 2.5rem;
-  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  padding: calc(var(--header-h) + env(safe-area-inset-top, 0px)) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
   overflow-y: auto;
   overscroll-behavior: contain;
   opacity: 0;
@@ -361,7 +362,7 @@ html, body {
 .r-hero {
   flex: 1;
   display: flex;
-  padding: 6rem 6vw 0;
+  padding: 6rem var(--space-gutter) 0;
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
@@ -851,8 +852,8 @@ html, body {
 .r-about {
   display: flex;
   flex-wrap: wrap;
-  padding: 8vw 6vw 8vw 4vw;
-  gap: 4vw;
+  padding: var(--space-section) var(--space-gutter) var(--space-section) var(--space-inner);
+  gap: var(--space-inner);
   align-items: center;
   position: relative;
   background-color: var(--color-surface);
@@ -944,7 +945,7 @@ html, body {
 .r-skills {
   position: relative;
   width: 100%;
-  padding: 8vw;
+  padding: var(--space-section) var(--space-gutter);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1004,7 +1005,7 @@ html, body {
 .r-projects-container {
   position: relative;
   width: 100%;
-  padding: 4vw 6vw 0;
+  padding: clamp(2rem, 4vw, 4rem) var(--space-gutter) 0;
   display: flex;
   flex-direction: column;
   background-color: var(--color-surface);
@@ -1015,7 +1016,7 @@ html, body {
 
 .r-projects-header {
   display: flex;
-  gap: 4vw;
+  gap: var(--space-inner);
   align-items: flex-start;
   margin-bottom: 4rem;
 }
@@ -1067,7 +1068,7 @@ html, body {
 .r-site-footer {
   position: relative;
   overflow: hidden;
-  padding: 5.75rem max(6vw, 2rem) 1.5rem;
+  padding: 5.75rem var(--space-gutter) 1.5rem;
   padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
   background-color: var(--color-surface-deep);
   border-top: 1px solid var(--border-subtle);
@@ -1080,7 +1081,7 @@ html, body {
   z-index: 1;
   display: flex;
   justify-content: space-between;
-  gap: 5rem;
+  gap: clamp(2.5rem, 5vw, 5rem);
   min-height: 230px;
 }
 
@@ -1497,15 +1498,13 @@ html, body {
 }
 
 @media (max-width: 1024px) {
-  .r-header { padding: 1.5rem 4rem 1rem; }
-  .r-hero { padding: 6rem 4rem 0; }
-  .r-art img { margin-right: 4rem; }
+  .r-hero { padding: 6rem var(--space-gutter) 0; }
+  .r-art img { right: 4rem; }
   .r-header-actions-slot { gap: 1rem; }
 }
 
 @media (max-width: 768px) {
   html, body { overflow-y: auto; }
-  .r-header { padding: 1.5rem; }
   .r-header-nav-slot { display: none; }
   .r-header-actions-slot { gap: 0.75rem; }
   .r-nav { display: none; }
@@ -1513,7 +1512,7 @@ html, body {
   .r-mobile-toggle { display: inline-flex; }
   .r-theme-toggle { display: none; }
   .r-theme-toggle--mobile { display: inline-flex; margin-top: 0.5rem; }
-  .r-hero { padding: 6rem 1.5rem 0; flex-direction: column; }
+  .r-hero { flex-direction: column; }
   .r-left { width: 100%; max-width: 100%; }
   .r-right { position: relative; width: 100%; height: 500px; margin-top: 2rem; }
   .r-halo { right: 50%; transform: translate(50%, -50%); width: 300px; height: 300px; }
@@ -1665,7 +1664,7 @@ html, body {
 
   .r-mobile-nav {
     justify-content: flex-start;
-    padding-top: max(2rem, env(safe-area-inset-top, 0px));
+    padding-top: calc(var(--header-h) + max(1rem, env(safe-area-inset-top, 0px)));
     padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
   }
 

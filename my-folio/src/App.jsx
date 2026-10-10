@@ -381,10 +381,10 @@ const LogoLoopSection = memo(function LogoLoopSection() {
 
 const Skills = memo(function Skills() {
   return (
-    <section className="r-skills" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '6rem' }}>
+    <section className="r-skills" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--space-section)' }}>
       {/* Top Row: Description + Carousel */}
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4rem' }}>
-        <div style={{ display: 'flex', gap: '4vw', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-inner)' }}>
+        <div style={{ display: 'flex', gap: 'var(--space-gutter)', alignItems: 'center', flexWrap: 'wrap' }}>
           <div className="r-about-eyebrow">
             <span className="r-about-eyebrow-text">TECHNICAL FOCUS</span>
             <span className="r-about-eyebrow-icon">水</span>
