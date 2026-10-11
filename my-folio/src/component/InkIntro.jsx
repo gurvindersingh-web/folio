@@ -4,8 +4,9 @@ import './InkIntro.css';
 const VIDEO_MP4 = '/imgs/intro/ink_1080p.mp4';
 const VIDEO_WEBM = '/imgs/intro/ink_1080p.webm';
 
+const START_DELAY_MS = 2000;
 const PLAY_DURATION_MS = 5300;
-const FADE_MS = 600;
+const FADE_MS = 500;
 const UNMOUNT_MS = FADE_MS + 50;
 const REDUCED_MOTION_PLAY_MS = 300;
 const REDUCED_MOTION_FADE_MS = 1;
@@ -87,6 +88,7 @@ const InkIntro = ({ onComplete }) => {
 
     let cancelled = false;
     let fadeTimer;
+    let playTimer;
 
     const unlock = () => {
       document.body.style.overflow = previousOverflow;
@@ -208,13 +210,18 @@ const InkIntro = ({ onComplete }) => {
     const startPlayback = () => {
       if (cancelled) return;
       setPhase('playing');
-      video.play().catch(() => {});
+      // Render loop starts now (shows the blank first frame during the pause)
       rafId = requestAnimationFrame(render);
 
-      fadeTimer = setTimeout(() => {
-        unlock();
-        setPhase('fading');
-      }, PLAY_DURATION_MS);
+      // Delay the actual animation
+      playTimer = setTimeout(() => {
+        if (cancelled) return;
+        video.play().catch(() => {});
+        fadeTimer = setTimeout(() => {
+          unlock();
+          setPhase('fading');
+        }, PLAY_DURATION_MS);
+      }, START_DELAY_MS);
     };
 
     if (video.readyState >= 3) {
@@ -226,6 +233,7 @@ const InkIntro = ({ onComplete }) => {
     return () => {
       cancelled = true;
       cancelAnimationFrame(rafId);
+      clearTimeout(playTimer);
       clearTimeout(fadeTimer);
       window.removeEventListener('resize', resize);
       unlock();
