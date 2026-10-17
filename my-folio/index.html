@@ -42,8 +42,91 @@
 
     <link rel="preload" as="font" href="/fonts/inter-latin-wght-normal.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="font" href="/fonts/playfair-display-latin-wght-normal.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="/fonts/jetbrains-mono-latin-wght-normal.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="image" href="/imgs/profile-hero.webp" type="image/webp" fetchpriority="high" />
     <link rel="preload" as="video" href="/imgs/intro/ink_1080p.mp4" type="video/mp4" />
+
+    <!-- First-paint intro. Inlined so the overlay is visible on the very first
+         frame, before the JS bundle loads. React takes over / removes it. -->
+    <style>
+      @font-face {
+        font-family: 'Playfair Display';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400 900;
+        src: url('/fonts/playfair-display-latin-wght-normal.woff2') format('woff2-variations');
+      }
+
+      @font-face {
+        font-family: 'JetBrains Mono';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 800;
+        src: url('/fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2-variations');
+      }
+
+      html.ink-intro-locked,
+      html.ink-intro-locked body {
+        overflow: hidden;
+      }
+
+      #ink-intro-boot {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        overflow: hidden;
+        touch-action: none;
+        overscroll-behavior: contain;
+        background-color: #d3cdbd;
+      }
+
+      html[data-theme='light'] #ink-intro-boot {
+        background-color: #d8ccb8;
+      }
+
+      #ink-intro-boot .ink-banner {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      #ink-intro-boot .ink-content {
+        display: grid;
+        justify-items: center;
+        gap: 2.5rem;
+        text-align: center;
+      }
+
+      #ink-intro-boot .ink-title {
+        margin: 0;
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(4.75rem, 9vw, 8.5rem);
+        font-weight: 500;
+        line-height: 0.92;
+        letter-spacing: -0.01em;
+        color: #121212;
+      }
+
+      html[data-theme='light'] #ink-intro-boot .ink-title {
+        color: #171613;
+      }
+
+      #ink-intro-boot .ink-content > p {
+        margin: 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #333333;
+      }
+
+      html[data-theme='light'] #ink-intro-boot .ink-content > p {
+        color: #5b574e;
+      }
+    </style>
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -64,6 +147,36 @@
 
   </head>
   <body>
+    <!-- Static intro so it shows on the very first paint (before React boots).
+         InkIntro.jsx renders the live version and calls __dismissInkIntroBoot. -->
+    <div id="ink-intro-boot">
+      <div class="ink-banner">
+        <div class="ink-content">
+          <h1 class="ink-title">Gurvinder<br />Singh</h1>
+          <p>@ gurvindersingh-web</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      (() => {
+        const boot = document.getElementById('ink-intro-boot');
+        const root = document.documentElement;
+        root.classList.add('ink-intro-locked');
+
+        let active = true;
+        const dismiss = () => {
+          if (!active) return;
+          active = false;
+          clearTimeout(failsafe);
+          root.classList.remove('ink-intro-locked');
+          boot.remove();
+        };
+
+        window.__dismissInkIntroBoot = dismiss;
+        // Failsafe: if the bundle never boots, don't trap visitors on the intro.
+        const failsafe = setTimeout(dismiss, 12000);
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

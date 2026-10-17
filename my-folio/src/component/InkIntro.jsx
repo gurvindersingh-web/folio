@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, memo } from 'react';
 import './InkIntro.css';
 
 const VIDEO_MP4 = '/imgs/intro/ink_1080p.mp4';
 const VIDEO_WEBM = '/imgs/intro/ink_1080p.webm';
 
-const START_DELAY_MS = 2000;
+const START_DELAY_MS = 0;
 const PLAY_DURATION_MS = 5300;
 const FADE_MS = 500;
 const UNMOUNT_MS = FADE_MS + 50;
+const VIDEO_LOAD_TIMEOUT_MS = 4000;
 const REDUCED_MOTION_PLAY_MS = 300;
 const REDUCED_MOTION_FADE_MS = 1;
 
@@ -80,6 +81,13 @@ const InkIntro = ({ onComplete }) => {
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
+
+  // index.html paints this same overlay statically so it shows on the very
+  // first frame. React now owns an identical overlay on top, so drop the
+  // static copy (and its scroll lock) before the browser paints.
+  useLayoutEffect(() => {
+    window.__dismissInkIntroBoot?.();
+  }, []);
 
   // Lock scroll on mount, unlock on finish
   useEffect(() => {
@@ -207,11 +215,17 @@ const InkIntro = ({ onComplete }) => {
       rafId = requestAnimationFrame(render);
     };
 
+    // Draw immediately: until the video is decoded the 1x1 white texture keeps
+    // the cream paper on screen, so there is never a transparent gap.
+    rafId = requestAnimationFrame(render);
+
+    let loadTimer;
+    let started = false;
     const startPlayback = () => {
-      if (cancelled) return;
+      if (cancelled || started) return;
+      started = true;
+      clearTimeout(loadTimer);
       setPhase('playing');
-      // Render loop starts now (shows the blank first frame during the pause)
-      rafId = requestAnimationFrame(render);
 
       // Delay the actual animation
       playTimer = setTimeout(() => {
@@ -228,13 +242,17 @@ const InkIntro = ({ onComplete }) => {
       startPlayback();
     } else {
       video.addEventListener('canplay', startPlayback, { once: true });
+      // Failsafe: never trap the visitor behind the intro if the video stalls.
+      loadTimer = setTimeout(startPlayback, VIDEO_LOAD_TIMEOUT_MS);
     }
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(rafId);
+      clearTimeout(loadTimer);
       clearTimeout(playTimer);
       clearTimeout(fadeTimer);
+      video.removeEventListener('canplay', startPlayback);
       window.removeEventListener('resize', resize);
       unlock();
 

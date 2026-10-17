@@ -15,6 +15,12 @@
   pointer-events: none;
 }
 
+/* Cream paper base while the video warms up, so the page behind never peeks
+   through. Removed once playing so the canvas' ink can reveal the site. */
+.ink-intro-overlay:not(.is-playing) {
+  background-color: var(--color-intro-ink);
+}
+
 /* ─── Hidden video decoder ─── */
 .ink-video-source {
   display: none;
